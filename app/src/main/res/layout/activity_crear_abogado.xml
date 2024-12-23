@@ -326,8 +326,357 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/spinner_background"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:text="Horario de trabajo"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:singleLine="true"/>
+
+                <Button
+                    android:id="@+id/btnVerHorario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mostrar Horario"
+                    android:textSize="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/negroSecundario"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/gridHorario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <!-- Lunes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="5dp">
+
+                    <CheckBox
+                        android:layout_width="110dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/chkLunes"
+                        android:text="Lunes"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:buttonTint="@color/negroSecundario"
+                        />
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spLunesInicio"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvLunes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="a"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"/>
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spLunesFin"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                </LinearLayout>
+
+                <!-- Martes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="5dp">
+
+                    <CheckBox
+                        android:layout_width="110dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/chkMartes"
+                        android:text="Martes"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:buttonTint="@color/negroSecundario"
+                        />
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spMartesInicio"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvMartes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="a"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"/>
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spMartesFin"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        />
+                </LinearLayout>
+
+                <!-- Miércoles -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="5dp">
+
+                    <CheckBox
+                        android:id="@+id/chkMiercoles"
+                        android:layout_width="110dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:buttonTint="@color/negroSecundario"
+                        android:text="Miercoles"
+                        android:textColor="@color/black"
+                        android:textSize="16dp" />
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spMiercolesInicio"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvMiercoles"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="a"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"/>
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spMiercolesFin"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+                </LinearLayout>
+
+                <!-- Jueves -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="5dp">
+
+                    <CheckBox
+                        android:layout_width="110dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/chkJueves"
+                        android:text="Jueves"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:buttonTint="@color/negroSecundario"
+                        />
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spJuevesInicio"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvJueves"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="a"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"/>
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spJuevesFin"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        />
+                </LinearLayout>
+
+                <!-- Viernes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="10dp">
+
+                    <CheckBox
+                        android:layout_width="110dp"
+                        android:layout_height="50dp"
+                        android:id="@+id/chkViernes"
+                        android:text="Viernes"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:buttonTint="@color/negroSecundario"
+                        />
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spViernesInicio"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvViernes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16dp"
+                        android:textColor="@color/black"
+                        android:text="a"
+                        android:textAlignment="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"/>
+
+                    <Spinner
+                        android:layout_width="80dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/spViernesFin"
+                        android:background="@drawable/spinner_background"
+                        android:textSize="15sp"
+                        android:spinnerMode="dropdown"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp"
+                        />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"

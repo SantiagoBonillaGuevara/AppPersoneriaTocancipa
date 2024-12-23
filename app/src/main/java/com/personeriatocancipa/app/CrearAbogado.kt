@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.LinearLayout
@@ -46,11 +47,42 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var tvEstado: TextView
     private lateinit var tvCargo: TextView
     private lateinit var tvTema: TextView
+
+    // Firebase
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
     private var sujeto: String = ""
     private var uidConsultado: String = ""
+
+    // Horario
+    private lateinit var btnVerHorario: Button
+    private lateinit var gridHorario: LinearLayout
+
+    private lateinit var tvLunes: TextView
+    private lateinit var tvMartes: TextView
+    private lateinit var tvMiercoles: TextView
+    private lateinit var tvJueves: TextView
+    private lateinit var tvViernes: TextView
+
+    private lateinit var spLunesInicio: Spinner
+    private lateinit var spLunesFin: Spinner
+    private lateinit var spMartesInicio: Spinner
+    private lateinit var spMartesFin: Spinner
+    private lateinit var spMiercolesInicio: Spinner
+    private lateinit var spMiercolesFin: Spinner
+    private lateinit var spJuevesInicio: Spinner
+    private lateinit var spJuevesFin: Spinner
+    private lateinit var spViernesInicio: Spinner
+    private lateinit var spViernesFin: Spinner
+
+    private lateinit var chkLunes: CheckBox
+    private lateinit var chkMartes: CheckBox
+    private lateinit var chkMiercoles: CheckBox
+    private lateinit var chkJueves: CheckBox
+    private lateinit var chkViernes: CheckBox
+
+
 
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +115,75 @@ class CrearAbogado : AppCompatActivity() {
         tvEstado = findViewById(R.id.tvEstado)
         tvCargo = findViewById(R.id.tvCargo)
         tvTema = findViewById(R.id.tvTema)
+
+        // Horario
+        btnVerHorario = findViewById(R.id.btnVerHorario)
+        gridHorario = findViewById(R.id.gridHorario)
+
+        // TextView
+        tvLunes = findViewById(R.id.tvLunes)
+        tvMartes = findViewById(R.id.tvMartes)
+        tvMiercoles = findViewById(R.id.tvMiercoles)
+        tvJueves = findViewById(R.id.tvJueves)
+        tvViernes = findViewById(R.id.tvViernes)
+
+        // CheckBox
+        chkLunes = findViewById(R.id.chkLunes)
+        chkMartes = findViewById(R.id.chkMartes)
+        chkMiercoles = findViewById(R.id.chkMiercoles)
+        chkJueves = findViewById(R.id.chkJueves)
+        chkViernes = findViewById(R.id.chkViernes)
+
+        // Spinner
+        spLunesInicio = findViewById(R.id.spLunesInicio)
+        spLunesFin = findViewById(R.id.spLunesFin)
+        spMartesInicio = findViewById(R.id.spMartesInicio)
+        spMartesFin = findViewById(R.id.spMartesFin)
+        spMiercolesInicio = findViewById(R.id.spMiercolesInicio)
+        spMiercolesFin = findViewById(R.id.spMiercolesFin)
+        spJuevesInicio = findViewById(R.id.spJuevesInicio)
+        spJuevesFin = findViewById(R.id.spJuevesFin)
+        spViernesInicio = findViewById(R.id.spViernesInicio)
+        spViernesFin = findViewById(R.id.spViernesFin)
+
+        // Array con el nombre de los spinner
+        val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        for (spinner in spinnerDiasArray) {
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.horasLaborales,
+                R.drawable.spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                spinner.adapter = adapter
+            }
+            spinner.visibility = Spinner.GONE
+        }
+
+        val tvDiasArray = arrayOf(tvLunes, tvMartes, tvMiercoles, tvJueves, tvViernes)
+        for (tv in tvDiasArray) {
+            tv.visibility = TextView.GONE
+        }
+
+
+        val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
+        for (checkBox in checkBoxesArray) {
+            checkBox.setOnClickListener {
+                if (checkBox.isChecked) {
+                    val index = checkBoxesArray.indexOf(checkBox)
+                    tvDiasArray[index].visibility = TextView.VISIBLE
+                    spinnerDiasArray[index * 2].visibility = Spinner.VISIBLE
+                    spinnerDiasArray[(index * 2) + 1].visibility = Spinner.VISIBLE
+                } else {
+                    val index = checkBoxesArray.indexOf(checkBox)
+                    tvDiasArray[index].visibility = TextView.GONE
+                    spinnerDiasArray[index * 2].visibility = Spinner.GONE
+                    spinnerDiasArray[(index * 2) + 1].visibility = Spinner.GONE
+                }
+            }
+        }
+
+
 
         spCargo = findViewById(R.id.spCargo)
         ArrayAdapter.createFromResource(
@@ -196,6 +297,17 @@ class CrearAbogado : AppCompatActivity() {
                     tvConfirmarClave.visibility = TextView.GONE
                     disableFields()
                 }
+            }
+        }
+
+        gridHorario.visibility = LinearLayout.GONE
+        btnVerHorario.setOnClickListener {
+            if (gridHorario.visibility == LinearLayout.GONE) {
+                btnVerHorario.text = "Ocultar Horario"
+                gridHorario.visibility = LinearLayout.VISIBLE
+            } else {
+                btnVerHorario.text = "Mostrar Horario"
+                gridHorario.visibility = LinearLayout.GONE
             }
         }
 

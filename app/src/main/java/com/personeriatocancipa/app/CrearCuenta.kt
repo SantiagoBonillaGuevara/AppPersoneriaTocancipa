@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -38,12 +37,21 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var txtDireccion: EditText
     private lateinit var txtTelefono: EditText
     private lateinit var txtCorreo: EditText
+    private lateinit var txtFecha: EditText
+    private lateinit var txtEtario: EditText
+    private lateinit var txtGrupoEtnico: EditText
+    private lateinit var spTipoDocumento: Spinner
     private lateinit var spSexo: Spinner
     private lateinit var spEscolaridad: Spinner
     private lateinit var spGrupo: Spinner
     private lateinit var spComunidad: Spinner
     private lateinit var spEstado: Spinner
-    private lateinit var txtGrupoEtnico: EditText
+    private lateinit var spSector: Spinner
+    private lateinit var spIdentidad: Spinner
+    private lateinit var spOrientacion: Spinner
+    private lateinit var spNacionalidad: Spinner
+    private lateinit var spDiscapacidad: Spinner
+    private lateinit var spEstrato: Spinner
     private lateinit var btnConsultar: Button
     private lateinit var btnSalir: Button
     private lateinit var btnSignUp: Button
@@ -51,6 +59,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var btnEliminar: Button
     private lateinit var btnTogglePassword: Button
     private lateinit var btnToggleCheckPassword: Button
+    private lateinit var btnFecha: Button
     private lateinit var tvClave: TextView
     private lateinit var tvConfirmarClave: TextView
     private lateinit var tvEstado: TextView
@@ -107,29 +116,6 @@ class CrearCuenta : AppCompatActivity() {
             spGrupo.adapter = adapter
         }
 
-        // Muestra pregunta si hace parte de Grupo Étnico
-        spGrupo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // Obtener el elemento seleccionado
-                val selectedItem = parent.getItemAtPosition(position).toString()
-
-                if (selectedItem == "Sí") {
-                    findViewById<GridLayout>(R.id.gridSiGrupo).visibility = View.VISIBLE
-                } else {
-                    findViewById<GridLayout>(R.id.gridSiGrupo).visibility = View.GONE
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
-        }
-
         // Comunidad Vulnerable
         spComunidad = findViewById(R.id.spComunidad)
         ArrayAdapter.createFromResource(
@@ -141,6 +127,7 @@ class CrearCuenta : AppCompatActivity() {
             spComunidad.adapter = adapter
         }
 
+        // Estado
         spEstado = findViewById(R.id.spEstado)
         ArrayAdapter.createFromResource(
             this,
@@ -149,6 +136,83 @@ class CrearCuenta : AppCompatActivity() {
         ).also { adapter ->
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
             spEstado.adapter = adapter
+        }
+
+        // Tipo de Documento
+        spTipoDocumento = findViewById(R.id.spTipoDocumento)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesTipoDocumento,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spTipoDocumento.adapter = adapter
+        }
+
+        // Sector y/o vereda
+        spSector = findViewById(R.id.spSector)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesSector,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spSector.adapter = adapter
+        }
+
+        // Identidad de Género
+        spIdentidad = findViewById(R.id.spIdentidad)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesIdentidad,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spIdentidad.adapter = adapter
+        }
+
+        // Orientación Sexual
+        spOrientacion = findViewById(R.id.spOrientacion)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesOrientacion,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spOrientacion.adapter = adapter
+        }
+
+        // Nacionalidad
+        spNacionalidad = findViewById(R.id.spNacionalidad)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesNacionalidad,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spNacionalidad.adapter = adapter
+        }
+
+        // Discapacidad
+        spDiscapacidad = findViewById(R.id.spDiscapacidad)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesDiscapacidad,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spDiscapacidad.adapter = adapter
+        }
+
+        // Estrato
+        spEstrato = findViewById(R.id.spEstrato)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opcionesEstrato,
+            R.drawable.spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+            spEstrato.adapter = adapter
         }
 
 
@@ -192,8 +256,10 @@ class CrearCuenta : AppCompatActivity() {
         txtDireccion = findViewById(R.id.txtDireccion)
         txtTelefono = findViewById(R.id.txtTelefono)
         txtCorreo = findViewById(R.id.txtCorreo)
-        txtGrupoEtnico = findViewById(R.id.txtGrupoEtnico)
+        txtFecha = findViewById(R.id.txtFecha)
+        txtEtario = findViewById(R.id.txtEtario)
         btnConsultar = findViewById(R.id.btnConsultar)
+        btnFecha = findViewById(R.id.btnFecha)
         btnSalir = findViewById(R.id.btnSalir)
         btnSignUp = findViewById(R.id.btnSignUp)
         btnModificar = findViewById(R.id.btnModificar)
@@ -267,21 +333,26 @@ class CrearCuenta : AppCompatActivity() {
         btnSignUp.setOnClickListener {
             // Crear y configurar el diálogo inicial
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Permiso de Habeas Data")
-            builder.setMessage("Al crear una cuenta, autorizas el tratamiento de tus datos personales conforme a nuestra política de privacidad. ¿Aceptas continuar?")
+            builder.setTitle("Política de Tratamiento de Datos Personales")
+            builder.setMessage("Señor(a) usuario(a), autoriza a la Personería de Tocancipá, para la recolección, consulta, almacenamiento, uso, traslado o eliminación de sus datos personales, con el fin de: adelantar las gestiones, actuaciones e intervenciones que permitan el restablecimiento y goce de sus derechos, invitar a eventos de participación ciudadana u organizados por la entidad,  información con fines estadísticos, enviar información a entidades autorizadas cuando la solicitud lo amerite, evaluar la calidad del servicio y contactar al titular en los casos que se considere necesario. \n" +
+                    "\n" +
+                    "No es obligatorio para la prestación del servicio, suministrar los datos personales de carácter sensible o de niños, niñas y adolescentes. Se exime el tratamiento de datos de niños, niñas y adolescentes, salvo aquellos datos que sean de naturaleza pública. \n" +
+                    "Como titular de la información tiene derecho a conocer, actualizar y rectificar sus datos personales, así como  suprimir o revocar la autorización otorgada para su tratamiento, pedir prueba de la autorización otorgada al responsable del tratamiento y ser informado sobre el uso que le han dado a los mismos, presentar quejas ante la Superintendencia de Industria y Comercio SIC por infracción a la ley y acceder en forma gratuita a sus datos personales, acorde al o establecido en los artículos 15, 20 y 74 de la Constitución Política, , la Ley 1581 del 2012, el Decreto Reglamentario 1377 de 2013, la Ley 1266 del 31 de 2008, el Decreto Reglamentario 1727 de  2009, y demás normatividad vigente relacionada. \n" +
+                    "Consulte la Política de Tratamiento de Datos Personales Personería Municipal de Tocancipá adoptada mediante Resolución Administrativa 051 de 2020 en el siguiente link https://www.personeria-tocancipa.gov.co/politicas-y-lineamientos/politica-de-tratamiento-de-datos\n" +
+                    "¿Acepta términos y condiciones?\n")
 
             // Agregar botones de acción
-            builder.setPositiveButton("Acepto") { dialog, which ->
+            builder.setPositiveButton("Sí") { dialog, which ->
                 // Continuar con la creación de la cuenta
                 procesarCreacionCuenta()
             }
 
-            builder.setNegativeButton("No acepto") { dialog, which ->
+            builder.setNegativeButton("No") { dialog, which ->
                 // Cancelar el flujo
                 dialog.dismiss()
                 Toast.makeText(
                     this@CrearCuenta,
-                    "No se puede continuar sin aceptar el permiso de habeas data",
+                    "Debe aceptar la política de tratamiento de datos personales para continuar",
                     Toast.LENGTH_SHORT,
                 ).show()
             }
@@ -326,9 +397,9 @@ class CrearCuenta : AppCompatActivity() {
                     val estado = campos[13]
 
                     mDbRef = FirebaseDatabase.getInstance().getReference("userData")
-                    mDbRef.child(uidConsultado).setValue(
+                    """mDbRef.child(uidConsultado).setValue(
                         Usuario(nombre, documento, edad, direccion, telefono,
-                            correo, sexo, escolaridad, siGrupo, grupo, comunidad, estado, uidConsultado))
+                            correo, sexo, escolaridad, siGrupo, grupo, comunidad, estado, uidConsultado))"""
                     Toast.makeText(
                         this@CrearCuenta,
                         "Usuario modificado exitosamente",
@@ -428,19 +499,27 @@ class CrearCuenta : AppCompatActivity() {
             return
         } else {
             val nombre = campos[0]
-            val clave = campos[1]
-            val confirmarClave = campos[2]
-            val documento = campos[3]
+            val tipoDocumento = campos[1]
+            val documento = campos[2]
+            val fechaNacimiento = campos[3]
             val edad = campos[4].toInt()
-            val direccion = campos[5]
-            val telefono = campos[6]
-            val correo = campos[7]
-            val sexo = campos[8]
-            val escolaridad = campos[9]
-            val grupo = campos[10]
-            val siGrupo = campos[11]
-            val comunidad = campos[12]
-            val estado = campos[13]
+            val grupoEtario = campos[5]
+            val direccion = campos[6]
+            val sector = campos[7]
+            val telefono = campos[8]
+            val correo = campos[9]
+            val sexo = campos[10]
+            val identidad = campos[11]
+            val orientacion = campos[12]
+            val nacionalidad = campos[13]
+            val escolaridad = campos[14]
+            val grupoEtnico = campos[15]
+            val discapacidad = campos[16]
+            val estrato = campos[17]
+            val comunidad = campos[18]
+            val clave = campos[19]
+            val confirmarClave = campos[20]
+            val estado = campos[21]
 
             if (clave != confirmarClave) {
                 Toast.makeText(
@@ -450,49 +529,109 @@ class CrearCuenta : AppCompatActivity() {
                 ).show()
                 return
             } else {
-                signUp(
-                    nombre, clave, documento, edad,
-                    direccion, telefono, correo, sexo, escolaridad,
-                    grupo, siGrupo, comunidad, estado)
+                signUp(nombre, tipoDocumento, documento, fechaNacimiento, edad,
+                    grupoEtario, direccion, sector, telefono, correo, sexo,
+                    identidad, orientacion, nacionalidad, escolaridad, grupoEtnico,
+                    discapacidad, estrato, comunidad, clave, estado)
             }
         }
     }
 
     private fun signUp(
         nombre: String,
-        clave: String,
+        tipoDocumento: String,
         documento: String,
+        fechaNacimiento: String,
         edad: Int,
+        grupoEtario: String,
         direccion: String,
+        sector: String,
         telefono: String,
         correo: String,
         sexo: String,
+        identidad: String,
+        orientacion: String,
+        nacionalidad: String,
         escolaridad: String,
-        grupo: String,
-        siGrupo: String?,
+        grupoEtnico: String,
+        discapacidad: String,
+        estrato: String,
         comunidad: String,
+        clave: String,
         estado: String
     ) {
 
         // Buscar en RealtimeDatabase si ya existe un usuario con el mismo documento
         mDbRef = FirebaseDatabase.getInstance().getReference("userData")
-        val query = mDbRef.orderByChild("documento").equalTo(documento)
+        var query = mDbRef.orderByChild("documento").equalTo(documento)
+        // Buscar si ese número de documento ya está registrado
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
-                    Toast.makeText(
-                        this@CrearCuenta,
-                        "Ya existe un usuario con el documento ingresado",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    // Buscar si ese número de documento está registrado, pero con otro tipo
+                    query = mDbRef.orderByChild("tipoDocumento").equalTo(tipoDocumento)
+                    query.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                Toast.makeText(
+                                    this@CrearCuenta,
+                                    "Ya existe un usuario con ese número y tipo de documento",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            } else {
+                                mAuth.createUserWithEmailAndPassword(correo, clave)
+                                    .addOnCompleteListener(this@CrearCuenta) { task ->
+                                        if (task.isSuccessful) {
+                                            addUserToDatabase(
+                                                nombre, tipoDocumento, documento, fechaNacimiento, edad.toString(),
+                                                grupoEtario, direccion, sector, telefono,
+                                                correo, sexo, identidad, orientacion, nacionalidad,
+                                                escolaridad, grupoEtnico, discapacidad, estrato, comunidad,
+                                                estado, mAuth.currentUser?.uid!!
+                                            )
+
+                                            println(mAuth.currentUser?.uid)
+                                            if (usuario == "cliente") {
+                                                val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
+                                                finish()
+                                                startActivity(intent)
+                                            } else {
+                                                Toast.makeText(
+                                                    this@CrearCuenta,
+                                                    "Usuario creado exitosamente",
+                                                    Toast.LENGTH_SHORT,
+                                                ).show()
+                                            }
+                                        } else {
+                                            Toast.makeText(
+                                                this@CrearCuenta,
+                                                "Ha ocurrido un error",
+                                                Toast.LENGTH_SHORT,
+                                            ).show()
+                                        }
+                                    }
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            Toast.makeText(
+                                this@CrearCuenta,
+                                "Error al consultar la base de datos",
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                        }
+                    })
                 } else {
+                    // Ese número no está registrado, se puede proceder a crear la cuenta
                     mAuth.createUserWithEmailAndPassword(correo, clave)
                         .addOnCompleteListener(this@CrearCuenta) { task ->
                             if (task.isSuccessful) {
                                 addUserToDatabase(
-                                    nombre, documento, edad, direccion,
-                                    telefono, correo, sexo, escolaridad, grupo,
-                                    siGrupo, comunidad, estado, mAuth.currentUser?.uid!!
+                                    nombre, tipoDocumento, documento, fechaNacimiento, edad.toString(),
+                                    grupoEtario, direccion, sector, telefono,
+                                    correo, sexo, identidad, orientacion, nacionalidad,
+                                    escolaridad, grupoEtnico, discapacidad, estrato, comunidad,
+                                    estado, mAuth.currentUser?.uid!!
                                 )
 
                                 println(mAuth.currentUser?.uid)
@@ -528,23 +667,36 @@ class CrearCuenta : AppCompatActivity() {
         })
     }
 
-    private fun addUserToDatabase(nombre: String,
-                                  documento: String,
-                                  edad: Int,
-                                  direccion: String,
-                                  telefono: String,
-                                  correo: String,
-                                  sexo: String,
-                                  escolaridad: String,
-                                  grupo: String,
-                                  siGrupo: String?,
-                                  comunidad: String,
-                                  estado: String,
-                                  uid: String) {
+    private fun addUserToDatabase(
+        nombre: String,
+        tipoDocumento: String,
+        documento: String,
+        fechaNacimiento: String,
+        edad: String,
+        grupoEtario: String,
+        direccion: String,
+        sector: String,
+        telefono: String,
+        correo: String,
+        sexo: String,
+        identidad: String,
+        orientacion: String,
+        nacionalidad: String,
+        escolaridad: String,
+        grupoEtnico: String,
+        discapacidad: String,
+        estrato: String,
+        comunidad: String,
+        estado: String,
+        uid: String
+    ) {
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("userData").child(uid).setValue(
-            Usuario(nombre, documento, edad, direccion, telefono,
-                correo, sexo, escolaridad, siGrupo, grupo, comunidad, estado, uid))
+            Usuario(nombre, tipoDocumento, documento, fechaNacimiento,
+                grupoEtario, edad.toInt(), direccion, sector, telefono,
+                correo, sexo, identidad, orientacion, nacionalidad,
+                escolaridad, grupoEtnico, discapacidad, estrato,
+                comunidad, estado, uid))
         Toast.makeText(
             this@CrearCuenta,
             "Cuenta creada exitosamente",
@@ -554,32 +706,36 @@ class CrearCuenta : AppCompatActivity() {
 
     private fun conseguirCampos(): Array<String> {
         val nombre = txtNombre.text.toString()
-        val clave = txtClave.text.toString()
-        val confirmarClave = txtConfirmarClave.text.toString()
+        val tipoDocumento = spTipoDocumento.selectedItem.toString()
         val documento = txtDocumento.text.toString()
+        val fechaNacimiento = txtFecha.text.toString()
         val edad = txtEdad.text.toString()
+        val grupoEtario = txtEtario.text.toString()
         val direccion = txtDireccion.text.toString()
+        val sector = spSector.selectedItem.toString()
         val telefono = txtTelefono.text.toString()
         val correo = txtCorreo.text.toString()
         val sexo = spSexo.selectedItem.toString()
+        val identidad = spIdentidad.selectedItem.toString()
+        val orientacion = spOrientacion.selectedItem.toString()
+        val nacionalidad = spNacionalidad.selectedItem.toString()
         val escolaridad = spEscolaridad.selectedItem.toString()
-        val grupo = spGrupo.selectedItem.toString()
+        val grupoEtnico = spGrupo.selectedItem.toString()
+        val discpacidad = spDiscapacidad.selectedItem.toString()
+        val estrato = spEstrato.selectedItem.toString()
         val comunidad = spComunidad.selectedItem.toString()
-        val grupoEtnico = txtGrupoEtnico.text.toString()
+        val clave = txtClave.text.toString()
+        val confirmarClave = txtConfirmarClave.text.toString()
         val estado = spEstado.selectedItem.toString()
 
-        return arrayOf(nombre, clave, confirmarClave, documento, edad, direccion, telefono, correo, sexo, escolaridad, grupo, grupoEtnico, comunidad, estado)
+        return arrayOf(nombre, tipoDocumento, documento, fechaNacimiento, edad, grupoEtario, direccion, sector, telefono, correo, sexo, identidad, orientacion, nacionalidad, escolaridad, grupoEtnico, discpacidad, estrato, comunidad, clave, confirmarClave, estado)
     }
 
     private fun verificarCampos(campos: Array<String>): Boolean {
        //Verifica que todos los campos estén diligenciados
-        // Si el grupo étnico es "Sí", se debe diligenciar el campo de grupo étnico
-        if((tarea == "modificar") && (campos[0].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty())){
+        if((tarea == "modificar") && (campos[0].isEmpty() || campos[2].isEmpty() || campos[6].isEmpty() || campos[8].isEmpty() || campos[9].isEmpty())){
             return false
-        }else if (tarea == "crear" && (campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty() || campos[5].isEmpty() || campos[6].isEmpty() || campos[7].isEmpty() || campos[10].isEmpty() || campos[12].isEmpty())) {
-            return false
-        }
-        if (campos[10] == "Sí" && campos[11].isEmpty()) {
+        }else if (tarea == "crear" && (campos[0].isEmpty() || campos[2].isEmpty() || campos[6].isEmpty() || campos[8].isEmpty() || campos[9].isEmpty() || campos[19].isEmpty()|| campos[20].isEmpty())) {
             return false
         }
         return true

@@ -615,37 +615,107 @@ class CrearCuenta : AppCompatActivity() {
                                     Toast.LENGTH_SHORT,
                                 ).show()
                             } else {
-                                mAuth.createUserWithEmailAndPassword(correo, clave)
-                                    .addOnCompleteListener(this@CrearCuenta) { task ->
-                                        if (task.isSuccessful) {
-                                            addUserToDatabase(
-                                                nombre, tipoDocumento, documento, fechaNacimiento, edad.toString(),
-                                                grupoEtario, direccion, sector, telefono,
-                                                correo, sexo, identidad, orientacion, nacionalidad,
-                                                escolaridad, grupoEtnico, discapacidad, estrato, comunidad,
-                                                estado, mAuth.currentUser?.uid!!
-                                            )
-
-                                            println(mAuth.currentUser?.uid)
-                                            if (usuario == "cliente") {
-                                                val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
-                                                finish()
-                                                startActivity(intent)
-                                            } else {
-                                                Toast.makeText(
-                                                    this@CrearCuenta,
-                                                    "Usuario creado exitosamente",
-                                                    Toast.LENGTH_SHORT,
-                                                ).show()
-                                            }
-                                        } else {
+                                // Buscar si ese correo está registrado en Usuarios
+                                mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+                                query = mDbRef.orderByChild("correo").equalTo(correo)
+                                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        if (snapshot.exists()) {
                                             Toast.makeText(
                                                 this@CrearCuenta,
-                                                "Ha ocurrido un error",
+                                                "Ese correo ya está registrado",
                                                 Toast.LENGTH_SHORT,
                                             ).show()
+                                        } else {
+                                            // Buscar si ese correo está registrado en Abogados
+                                            mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
+                                            query = mDbRef.orderByChild("correo").equalTo(correo)
+                                            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                                override fun onDataChange(snapshot: DataSnapshot) {
+                                                    if (snapshot.exists()) {
+                                                        Toast.makeText(
+                                                            this@CrearCuenta,
+                                                            "Ese correo ya está registrado",
+                                                            Toast.LENGTH_SHORT,
+                                                        ).show()
+                                                    } else {
+                                                        // Buscar si ese correo está registrado en Administradores
+                                                        mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
+                                                        query = mDbRef.orderByChild("correo").equalTo(correo)
+                                                        query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                                            override fun onDataChange(snapshot: DataSnapshot) {
+                                                                if (snapshot.exists()) {
+                                                                    Toast.makeText(
+                                                                        this@CrearCuenta,
+                                                                        "Ese correo ya está registrado",
+                                                                        Toast.LENGTH_SHORT,
+                                                                    ).show()
+                                                                } else {
+                                                                    // Ese número no está registrado, se puede proceder a crear la cuenta
+                                                                    mAuth.createUserWithEmailAndPassword(correo, clave)
+                                                                        .addOnCompleteListener(this@CrearCuenta) { task ->
+                                                                            if (task.isSuccessful) {
+                                                                                addUserToDatabase(
+                                                                                    nombre, tipoDocumento, documento, fechaNacimiento, edad.toString(),
+                                                                                    grupoEtario, direccion, sector, telefono,
+                                                                                    correo, sexo, identidad, orientacion, nacionalidad,
+                                                                                    escolaridad, grupoEtnico, discapacidad, estrato, comunidad,
+                                                                                    estado, mAuth.currentUser?.uid!!
+                                                                                )
+
+                                                                                println(mAuth.currentUser?.uid)
+                                                                                if (usuario == "cliente") {
+                                                                                    val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
+                                                                                    finish()
+                                                                                    startActivity(intent)
+                                                                                } else {
+                                                                                    Toast.makeText(
+                                                                                        this@CrearCuenta,
+                                                                                        "Usuario creado exitosamente",
+                                                                                        Toast.LENGTH_SHORT,
+                                                                                    ).show()
+                                                                                }
+                                                                            } else {
+                                                                                Toast.makeText(
+                                                                                    this@CrearCuenta,
+                                                                                    "Ha ocurrido un error",
+                                                                                    Toast.LENGTH_SHORT,
+                                                                                ).show()
+                                                                            }
+                                                                        }
+                                                                }
+                                                            }
+
+                                                            override fun onCancelled(error: DatabaseError) {
+                                                                Toast.makeText(
+                                                                    this@CrearCuenta,
+                                                                    "Error al consultar la base de datos",
+                                                                    Toast.LENGTH_SHORT,
+                                                                ).show()
+                                                            }
+                                                        })
+                                                    }
+                                                }
+
+                                                override fun onCancelled(error: DatabaseError) {
+                                                    Toast.makeText(
+                                                        this@CrearCuenta,
+                                                        "Error al consultar la base de datos",
+                                                        Toast.LENGTH_SHORT,
+                                                    ).show()
+                                                }
+                                            })
                                         }
                                     }
+
+                                    override fun onCancelled(error: DatabaseError) {
+                                        Toast.makeText(
+                                            this@CrearCuenta,
+                                            "Error al consultar la base de datos",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                    }
+                                })
                             }
                         }
 

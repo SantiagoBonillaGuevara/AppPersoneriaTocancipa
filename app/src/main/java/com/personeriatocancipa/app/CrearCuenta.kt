@@ -67,6 +67,7 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var tvEstado: TextView
     private lateinit var tvTipoDocumento: TextView
     private lateinit var tvDocumento: TextView
+    private lateinit var tvCorreo: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private lateinit var calendar: Calendar
@@ -286,6 +287,7 @@ class CrearCuenta : AppCompatActivity() {
         tvConfirmarClave = findViewById(R.id.tvConfirmarClave)
         tvDocumento = findViewById(R.id.tvDocumento)
         tvTipoDocumento = findViewById(R.id.tvTipoDocumento)
+        tvCorreo = findViewById(R.id.tvCorreo)
         tvEstado = findViewById(R.id.tvEstado)
 
         if(tarea == "crear"){
@@ -335,6 +337,8 @@ class CrearCuenta : AppCompatActivity() {
                     btnToggleCheckPassword.visibility = Button.GONE
                     tvClave.visibility = TextView.GONE
                     tvConfirmarClave.visibility = TextView.GONE
+                    tvCorreo.visibility = TextView.GONE
+                    txtCorreo.visibility = EditText.GONE
                 }
                 else -> {
                     btnSignUp.visibility = Button.GONE
@@ -881,7 +885,7 @@ class CrearCuenta : AppCompatActivity() {
 
     private fun verificarCampos(campos: Array<String>): Boolean {
        //Verifica que todos los campos estén diligenciados
-        if((tarea == "modificar") && (campos[0].isEmpty() || campos[2].isEmpty() || campos[6].isEmpty() || campos[8].isEmpty() || campos[9].isEmpty())){
+        if((tarea == "modificar") && (campos[0].isEmpty() || campos[2].isEmpty() || campos[6].isEmpty() || campos[8].isEmpty())){
             return false
         }else if (tarea == "crear" && (campos[0].isEmpty() || campos[2].isEmpty() || campos[6].isEmpty() || campos[8].isEmpty() || campos[9].isEmpty() || campos[19].isEmpty()|| campos[20].isEmpty())) {
             return false

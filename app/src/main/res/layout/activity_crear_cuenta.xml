@@ -407,6 +407,7 @@
 
         <!-- Correo -->
         <TextView
+            android:id="@+id/tvCorreo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Correo Electrónico"

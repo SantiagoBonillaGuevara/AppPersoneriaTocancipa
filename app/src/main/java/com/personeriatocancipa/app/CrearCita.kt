@@ -86,6 +86,9 @@ class CrearCita : AppCompatActivity() {
     private lateinit var calendar: Calendar
     private lateinit var correosAdicionales: List<String>
 
+    private lateinit var abogadosActivos: List<String>
+    private var abogadosPorTema = mutableMapOf<String, List<String>>()
+
     private val horariosAbogados = mapOf(
         "Edwin Yovanni Franco Bahamón" to mapOf(
             "Lunes" to Pair("07:00", "15:00"),
@@ -189,26 +192,17 @@ class CrearCita : AppCompatActivity() {
         // Obtener el ID más alto de citas en Firebase al iniciar
         obtenerUltimoID()
 
+        // Inicializar abogados por tema (solo key) para evitar valores null
+        resources.getStringArray(R.array.opcionesTema).forEach { tema ->
+            // Convertir en una lista mutable vacia
+            abogadosPorTema[tema] = mutableListOf()
+        }
+
+        // Mapear abogados activos
+        abogadosActivos = buscarAbogadosActivos()
+
         // Mapear opciones de abogados según tema
-        val temaAbogadoMap = mapOf(
-            "Víctimas" to listOf("Edwin Yovanni Franco Bahamón"),
-            "Servicios Públicos" to listOf("Emilio Alexander Mejía Ángulo",
-                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
-                "Jose Omar Chaves Bautista", "Kewin Paul Pardo Cortés",
-                "Oscar Mauricio Díaz Muñoz"),
-            "Administrativo" to listOf("Emilio Alexander Mejía Ángulo",
-                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
-                "Kewin Paul Pardo Cortés", "Liliana Zambrano",
-                "Oscar Mauricio Díaz Muñoz"),
-            "Menores y Familia" to listOf("Emilio Alexander Mejía Ángulo",
-                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
-                "Kewin Paul Pardo Cortés", "Nydia Yurani Suárez Moscoso",
-                "Oscar Mauricio Díaz Muñoz"),
-            "Familia y Civil" to listOf("Emilio Alexander Mejía Ángulo",
-                "Fransy Yanet Mambuscay López", "José Francisco Alfonso Rojas",
-                "Kewin Paul Pardo Cortés", "Oscar Mauricio Díaz Muñoz",
-                "Santiago Garzón")
-        )
+        val temaAbogadoMap = abogadosPorTema
 
         // Tema de la cita
         spTema = findViewById(R.id.spTema)
@@ -241,31 +235,16 @@ class CrearCita : AppCompatActivity() {
                 if (txtDia.text.isNotEmpty()) {
                     cambiarHorarioSegunAbogado()
                 }
+                gridSeleccionarAbogado.visibility = View.VISIBLE
 
-                // Mostrar u ocultar la grilla de selección de abogado
-                if (selectedTema == "Víctimas") {
-                    gridSeleccionarAbogado.visibility = View.VISIBLE
-
-                    val abogadoAdapter = ArrayAdapter(
-                        this@CrearCita,
-                        R.drawable.spinner_item, // Usa el estilo definido
-                        listOf("Edwin Yovanni Franco Bahamón")
-                    )
-                    abogado = "Edwin Yovanni Franco Bahamón"
-                    abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-                    spAbogado.adapter = abogadoAdapter
-                } else {
-                    gridSeleccionarAbogado.visibility = View.VISIBLE
-
-                    // Configurar el adaptador del Spinner de abogados
-                    val abogadoAdapter = ArrayAdapter(
-                        this@CrearCita,
-                        R.drawable.spinner_item, // Usa el estilo definido
-                        abogados
-                    )
-                    abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
-                    spAbogado.adapter = abogadoAdapter
-                }
+                // Configurar el adaptador del Spinner de abogados
+                val abogadoAdapter = ArrayAdapter(
+                    this@CrearCita,
+                    R.drawable.spinner_item, // Usa el estilo definido
+                    abogados
+                )
+                abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                spAbogado.adapter = abogadoAdapter
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -380,6 +359,60 @@ class CrearCita : AppCompatActivity() {
         btnModificar.setOnClickListener(){
             modificarCita()
         }
+    }
+
+    private fun buscarAbogadosActivos(): List<String> {
+        val abogadosActivos = mutableListOf<String>()
+        val ref = FirebaseDatabase.getInstance().getReference("abogadoData")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { childSnapshot ->
+                        val estado = childSnapshot.child("estado").value.toString()
+                        if (estado == "Activo") {
+                            val nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
+                            abogadosActivos.add(nombreAbogado)
+
+                            // Añadir a la lista de abogados por tema
+                            val tema = childSnapshot.child("tema").value.toString()
+                            agregarAbogadoPorTema(tema, nombreAbogado)
+                        }
+                    }
+                    println(abogadosActivos)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al buscar abogados activos", Toast.LENGTH_SHORT).show()
+            }
+        })
+        return abogadosActivos
+    }
+
+    private fun agregarAbogadoPorTema(tema: String, abogado: String) {
+        if(tema=="Todo excepto Victimas"){
+            // Incluir al abogado al map de abogados por tema en todos los temas excepto Víctimas
+            for (temaF in resources.getStringArray(R.array.opcionesTema).filter { it != "Victimas" }) {
+                // .EmptyList cannot be cast to kotlin.collections.MutableList
+                if (abogadosPorTema.containsKey(temaF)) {
+                    val abogados = abogadosPorTema[temaF] as MutableList<String>
+                    abogados.add(abogado)
+                    abogadosPorTema[temaF] = abogados
+                } else {
+                    abogadosPorTema[temaF] = mutableListOf(abogado)
+                }
+            }
+        }
+        else{
+            if (abogadosPorTema.containsKey(tema)) {
+                val abogados = abogadosPorTema[tema] as MutableList<String>
+                abogados.add(abogado)
+                abogadosPorTema[tema] = abogados
+            } else {
+                abogadosPorTema[tema] = mutableListOf(abogado)
+            }
+        }
+        println(abogadosPorTema)
     }
 
     private fun habilitarCampos(habilitar:Boolean){

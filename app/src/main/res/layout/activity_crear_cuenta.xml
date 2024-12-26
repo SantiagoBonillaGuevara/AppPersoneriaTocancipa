@@ -68,7 +68,7 @@
                     android:textSize="15dp"
                     android:layout_weight="1"
                     android:textColor="@color/black"
-                    android:hint="Digite la cédula del usuario"
+                    android:hint="Digite el número de documento"
                     android:inputType="number"
                     android:padding="10dp"
                     android:background="@drawable/edittext_format"
@@ -89,9 +89,26 @@
                     android:textColor="@color/white"
                     android:backgroundTint="@color/negroSecundario"
                     />
-
-
             </LinearLayout>
+            <!-- Tipo de Documento -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Documento"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                />
+
+            <Spinner
+                android:id="@+id/spConsultarTipoDocumento"
+                android:background="@drawable/spinner_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:spinnerMode="dropdown"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                />
         </LinearLayout>
 
 
@@ -126,6 +143,7 @@
 
         <!-- Tipo de Documento -->
         <TextView
+            android:id="@+id/tvTipoDocumento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tipo de Documento"
@@ -149,6 +167,7 @@
 
         <!-- Documento -->
         <TextView
+            android:id="@+id/tvDocumento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Documento de Identidad"
@@ -303,7 +322,6 @@
                     android:background="@drawable/edittext_format"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginRight="10dp"
                     android:singleLine="true"
                     />
             </LinearLayout>
@@ -340,7 +358,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Vereda y/o sector"
+            android:text="Vereda y/o Sector"
             android:textSize="15dp"
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"

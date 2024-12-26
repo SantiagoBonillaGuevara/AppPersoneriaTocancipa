@@ -1,6 +1,7 @@
 package com.personeriatocancipa.app
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import java.util.Calendar
 
 
 class CrearCuenta : AppCompatActivity() {
@@ -65,10 +67,13 @@ class CrearCuenta : AppCompatActivity() {
     private lateinit var tvEstado: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
+    private lateinit var calendar: Calendar
     private var tarea: String = ""
     private var sujeto: String = ""
     private var usuario: String = ""
     private var uidConsultado: String = ""
+    private var seleccionFecha = Calendar.getInstance()
+    private var seleccionHora=""
 
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -326,6 +331,11 @@ class CrearCuenta : AppCompatActivity() {
             }
         }
 
+        btnFecha.setOnClickListener {
+            calendar = Calendar.getInstance()
+            seleccionarFecha()
+        }
+
         btnSalir.setOnClickListener {
             finish()
         }
@@ -486,6 +496,32 @@ class CrearCuenta : AppCompatActivity() {
                 }
             })
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun seleccionarFecha(){
+        DatePickerDialog(this, { _, year, month, day ->
+            val fechaSeleccionada = Calendar.getInstance().apply { set(year, month, day) }
+
+            seleccionFecha = fechaSeleccionada
+            txtFecha.setText("$day-${month + 1}-$year")
+
+            // Calcular edad
+            val edad = Calendar.getInstance().get(Calendar.YEAR) - year
+            txtEdad.setText(edad.toString())
+
+            // Calcular grupo etario
+            val grupoEtario = when {
+                edad < 5 -> "Primera Infancia"
+                edad in 6..11 -> "Infancia"
+                edad in 12..18 -> "Adolescencia"
+                edad in 19..26 -> "Juventud"
+                edad in 27..59 -> "Adultez"
+                else -> "Persona Mayor"
+            }
+            txtEtario.setText(grupoEtario)
+
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
     }
 
     private fun procesarCreacionCuenta() {

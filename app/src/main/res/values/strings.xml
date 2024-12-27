@@ -1,21 +1,284 @@
 <resources>
     <string name="app_name">Personería</string>
+    <string-array name="opcionesTipoDocumento">
+        <item>Cédula de Ciudadanía</item>
+        <item>Cédula de Extranjería</item>
+        <item>Número de Identificación Tributaria</item>
+        <item>Pasaporte</item>
+        <item>Permiso Especial de Permanencia</item>
+        <item>Permiso Temporal de Permanencia</item>
+        <item>Registro Civil</item>
+        <item>Tarjeta de Identidad</item>
+    </string-array>
+    <string-array name="opcionesOrientacion">
+        <item>Bisexual</item>
+        <item>Heterosexual</item>
+        <item>Homosexual</item>
+        <item>No deseo informar</item>
+    </string-array>
+    <string-array name="opcionesSector">
+        <item>Betania</item>
+        <item>Bohío</item>
+        <item>La Aurora</item>
+        <item>La Esmeralda</item>
+        <item>La Selva</item>
+        <item>Los Alpes</item>
+        <item>La Trampa</item>
+        <item>Los Cerezos</item>
+        <item>Canvita</item>
+        <item>El Centro</item>
+        <item>El Porvenir</item>
+        <item>Esmeralda</item>
+        <item>La Fuente</item>
+        <item>Tibito</item>
+        <item>Verganzo</item>
+        <item>No sabe o no responde</item>
+        <item>Fuera de Tocancipá</item>
+    </string-array>
     <string-array name="opcionesSexo">
-        <item>M</item>
-        <item>F</item>
-        <item>Inter Sex</item>
+        <item>Hombre</item>
+        <item>Mujer</item>
+        <item>Intersexual</item>
+    </string-array>
+    <string-array name="opcionesIdentidad">
+        <item>Femenino</item>
+        <item>Masculino</item>
+        <item>Transgénero</item>
+        <item>No deseo informar</item>
+    </string-array>
+    <string-array name="opcionesNacionalidad">
+        <item>Afganistán</item>
+        <item>Albania</item>
+        <item>Alemania</item>
+        <item>Andorra</item>
+        <item>Angola</item>
+        <item>Antigua y Barbuda</item>
+        <item>Arabia Saudita</item>
+        <item>Argelia</item>
+        <item>Argentina</item>
+        <item>Armenia</item>
+        <item>Australia</item>
+        <item>Austria</item>
+        <item>Azerbaiyán</item>
+        <item>Bahamas</item>
+        <item>Bahréin</item>
+        <item>Bangladés</item>
+        <item>Barbados</item>
+        <item>Bélgica</item>
+        <item>Belice</item>
+        <item>Benín</item>
+        <item>Bielorrusia</item>
+        <item>Birmania</item>
+        <item>Bolivia</item>
+        <item>Bosnia y Herzegovina</item>
+        <item>Botsuana</item>
+        <item>Brasil</item>
+        <item>Brunéi</item>
+        <item>Bulgaria</item>
+        <item>Burkina Faso</item>
+        <item>Burundi</item>
+        <item>Bután</item>
+        <item>Cabo Verde</item>
+        <item>Camboya</item>
+        <item>Camerún</item>
+        <item>Canadá</item>
+        <item>Catar</item>
+        <item>Chad</item>
+        <item>Chile</item>
+        <item>China</item>
+        <item>Chipre</item>
+        <item>Ciudad del Vaticano</item>
+        <item>Colombia</item>
+        <item>Comoras</item>
+        <item>Corea del Norte</item>
+        <item>Corea del Sur</item>
+        <item>Costa de Marfil</item>
+        <item>Costa Rica</item>
+        <item>Croacia</item>
+        <item>Cuba</item>
+        <item>Dinamarca</item>
+        <item>Dominica</item>
+        <item>Ecuador</item>
+        <item>Egipto</item>
+        <item>El Salvador</item>
+        <item>Emiratos Árabes Unidos</item>
+        <item>Eritrea</item>
+        <item>Eslovaquia</item>
+        <item>Eslovenia</item>
+        <item>España</item>
+        <item>Estados Unidos</item>
+        <item>Estonia</item>
+        <item>Esuatini</item>
+        <item>Etiopía</item>
+        <item>Filipinas</item>
+        <item>Finlandia</item>
+        <item>Fiyi</item>
+        <item>Francia</item>
+        <item>Gabón</item>
+        <item>Gambia</item>
+        <item>Georgia</item>
+        <item>Ghana</item>
+        <item>Granada</item>
+        <item>Grecia</item>
+        <item>Guatemala</item>
+        <item>Guinea</item>
+        <item>Guinea-Bisáu</item>
+        <item>Guinea Ecuatorial</item>
+        <item>Guyana</item>
+        <item>Haití</item>
+        <item>Honduras</item>
+        <item>Hungría</item>
+        <item>India</item>
+        <item>Indonesia</item>
+        <item>Irak</item>
+        <item>Irán</item>
+        <item>Irlanda</item>
+        <item>Islandia</item>
+        <item>Islas Marshall</item>
+        <item>Islas Salomón</item>
+        <item>Israel</item>
+        <item>Italia</item>
+        <item>Jamaica</item>
+        <item>Japón</item>
+        <item>Jordania</item>
+        <item>Kazajistán</item>
+        <item>Kenia</item>
+        <item>Kirguistán</item>
+        <item>Kiribati</item>
+        <item>Kuwait</item>
+        <item>Laos</item>
+        <item>Lesoto</item>
+        <item>Letonia</item>
+        <item>Líbano</item>
+        <item>Liberia</item>
+        <item>Libia</item>
+        <item>Liechtenstein</item>
+        <item>Lituania</item>
+        <item>Luxemburgo</item>
+        <item>Madagascar</item>
+        <item>Malasia</item>
+        <item>Malaui</item>
+        <item>Maldivas</item>
+        <item>Malí</item>
+        <item>Malta</item>
+        <item>Marruecos</item>
+        <item>Mauricio</item>
+        <item>Mauritania</item>
+        <item>México</item>
+        <item>Micronesia</item>
+        <item>Moldavia</item>
+        <item>Mónaco</item>
+        <item>Mongolia</item>
+        <item>Montenegro</item>
+        <item>Mozambique</item>
+        <item>Namibia</item>
+        <item>Nauru</item>
+        <item>Nepal</item>
+        <item>Nicaragua</item>
+        <item>Níger</item>
+        <item>Nigeria</item>
+        <item>Noruega</item>
+        <item>Nueva Zelanda</item>
+        <item>Omán</item>
+        <item>Países Bajos</item>
+        <item>Pakistán</item>
+        <item>Palaos</item>
+        <item>Palestina</item>
+        <item>Panamá</item>
+        <item>Papúa Nueva Guinea</item>
+        <item>Paraguay</item>
+        <item>Perú</item>
+        <item>Polonia</item>
+        <item>Portugal</item>
+        <item>Reino Unido</item>
+        <item>República Centroafricana</item>
+        <item>República Checa</item>
+        <item>República del Congo</item>
+        <item>República Democrática del Congo</item>
+        <item>República Dominicana</item>
+        <item>Ruanda</item>
+        <item>Rumanía</item>
+        <item>Rusia</item>
+        <item>Samoa</item>
+        <item>San Cristóbal y Nieves</item>
+        <item>San Marino</item>
+        <item>San Vicente y las Granadinas</item>
+        <item>Santa Lucía</item>
+        <item>Santo Tomé y Príncipe</item>
+        <item>Senegal</item>
+        <item>Serbia</item>
+        <item>Seychelles</item>
+        <item>Sierra Leona</item>
+        <item>Singapur</item>
+        <item>Siria</item>
+        <item>Somalia</item>
+        <item>Sri Lanka</item>
+        <item>Sudáfrica</item>
+        <item>Sudán</item>
+        <item>Sudán del Sur</item>
+        <item>Suecia</item>
+        <item>Suiza</item>
+        <item>Surinam</item>
+        <item>Tailandia</item>
+        <item>Tanzania</item>
+        <item>Tayikistán</item>
+        <item>Timor Oriental</item>
+        <item>Togo</item>
+        <item>Tonga</item>
+        <item>Trinidad y Tobago</item>
+        <item>Túnez</item>
+        <item>Turkmenistán</item>
+        <item>Turquía</item>
+        <item>Tuvalu</item>
+        <item>Ucrania</item>
+        <item>Uganda</item>
+        <item>Uruguay</item>
+        <item>Uzbekistán</item>
+        <item>Vanuatu</item>
+        <item>Venezuela</item>
+        <item>Vietnam</item>
+        <item>Yemen</item>
+        <item>Yibuti</item>
+        <item>Zambia</item>
+        <item>Zimbabue</item>
     </string-array>
     <string-array name="opcionesEscolaridad">
         <item>Primaria</item>
-        <item>Bachillerato</item>
+        <item>Secundaria</item>
         <item>Técnico</item>
-        <item>Tecnólogo</item>
         <item>Profesional</item>
-        <item>Posgrado</item>
+        <item>Especialización</item>
+        <item>Maestría</item>
+        <item>Doctorado</item>
+        <item>No deseo informar</item>
     </string-array>
     <string-array name="opcionesGrupo">
-        <item>Sí</item>
-        <item>No</item>
+        <item>Afrocolombiano</item>
+        <item>Indígena</item>
+        <item>Rom</item>
+        <item>Raizal</item>
+        <item>Palenquero</item>
+        <item>Gitano</item>
+        <item>No pertenece a ninguno</item>
+    </string-array>
+    <string-array name="opcionesDiscapacidad">
+        <item>Auditiva</item>
+        <item>Física</item>
+        <item>Intelectual</item>
+        <item>Visual</item>
+        <item>Sordoceguera</item>
+        <item>Psicosocial</item>
+        <item>Múltiple</item>
+        <item>Ninguna</item>
+    </string-array>
+    <string-array name="opcionesEstrato">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>No informa</item>
     </string-array>
     <string-array name="opcionesComunidad">
         <item>Madre cabeza de familia</item>
@@ -23,6 +286,8 @@
         <item>Discapacidad</item>
         <item>Adulto Mayor</item>
         <item>LGBTIQ+</item>
+        <item>Ninguna</item>
+        <item>Otros</item>
     </string-array>
     <string-array name="opcionesAbogado">
         <item>Edwin Yovanni Franco Bahamón</item>
@@ -37,11 +302,21 @@
         <item>Santiago Garzón</item>
     </string-array>
     <string-array name="opcionesTema">
-        <item>Victimas</item>
+        <item>Salud</item>
+        <item>Familia</item>
+        <item>Medio Ambiente</item>
+        <item>Laboral</item>
+        <item>Convivencia (Derecho Policivo)</item>
+        <item>Propiedad</item>
+        <item>Propiedad Horizontal</item>
+        <item>Maltrato Animal</item>
         <item>Servicios Públicos</item>
-        <item>Administrativo</item>
-        <item>Menores y Familia</item>
-        <item>Familia y Civil</item>
+        <item>Contratos (Compraventa, Arriendo, Otros)</item>
+        <item>Deudas</item>
+        <item>Accidentes de Tránsito</item>
+        <item>Adulto Mayor</item>
+        <item>Hechos Victima de Conflicto Armado (Desplazamiento forzado, Amenaza, Otros)</item>
+        <item>Otros</item>
     </string-array>
     <string-array name="opcionesTipoCuenta">
         <item>Cliente</item>
@@ -84,5 +359,9 @@
         <item>13:00</item>
         <item>14:00</item>
         <item>15:00</item>
+    </string-array>
+    <string-array name="opcionesAutorizacion">
+      <item>Sí</item>
+      <item>No</item>
     </string-array>
 </resources>

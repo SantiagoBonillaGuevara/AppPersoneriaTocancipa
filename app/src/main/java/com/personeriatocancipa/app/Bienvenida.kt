@@ -1,8 +1,11 @@
 package com.personeriatocancipa.app
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -16,12 +19,14 @@ import com.google.firebase.database.ValueEventListener
 class Bienvenida : AppCompatActivity() {
 
     private lateinit var txtCorreo: EditText
-    private lateinit var txtContraseña: EditText
+    private lateinit var txtClave: EditText
     private lateinit var btnLogin: Button
     private lateinit var btnSignUp: Button
     private lateinit var btnRecuperarPassword: Button
+    private lateinit var btnTogglePassword: Button
     private lateinit var mAuth: FirebaseAuth
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bienvenida)
@@ -30,16 +35,17 @@ class Bienvenida : AppCompatActivity() {
 
         //Obtiene valores de Layout
         txtCorreo = findViewById(R.id.txtCorreo)
-        txtContraseña = findViewById(R.id.txtContraseña)
+        txtClave = findViewById(R.id.txtClave)
         btnLogin = findViewById(R.id.btnLogin)
         btnSignUp = findViewById(R.id.btnSignUp)
         btnRecuperarPassword = findViewById(R.id.btnRecuperarPassword)
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
 
 
         //Crea eventListener para clicks en "Log In"
         btnLogin.setOnClickListener(){
             val correo = txtCorreo.text.toString()
-            val clave = txtContraseña.text.toString()
+            val clave = txtClave.text.toString()
             login(correo, clave)
         }
 
@@ -47,12 +53,25 @@ class Bienvenida : AppCompatActivity() {
         btnSignUp.setOnClickListener(){
             signup()
             txtCorreo.text.clear()
-            txtContraseña.text.clear()
+            txtClave.text.clear()
         }
 
         //Crea eventListener para clicks en "Recuperar Contraseña"
         btnRecuperarPassword.setOnClickListener(){
             recuperarPassword()
+        }
+
+        // Botón Ver Contraseña
+        btnTogglePassword = findViewById(R.id.btnTogglePassword)
+        btnTogglePassword.setOnClickListener { v: View? ->
+            if (txtClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                txtClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                txtClave.inputType =
+                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            txtClave.setSelection(txtClave.text.length) // Mantener cursor al final
         }
     }
 
@@ -78,7 +97,7 @@ class Bienvenida : AppCompatActivity() {
                     if(task.isSuccessful){
                         showRoleScreen()
                         txtCorreo.text.clear()
-                        txtContraseña.text.clear()
+                        txtClave.text.clear()
                     }else{
                         Toast.makeText(
                             this@Bienvenida,

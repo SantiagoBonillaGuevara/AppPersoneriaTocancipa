@@ -302,11 +302,21 @@
         <item>Santiago Garzón</item>
     </string-array>
     <string-array name="opcionesTema">
-        <item>Víctimas</item>
+        <item>Salud</item>
+        <item>Familia</item>
+        <item>Medio Ambiente</item>
+        <item>Laboral</item>
+        <item>Convivencia (Derecho Policivo)</item>
+        <item>Propiedad</item>
+        <item>Propiedad Horizontal</item>
+        <item>Maltrato Animal</item>
         <item>Servicios Públicos</item>
-        <item>Administrativo</item>
-        <item>Menores y Familia</item>
-        <item>Familia y Civil</item>
+        <item>Contratos (Compraventa, Arriendo, Otros)</item>
+        <item>Deudas</item>
+        <item>Accidentes de Tránsito</item>
+        <item>Adulto Mayor</item>
+        <item>Hechos Victima de Conflicto Armado (Desplazamiento forzado, Amenaza, Otros)</item>
+        <item>Otros</item>
     </string-array>
     <string-array name="opcionesTipoCuenta">
         <item>Cliente</item>
@@ -338,5 +348,9 @@
     </string-array>
     <string-array name="horas">
         <item>Seleccionar hora</item>
+    </string-array>
+    <string-array name="opcionesAutorizacion">
+    <item>Sí</item>
+    <item>No</item>
     </string-array>
 </resources>

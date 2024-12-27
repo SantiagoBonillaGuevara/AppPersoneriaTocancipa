@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.LinearLayout
@@ -46,11 +47,42 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var tvEstado: TextView
     private lateinit var tvCargo: TextView
     private lateinit var tvTema: TextView
+
+    // Firebase
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
     private var sujeto: String = ""
     private var uidConsultado: String = ""
+
+    // Horario
+    private lateinit var btnVerHorario: Button
+    private lateinit var gridHorario: LinearLayout
+
+    private lateinit var tvLunes: TextView
+    private lateinit var tvMartes: TextView
+    private lateinit var tvMiercoles: TextView
+    private lateinit var tvJueves: TextView
+    private lateinit var tvViernes: TextView
+
+    private lateinit var spLunesInicio: Spinner
+    private lateinit var spLunesFin: Spinner
+    private lateinit var spMartesInicio: Spinner
+    private lateinit var spMartesFin: Spinner
+    private lateinit var spMiercolesInicio: Spinner
+    private lateinit var spMiercolesFin: Spinner
+    private lateinit var spJuevesInicio: Spinner
+    private lateinit var spJuevesFin: Spinner
+    private lateinit var spViernesInicio: Spinner
+    private lateinit var spViernesFin: Spinner
+
+    private lateinit var chkLunes: CheckBox
+    private lateinit var chkMartes: CheckBox
+    private lateinit var chkMiercoles: CheckBox
+    private lateinit var chkJueves: CheckBox
+    private lateinit var chkViernes: CheckBox
+
+
 
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +115,75 @@ class CrearAbogado : AppCompatActivity() {
         tvEstado = findViewById(R.id.tvEstado)
         tvCargo = findViewById(R.id.tvCargo)
         tvTema = findViewById(R.id.tvTema)
+
+        // Horario
+        btnVerHorario = findViewById(R.id.btnVerHorario)
+        gridHorario = findViewById(R.id.gridHorario)
+
+        // TextView
+        tvLunes = findViewById(R.id.tvLunes)
+        tvMartes = findViewById(R.id.tvMartes)
+        tvMiercoles = findViewById(R.id.tvMiercoles)
+        tvJueves = findViewById(R.id.tvJueves)
+        tvViernes = findViewById(R.id.tvViernes)
+
+        // CheckBox
+        chkLunes = findViewById(R.id.chkLunes)
+        chkMartes = findViewById(R.id.chkMartes)
+        chkMiercoles = findViewById(R.id.chkMiercoles)
+        chkJueves = findViewById(R.id.chkJueves)
+        chkViernes = findViewById(R.id.chkViernes)
+
+        // Spinner
+        spLunesInicio = findViewById(R.id.spLunesInicio)
+        spLunesFin = findViewById(R.id.spLunesFin)
+        spMartesInicio = findViewById(R.id.spMartesInicio)
+        spMartesFin = findViewById(R.id.spMartesFin)
+        spMiercolesInicio = findViewById(R.id.spMiercolesInicio)
+        spMiercolesFin = findViewById(R.id.spMiercolesFin)
+        spJuevesInicio = findViewById(R.id.spJuevesInicio)
+        spJuevesFin = findViewById(R.id.spJuevesFin)
+        spViernesInicio = findViewById(R.id.spViernesInicio)
+        spViernesFin = findViewById(R.id.spViernesFin)
+
+        // Array con el nombre de los spinner
+        val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        for (spinner in spinnerDiasArray) {
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.horasLaborales,
+                R.drawable.spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                spinner.adapter = adapter
+            }
+            spinner.visibility = Spinner.GONE
+        }
+
+        val tvDiasArray = arrayOf(tvLunes, tvMartes, tvMiercoles, tvJueves, tvViernes)
+        for (tv in tvDiasArray) {
+            tv.visibility = TextView.GONE
+        }
+
+
+        val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
+        for (checkBox in checkBoxesArray) {
+            checkBox.setOnClickListener {
+                if (checkBox.isChecked) {
+                    val index = checkBoxesArray.indexOf(checkBox)
+                    tvDiasArray[index].visibility = TextView.VISIBLE
+                    spinnerDiasArray[index * 2].visibility = Spinner.VISIBLE
+                    spinnerDiasArray[(index * 2) + 1].visibility = Spinner.VISIBLE
+                } else {
+                    val index = checkBoxesArray.indexOf(checkBox)
+                    tvDiasArray[index].visibility = TextView.GONE
+                    spinnerDiasArray[index * 2].visibility = Spinner.GONE
+                    spinnerDiasArray[(index * 2) + 1].visibility = Spinner.GONE
+                }
+            }
+        }
+
+
 
         spCargo = findViewById(R.id.spCargo)
         ArrayAdapter.createFromResource(
@@ -147,9 +248,12 @@ class CrearAbogado : AppCompatActivity() {
             btnSignUp.visibility = Button.VISIBLE
             btnModificar.visibility = Button.GONE
             btnEliminar.visibility = Button.GONE
+            gridHorario.visibility = LinearLayout.GONE
         }else {
             txtAnuncio.text = "Gestión de Abogado"
             gridConsultar.visibility = View.VISIBLE
+            btnVerHorario.text = "Ocultar Horario"
+            gridHorario.visibility = LinearLayout.VISIBLE
             when (tarea) {
                 "consultar" -> {
                     btnSignUp.visibility = Button.GONE
@@ -196,6 +300,16 @@ class CrearAbogado : AppCompatActivity() {
                     tvConfirmarClave.visibility = TextView.GONE
                     disableFields()
                 }
+            }
+        }
+
+        btnVerHorario.setOnClickListener {
+            if (gridHorario.visibility == LinearLayout.GONE) {
+                btnVerHorario.text = "Ocultar Horario"
+                gridHorario.visibility = LinearLayout.VISIBLE
+            } else {
+                btnVerHorario.text = "Mostrar Horario"
+                gridHorario.visibility = LinearLayout.GONE
             }
         }
 
@@ -294,6 +408,16 @@ class CrearAbogado : AppCompatActivity() {
         spCargo.isEnabled = false
         spTema.isEnabled = false
         spEstado.isEnabled = false
+
+        val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
+        for (spinner in spinnerDiasArray) {
+            spinner.isEnabled = false
+        }
+        for (checkBox in checkBoxesArray) {
+            checkBox.isEnabled = false
+        }
+
     }
 
     private fun consultarPorCedula() {
@@ -331,6 +455,8 @@ class CrearAbogado : AppCompatActivity() {
                         spCargo.setSelection((spCargo.adapter as ArrayAdapter<String>).getPosition(cargo))
                         spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(tema))
                         spEstado.setSelection((spEstado.adapter as ArrayAdapter<String>).getPosition(estado))
+
+                        conseguirHorarioDeFirebase(nombre)
                     }
                     if(tarea == "modificar"){
                         btnModificar.visibility = Button.VISIBLE
@@ -354,6 +480,98 @@ class CrearAbogado : AppCompatActivity() {
                 ).show()
             }
         })
+    }
+
+    private fun conseguirHorarioDeFirebase(nombre: String) {
+        val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
+        mDbRef = FirebaseDatabase.getInstance().getReference("horarioAbogados")
+        val query = mDbRef.orderByKey().equalTo(nombre)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                println(snapshot)
+                if (snapshot.exists()) {
+                    snapshot.children.forEach {
+                        val dias = it.children
+                        dias.forEach {
+                            val dia = it.key.toString()
+                            val inicio = it.child("inicio").value.toString()
+                            val fin = it.child("fin").value.toString()
+                            val index = when (dia) {
+                                "Lunes" -> 0
+                                "Martes" -> 1
+                                "Miércoles" -> 2
+                                "Jueves" -> 3
+                                "Viernes" -> 4
+                                else -> -1
+                            }
+                            if (index != -1) {
+                                if (inicio != "" && fin != "") {
+                                    checkBoxesArray[index].isChecked = true
+                                    spinnerDiasArray[index * 2].visibility = Spinner.VISIBLE
+                                    spinnerDiasArray[(index * 2) + 1].visibility = Spinner.VISIBLE
+                                    spinnerDiasArray[index * 2].setSelection((spinnerDiasArray[index * 2].adapter as ArrayAdapter<String>).getPosition(inicio))
+                                    spinnerDiasArray[(index * 2) + 1].setSelection((spinnerDiasArray[(index * 2) + 1].adapter as ArrayAdapter<String>).getPosition(fin))
+                                } else {
+                                    checkBoxesArray[index].isChecked = false
+                                    spinnerDiasArray[index * 2].visibility = Spinner.GONE
+                                    spinnerDiasArray[(index * 2) + 1].visibility = Spinner.GONE
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Toast.makeText(
+                        this@CrearAbogado,
+                        "No se encontró un horario para el abogado",
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    this@CrearAbogado,
+                    "Error al consultar la base de datos",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        })
+    }
+
+    private fun getHorario(): Array<Pair<String, String>> {
+        val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        val horario = arrayOf(Pair("", ""), Pair("", ""), Pair("", ""), Pair("", ""), Pair("", ""))
+        for (i in 0..4) {
+            if (spinnerDiasArray[i * 2].visibility == Spinner.VISIBLE) {
+                val inicio = spinnerDiasArray[i * 2].selectedItem.toString()
+                val fin = spinnerDiasArray[(i * 2) + 1].selectedItem.toString()
+                horario[i] = Pair(inicio, fin)
+            }
+        }
+        println(horario)
+
+        return horario
+    }
+
+    private fun agregarHorarioAFirebase(nombre: String, horario: Array<Pair<String, String>>) {
+        mDbRef = FirebaseDatabase.getInstance().getReference("horarioAbogados")
+        val horarioRef = mDbRef.child(nombre)
+        val dias = arrayOf("Lunes", "Martes", "Miércoles", "Jueves", "Viernes")
+        var inicioDia = ""
+        var finDia = ""
+        for (i in 0..4) {
+            // Añadir a firebase el horario de cada día
+            inicioDia = horario[i].first
+            finDia = horario[i].second
+            horarioRef.child(dias[i]).setValue(
+                mapOf(
+                    "inicio" to inicioDia,
+                    "fin" to finDia
+                )
+            )
+        }
+
     }
 
     private fun crearAbogado() {
@@ -398,11 +616,43 @@ class CrearAbogado : AppCompatActivity() {
                         Toast.LENGTH_SHORT,
                     ).show()
                 } else {
+                    var horario = Array<Pair<String, String>>(5) { Pair("", "") }
+                    horario = getHorario()
+                    // Validaciones Horario
+                    // Validacion al menos 1 dia seleccionado
+                    val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
+                    val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+                    if (checkBoxesArray.all { !it.isChecked }) {
+                        Toast.makeText(
+                            this@CrearAbogado,
+                            "Seleccione al menos un día de trabajo",
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        return
+                    }
+                    // Validacion de horas dia, inicio < fin
+                    for (i in 0..4) {
+                        if (checkBoxesArray[i].isChecked) {
+                            val inicio = spinnerDiasArray[i * 2].selectedItemPosition
+                            val fin = spinnerDiasArray[(i * 2) + 1].selectedItemPosition
+                            if (inicio >= fin) {
+                                Toast.makeText(
+                                    this@CrearAbogado,
+                                    "Seleccione un horario válido para el día ${checkBoxesArray[i].text}",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                                return
+                            }
+                        }
+                    }
                     mAuth.createUserWithEmailAndPassword(correo, clave).addOnCompleteListener {
                         if (it.isSuccessful) {
                             val user = mAuth.currentUser
                             val uid = user?.uid
                             val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
+                            agregarHorarioAFirebase(nombre, horario)
+
+                            mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
                             mDbRef.child(uid!!).setValue(abogado).addOnSuccessListener {
                                 Toast.makeText(
                                     this@CrearAbogado,
@@ -465,8 +715,41 @@ class CrearAbogado : AppCompatActivity() {
             }
         }
 
+        var horario = Array<Pair<String, String>>(5) { Pair("", "") }
+        horario = getHorario()
+        // Validaciones Horario
+        // Validacion al menos 1 dia seleccionado
+        val checkBoxesArray = arrayOf(chkLunes, chkMartes, chkMiercoles, chkJueves, chkViernes)
+        val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
+        if (checkBoxesArray.all { !it.isChecked }) {
+            Toast.makeText(
+                this@CrearAbogado,
+                "Seleccione al menos un día de trabajo",
+                Toast.LENGTH_SHORT,
+            ).show()
+            return
+        }
+        // Validacion de horas dia, inicio < fin
+        for (i in 0..4) {
+            if (checkBoxesArray[i].isChecked) {
+                val inicio = spinnerDiasArray[i * 2].selectedItemPosition
+                val fin = spinnerDiasArray[(i * 2) + 1].selectedItemPosition
+                if (inicio >= fin) {
+                    Toast.makeText(
+                        this@CrearAbogado,
+                        "Seleccione un horario válido para el día ${checkBoxesArray[i].text}",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    return
+                }
+            }
+        }
+
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
+        agregarHorarioAFirebase(nombre, horario)
+
+        mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         mDbRef.child(uidConsultado).setValue(abogado).addOnSuccessListener {
             Toast.makeText(
                 this@CrearAbogado,

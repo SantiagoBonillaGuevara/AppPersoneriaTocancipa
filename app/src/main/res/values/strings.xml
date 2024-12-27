@@ -349,8 +349,19 @@
     <string-array name="horas">
         <item>Seleccionar hora</item>
     </string-array>
+    <string-array name="horasLaborales">
+        <item>07:00</item>
+        <item>08:00</item>
+        <item>09:00</item>
+        <item>10:00</item>
+        <item>11:00</item>
+        <item>12:00</item>
+        <item>13:00</item>
+        <item>14:00</item>
+        <item>15:00</item>
+    </string-array>
     <string-array name="opcionesAutorizacion">
-    <item>Sí</item>
-    <item>No</item>
+      <item>Sí</item>
+      <item>No</item>
     </string-array>
 </resources>

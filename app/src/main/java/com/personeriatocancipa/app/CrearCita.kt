@@ -88,61 +88,7 @@ class CrearCita : AppCompatActivity() {
 
     private lateinit var abogadosActivos: List<String>
     private var abogadosPorTema = mutableMapOf<String, List<String>>()
-
-    private val horariosAbogados = mapOf(
-        "Edwin Yovanni Franco Bahamón" to mapOf(
-            "Lunes" to Pair("07:00", "15:00"),
-            "Martes" to Pair("07:00", "15:00"),
-            "Miércoles" to Pair("07:00", "15:00"),
-            "Jueves" to Pair("07:00", "15:00"),
-            "Viernes" to Pair("07:00", "14:00")
-        ),
-        "Emilio Alexander Mejía Ángulo" to mapOf(
-            "Jueves" to Pair("09:00", "15:00")
-        ),
-        "Fransy Yanet Mambuscay López" to mapOf(
-            "Lunes" to Pair("07:00", "15:00"),
-            "Martes" to Pair("13:00", "15:00"),
-            "Miércoles" to Pair("07:00", "15:00"),
-            "Jueves" to Pair("13:00", "15:00"),
-            "Viernes" to Pair("07:00", "14:00")
-        ),
-        "José Francisco Alfonso Rojas" to mapOf(
-            "Jueves" to Pair("09:00", "15:00")
-        ),
-        "Jose Omar Chaves Bautista" to mapOf(
-            "Lunes" to Pair("09:00", "15:00"),
-            "Martes" to Pair("09:00", "15:00"),
-            "Miércoles" to Pair("09:00", "15:00")
-        ),
-        "Kewin Paul Pardo Cortés" to mapOf(
-            "Lunes" to Pair("07:00", "12:00"),
-            "Martes" to Pair("07:00", "12:00"),
-            "Miércoles" to Pair("07:00", "10:00"),
-            "Jueves" to Pair("07:00", "12:00"),
-            "Viernes" to Pair("07:00", "10:00")
-        ),
-        "Liliana Zambrano" to mapOf(
-            "Miércoles" to Pair("08:00", "10:00")
-        ),
-        "Nydia Yurani Suárez Moscoso" to mapOf(
-            "Lunes" to Pair("07:00", "15:00"),
-            "Martes" to Pair("07:00", "15:00"),
-            "Miércoles" to Pair("07:00", "15:00"),
-            "Jueves" to Pair("07:00", "15:00"),
-            "Viernes" to Pair("07:00", "14:00")
-        ),
-        "Oscar Mauricio Díaz Muñoz" to mapOf(
-            "Lunes" to Pair("07:00", "15:00"),
-            "Martes" to Pair("13:00", "15:00"),
-            "Miércoles" to Pair("07:00", "15:00"),
-            "Jueves" to Pair("13:00", "15:00"),
-            "Viernes" to Pair("07:00", "10:00")
-        ),
-        "Santiago Garzón" to mapOf(
-            "Miércoles" to Pair("08:00", "11:00")
-        )
-    )
+    private var horariosAbogados = mutableMapOf<String, Map<String, Pair<String, String>>>()
 
     private val duracionCitas = mapOf(
         "Edwin Yovanni Franco Bahamón" to 60, // Duración en minutos
@@ -361,10 +307,40 @@ class CrearCita : AppCompatActivity() {
         }
     }
 
+    private fun conseguirHorariosAbogados(){
+        val ref = FirebaseDatabase.getInstance().getReference("horarioAbogados")
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { childSnapshot ->
+                        val abogado = childSnapshot.key.toString()
+                        val horarios = mutableMapOf<String, Pair<String, String>>()
+                        if (abogadosActivos.contains(abogado)) {
+                            childSnapshot.children.forEach { diaSnapshot ->
+                                val dia = diaSnapshot.key.toString()
+                                val horaInicio = diaSnapshot.child("inicio").value.toString()
+                                val horaFin = diaSnapshot.child("fin").value.toString()
+                                horarios[dia] = Pair(horaInicio, horaFin)
+                                println("$abogado: $dia: $horaInicio - $horaFin")
+                            }
+                            horariosAbogados[abogado] = horarios
+                        }
+                    }
+                    println(horariosAbogados)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@CrearCita, "Error al obtener los horarios de los abogados", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun buscarAbogadosActivos(): List<String> {
         val abogadosActivos = mutableListOf<String>()
         val ref = FirebaseDatabase.getInstance().getReference("abogadoData")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            @SuppressLint("ResourceType")
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     snapshot.children.forEach { childSnapshot ->
@@ -378,7 +354,29 @@ class CrearCita : AppCompatActivity() {
                             agregarAbogadoPorTema(tema, nombreAbogado)
                         }
                     }
-                    println(abogadosActivos)
+
+                    println("Abogados activos: $abogadosActivos")
+                    println("Abogados por tema: $abogadosPorTema")
+                    // Poner el primer tema en el Spinner
+                    spTema.setSelection(0)
+                    // Agregar al Spinner de Abogados los abogados del primer tema
+                    val abogadosPrimerTema = abogadosPorTema[spTema.selectedItem.toString()] ?: emptyList()
+                    val abogadoAdapter = ArrayAdapter(
+                        this@CrearCita,
+                        R.drawable.spinner_item,
+                        abogadosPrimerTema
+                    )
+                    abogadoAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
+                    spAbogado.adapter = abogadoAdapter
+
+                    // Inicializar horarios de abogados usando los abogados activos
+                    abogadosActivos.forEach { abogado ->
+                        val horarios = horariosAbogados[abogado] ?: emptyMap()
+                        horariosAbogados[abogado] = horarios
+                    }
+                    println("Horarios de abogados: $horariosAbogados")
+                    // Agregar Horarios de Abogados
+                    conseguirHorariosAbogados()
                 }
             }
 

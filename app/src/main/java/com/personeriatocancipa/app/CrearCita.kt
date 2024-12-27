@@ -93,6 +93,8 @@ class CrearCita : AppCompatActivity() {
     private var correoVigente: String = ""
     private var autorizaCorreoConsulta: String = ""
     private var correoVigenteConsulta: String = ""
+    private var fechaAntigua: String = ""
+    private var modificacionExitosa: Boolean = false
 
     private val horariosAbogados = mapOf(
         "Edwin Yovanni Franco Bahamón" to mapOf(
@@ -487,15 +489,20 @@ class CrearCita : AppCompatActivity() {
     private fun modificarCita(){
         val idCita = txtConsultar.text.toString().toIntOrNull()
 
+        if (idCita == null) {
+            Toast.makeText(this, "ID de cita inválido", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        appointmentID = idCita // Asegurar que appointmentID tiene el ID actual
+
         val ref = FirebaseDatabase.getInstance().getReference("citas")
         // Buscar cita y si existe, modificarla
         ref.child(idCita.toString()).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     //  Tambien quitar horario de la cita
-                    println(snapshot)
                     conseguirNombreAbogado(snapshot.child("correoAbogado").value.toString(), "modificar")
-                    eliminarHorarioOcupado(idCita.toString(),abogado, snapshot.child("fecha").value.toString())
 
                     // Modificar la cita
                     scheduleAppointment("admin","modificar")
@@ -590,6 +597,7 @@ class CrearCita : AppCompatActivity() {
     }
 
     private fun eliminarHorarioOcupado(idCita: String, abogado: String, fecha: String){
+        println("Eliminando horario ocupado")
         val ref = FirebaseDatabase.getInstance().getReference("horariosOcupados/$abogado/$fecha/$idCita")
         ref.removeValue()
     }
@@ -718,6 +726,7 @@ class CrearCita : AppCompatActivity() {
                 if (snapshot.exists()) {
                     val descripcionC = snapshot.child("descripcion").value.toString()
                     val fechaC = snapshot.child("fecha").value.toString()
+                    fechaAntigua = fechaC
                     val horaC = snapshot.child("hora").value.toString()
                     val abogadoC = snapshot.child("correoAbogado").value.toString()
                     val clienteC = snapshot.child("correoCliente").value.toString()
@@ -951,6 +960,7 @@ class CrearCita : AppCompatActivity() {
                                         println(nombreCliente)
                                         if (correoCliente.isNotEmpty()) {
                                             println("Correo Cliente asignado: $correoCliente")
+                                            eliminarHorarioOcupado(appointmentID.toString(),abogado, fechaAntigua)
                                             finalizarCreacion(modo)
                                         }else{
                                             Toast.makeText(this@CrearCita, "El correo del cliente no está disponible.", Toast.LENGTH_SHORT).show()
@@ -1044,7 +1054,7 @@ class CrearCita : AppCompatActivity() {
                 }else{
                     if(horarioAbogado != null){
                         val (horaInicio, horaFin) = horarioAbogado
-                        val  horaSeleccionada = seleccionHora
+                        val horaSeleccionada = seleccionHora
                         val hourOfDay = horaSeleccionada.split(":")[0].toInt()
                         val minute = horaSeleccionada.split(":")[1].toInt()
                         if(horaSeleccionada !in horaInicio..horaFin || horaSeleccionada in horaAlmuerzo.first..horaAlmuerzo.second){
@@ -1133,6 +1143,7 @@ class CrearCita : AppCompatActivity() {
 
                                     // Mostrar detalles en la pantalla
                                     txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${cita.id}"
+                                    modificacionExitosa = true
                                     saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita, autorizaCorreo, correoVigente)
                                 } else {
                                     Toast.makeText(this, "La hora seleccionada ya está ocupada.", Toast.LENGTH_SHORT).show()
@@ -1237,6 +1248,22 @@ class CrearCita : AppCompatActivity() {
         val citasRef = database.getReference("citas")
         val horariosRef = database.getReference("horariosOcupados/$abogado/$fecha")
 
+        println("modificacionExitosa: $modificacionExitosa")
+
+        if(tarea == "modificar" && modificacionExitosa){
+            // Eliminar el horario ocupado anterior
+            horariosRef.child(cita.id.toString()).removeValue()
+                .addOnSuccessListener {
+                    println("Referencia a eliminar: ${horariosRef.child(cita.id.toString())}")
+                    println("Horario ocupado eliminado exitosamente")
+                }
+                .addOnFailureListener {
+                    println("Error al eliminar el horario ocupado: ${it.message}")
+                    Toast.makeText(this, "Error al modificar la cita.", Toast.LENGTH_SHORT).show()
+                }
+        }
+
+        // Guardar la cita y el nuevo horario ocupado
         val citaData = mapOf(
             "id" to cita.id,
             "descripcion" to cita.descripcion,
@@ -1257,18 +1284,35 @@ class CrearCita : AppCompatActivity() {
 
         citasRef.child(cita.id.toString()).setValue(citaData)
             .addOnSuccessListener {
-                horariosRef.child(cita.id.toString()).setValue(horarioData)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Error al guardar el horario ocupado", Toast.LENGTH_SHORT).show()
-                    }
+                if(((tarea == "modificar") && (modificacionExitosa)) || (tarea == "crear")){
+                    horariosRef.child(cita.id.toString()).setValue(horarioData)
+                        .addOnSuccessListener {
+                            if(tarea == "modificar"){
+                                Toast.makeText(this, "Cita modificada exitosamente", Toast.LENGTH_SHORT).show()
+                            }else if(tarea == "crear"){
+                                Toast.makeText(this, "Cita agendada exitosamente", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        .addOnFailureListener {
+                            println("Error al guardar el horario ocupado: ${it.message}")
+                            Toast.makeText(this, "Error al guardar el horario ocupado", Toast.LENGTH_SHORT).show()
+                        }
+                }
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Error al agendar la cita", Toast.LENGTH_SHORT).show()
+                println("Error al guardar la cita: ${it.message}")
+                // Restaurar el horario eliminado si la cita falla al guardarse
+                horariosRef.child(cita.id.toString()).setValue(horarioData)
+                    .addOnSuccessListener {
+                        println("Horario restaurado debido a fallo en la modificación de la cita.")
+                    }
+                    .addOnFailureListener {
+                        println("Error al restaurar el horario: ${it.message}")
+                    }
+                Toast.makeText(this, "Error al modificar la cita.", Toast.LENGTH_SHORT).show()
             }
     }
+
 
 
     private fun sendEmailInBackground(recipientEmail: String, subject: String, body: String) {

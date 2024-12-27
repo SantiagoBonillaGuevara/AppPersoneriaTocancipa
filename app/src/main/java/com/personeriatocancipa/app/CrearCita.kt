@@ -91,6 +91,8 @@ class CrearCita : AppCompatActivity() {
     private var abogado: String = ""
     private var autorizaCorreo: String = ""
     private var correoVigente: String = ""
+    private var autorizaCorreoConsulta: String = ""
+    private var correoVigenteConsulta: String = ""
 
     private val horariosAbogados = mapOf(
         "Edwin Yovanni Franco Bahamón" to mapOf(
@@ -722,6 +724,8 @@ class CrearCita : AppCompatActivity() {
                     val temaC = snapshot.child("tema").value.toString()
                     val autorizaCorreoC = snapshot.child("autorizaCorreo").value.toString()
                     val correoVigenteC = snapshot.child("correoVigente").value.toString()
+                    autorizaCorreoConsulta = autorizaCorreoC
+                    correoVigenteConsulta = correoVigenteC
 
                     txtConsultar.setText(snapshot.key.toString())
                     txtDescripcion.setText(descripcionC)
@@ -990,17 +994,33 @@ class CrearCita : AppCompatActivity() {
             return
         }
 
-        val year = seleccionFecha.get(Calendar.YEAR)
-        val month = seleccionFecha.get(Calendar.MONTH)
-        val day = seleccionFecha.get(Calendar.DAY_OF_MONTH)
+        var year = seleccionFecha.get(Calendar.YEAR)
+        var month = seleccionFecha.get(Calendar.MONTH)
+        var day = seleccionFecha.get(Calendar.DAY_OF_MONTH)
         val fechaSeleccionada = seleccionFecha
         val diaSemana = fechaSeleccionada.get(Calendar.DAY_OF_WEEK)
         val dias = arrayOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
         val diaNombre = dias[diaSemana - 1]
         val horarioAbogado = horariosAbogados[abogado]?.get(diaNombre)
 
+        if (txtDia.text.isNotEmpty()) {
+            val partesFecha = txtDia.text.split(", ")[1].split("/")
+            seleccionFecha.set(
+                partesFecha[2].toInt(), // Año
+                partesFecha[1].toInt() - 1, // Mes (0 basado)
+                partesFecha[0].toInt() // Día
+            )
+            year = seleccionFecha.get(Calendar.YEAR)
+            month = seleccionFecha.get(Calendar.MONTH)
+            day = seleccionFecha.get(Calendar.DAY_OF_MONTH)
+        }
 
         val fechaActual = Calendar.getInstance()
+        fechaActual.set(Calendar.HOUR_OF_DAY, 0)
+        fechaActual.set(Calendar.MINUTE, 0)
+        fechaActual.set(Calendar.SECOND, 0)
+        fechaActual.set(Calendar.MILLISECOND, 0)
+
         // Validación: Fecha Pasada
         if (fechaSeleccionada.before(fechaActual)) {
             Toast.makeText(this, "No se puede agendar una cita en una fecha pasada.", Toast.LENGTH_SHORT).show()
@@ -1032,6 +1052,7 @@ class CrearCita : AppCompatActivity() {
                         }else{
                             val duracion = duracionCitas[abogado] ?: 60 // Duración predeterminada de 60 minutos
                             val fecha = "$day-${month + 1}-$year"
+                            println("Fecha: $fecha")
                             val horaFinCita = calcularHoraFin(hourOfDay, minute, duracion)
 
                             verificarDisponibilidad(abogado, fecha, horaSeleccionada, horaFinCita) { disponible ->
@@ -1044,6 +1065,9 @@ class CrearCita : AppCompatActivity() {
                                         }
                                     }
                                     else{
+                                        autorizaCorreo = autorizaCorreoConsulta
+                                        correoVigente = correoVigenteConsulta
+                                        Toast.makeText(this, "Autoriza correo: $autorizaCorreo, Correo vigente: $correoVigente", Toast.LENGTH_SHORT).show()
                                         appointmentID = txtConsultar.text.toString().toInt()
                                     }
 
@@ -1175,6 +1199,11 @@ class CrearCita : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     for (horario in snapshot.children) {
+                        // Excluir la cita actual si el modo es "modificar"
+                        if (tarea == "modificar" && horario.key == appointmentID.toString()) {
+                            continue
+                        }
+
                         val horaOcupadaInicio = horario.child("horaInicio").value.toString()
                         val horaOcupadaFin = horario.child("horaFin").value.toString()
 

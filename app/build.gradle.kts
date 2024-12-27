@@ -7,10 +7,10 @@ plugins {
 android {
     namespace = "com.personeriatocancipa.app"
     compileSdk = 34
-
     packaging {
-        exclude ("META-INF/NOTICE.md")
-        exclude ("META-INF/LICENSE.md")
+        resources {
+            excludes += setOf("META-INF/NOTICE.md", "META-INF/LICENSE.md")
+        }
     }
 
     defaultConfig {

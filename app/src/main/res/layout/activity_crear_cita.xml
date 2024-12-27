@@ -67,7 +67,7 @@
                     android:textColorHint="@color/grisClaro"
                     android:textSize="15dp"
                     android:textColor="@color/black"
-                    android:hint="Digite el número de consulta"
+                    android:hint="Digite el ID de la cita"
                     android:inputType="number"
                     android:padding="10dp"
                     android:background="@drawable/edittext_format"
@@ -81,7 +81,7 @@
                     android:id="@+id/btnConsultarID"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Consultar ID"
+                    android:text="Consultar"
                     android:textSize="15dp"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/negroSecundario"
@@ -114,9 +114,34 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             android:hint="Digite sin puntos ni comas"
             android:singleLine="true"
+            />
+
+        <!-- Tipo de Documento -->
+        <TextView
+            android:id="@+id/tvTipoDocumento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tipo de Documento"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            />
+
+        <Spinner
+            android:id="@+id/spTipoDocumento"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             />
 
         <!-- Tema -->
@@ -125,7 +150,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="Tema"
+            android:text="Motivo de la solicitud"
             android:textColor="@color/black"
             android:textSize="15dp" />
 
@@ -139,7 +164,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="15dp"
             />
 
         <!-- Seleccionar Abogado -->
@@ -191,7 +216,6 @@
             android:layout_height="wrap_content"
             android:textColorHint="@color/grisClaro"
             android:textSize="15dp"
-            android:inputType="textEmailAddress"
             android:textColor="@color/black"
             android:padding="10dp"
             android:background="@drawable/edittext_format"
@@ -201,6 +225,58 @@
             android:layout_marginBottom="5dp"
             android:hint="Describa su necesidad aquí"
             android:singleLine="true"
+            />
+
+        <!-- Autorizar envío de correos -->
+        <TextView
+            android:id="@+id/tvAutorizaCorreo"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Envío de correos"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spAutorizaCorreo"
+            android:enabled= "false"
+            android:visibility="gone"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
+            />
+
+        <!-- Autorizar envío de correos -->
+        <TextView
+            android:id="@+id/tvCorreoVigente"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="Correo vigente"
+            android:textColor="@color/black"
+            android:textSize="15dp" />
+
+        <Spinner
+            android:id="@+id/spCorreoVigente"
+            android:enabled= "false"
+            android:visibility="gone"
+            android:background="@drawable/spinner_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:spinnerMode="dropdown"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp"
             />
 
         <LinearLayout
@@ -310,17 +386,6 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnSeleccionar"
-            android:layout_width="200dp"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:text="Crear Cita"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/negroSecundario"
-            android:layout_margin="5dp"
-            />
-
         <!-- Ver Selección -->
         <TextView
             android:id="@+id/txtFecha"
@@ -331,6 +396,30 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"
             android:gravity="center"
+            />
+
+        <Button
+        android:id="@+id/btnSeleccionar"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="Crear Cita"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/negroSecundario"
+        android:layout_margin="5dp"
+        />
+
+        <!-- Anexos -->
+        <TextView
+            android:id="@+id/tvAnexos"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Recuerde presentar la documentación relacionada al momento de la cita"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="5dp"
             />
 
         <LinearLayout

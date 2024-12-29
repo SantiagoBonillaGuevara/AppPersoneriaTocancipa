@@ -64,6 +64,7 @@ class CrearAbogado : AppCompatActivity() {
     private lateinit var tvMiercoles: TextView
     private lateinit var tvJueves: TextView
     private lateinit var tvViernes: TextView
+    private lateinit var tvDocumento: TextView
 
     private lateinit var spLunesInicio: Spinner
     private lateinit var spLunesFin: Spinner
@@ -115,6 +116,7 @@ class CrearAbogado : AppCompatActivity() {
         tvEstado = findViewById(R.id.tvEstado)
         tvCargo = findViewById(R.id.tvCargo)
         tvTema = findViewById(R.id.tvTema)
+        tvDocumento = findViewById(R.id.tvDocumento)
 
         // Horario
         btnVerHorario = findViewById(R.id.btnVerHorario)
@@ -254,6 +256,7 @@ class CrearAbogado : AppCompatActivity() {
             gridConsultar.visibility = View.VISIBLE
             btnVerHorario.text = "Ocultar Horario"
             gridHorario.visibility = LinearLayout.VISIBLE
+            txtDocumento.isEnabled = false
             when (tarea) {
                 "consultar" -> {
                     btnSignUp.visibility = Button.GONE
@@ -265,12 +268,13 @@ class CrearAbogado : AppCompatActivity() {
                     btnToggleCheckPassword.visibility = Button.GONE
                     tvClave.visibility = TextView.GONE
                     tvConfirmarClave.visibility = TextView.GONE
+                    tvDocumento.visibility = TextView.GONE
+                    txtDocumento.visibility = EditText.GONE
                     disableFields()
                 }
                 "modificar" -> {
                     if(sujeto == "propio"){
                         gridConsultar.visibility = GridLayout.GONE
-                        txtDocumento.isEnabled = false
                         tvEstado.visibility = TextView.GONE
                         spEstado.visibility = Spinner.GONE
                         tvTema.visibility = TextView.GONE
@@ -287,6 +291,8 @@ class CrearAbogado : AppCompatActivity() {
                     btnToggleCheckPassword.visibility = Button.GONE
                     tvClave.visibility = TextView.GONE
                     tvConfirmarClave.visibility = TextView.GONE
+                    tvDocumento.visibility = TextView.GONE
+                    txtDocumento.visibility = EditText.GONE
                 }
                 else -> {
                     btnSignUp.visibility = Button.GONE

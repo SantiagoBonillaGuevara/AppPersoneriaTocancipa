@@ -256,6 +256,8 @@ class CrearAbogado : AppCompatActivity() {
             gridConsultar.visibility = View.VISIBLE
             btnVerHorario.text = "Ocultar Horario"
             gridHorario.visibility = LinearLayout.VISIBLE
+            tvDocumento.visibility = TextView.GONE
+            txtDocumento.visibility = EditText.GONE
             txtDocumento.isEnabled = false
             when (tarea) {
                 "consultar" -> {
@@ -268,8 +270,6 @@ class CrearAbogado : AppCompatActivity() {
                     btnToggleCheckPassword.visibility = Button.GONE
                     tvClave.visibility = TextView.GONE
                     tvConfirmarClave.visibility = TextView.GONE
-                    tvDocumento.visibility = TextView.GONE
-                    txtDocumento.visibility = EditText.GONE
                     disableFields()
                 }
                 "modificar" -> {
@@ -291,8 +291,6 @@ class CrearAbogado : AppCompatActivity() {
                     btnToggleCheckPassword.visibility = Button.GONE
                     tvClave.visibility = TextView.GONE
                     tvConfirmarClave.visibility = TextView.GONE
-                    tvDocumento.visibility = TextView.GONE
-                    txtDocumento.visibility = EditText.GONE
                 }
                 else -> {
                     btnSignUp.visibility = Button.GONE

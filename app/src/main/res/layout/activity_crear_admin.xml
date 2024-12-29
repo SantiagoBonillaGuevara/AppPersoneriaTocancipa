@@ -64,7 +64,7 @@
                     android:textSize="15dp"
                     android:layout_weight="1"
                     android:textColor="@color/black"
-                    android:hint="Digite la cédula del usuario"
+                    android:hint="Digite el número de documento"
                     android:inputType="number"
                     android:padding="10dp"
                     android:background="@drawable/edittext_format"
@@ -204,6 +204,7 @@
 
         <!-- Documento de Identidad -->
         <TextView
+            android:id="@+id/tvDocumento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Documento de Identidad"

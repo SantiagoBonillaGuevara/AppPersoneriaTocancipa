@@ -303,8 +303,12 @@ class CrearCuenta : AppCompatActivity() {
             gridConsultar.visibility = View.VISIBLE
             tvEstado.visibility = TextView.VISIBLE
             spEstado.visibility = Spinner.VISIBLE
-            txtDocumento.isEnabled = false
+            tvTipoDocumento.visibility = TextView.GONE
+            spTipoDocumento.visibility = Spinner.GONE
             spTipoDocumento.isEnabled = false
+            tvDocumento.visibility = TextView.GONE
+            txtDocumento.visibility = EditText.GONE
+            txtDocumento.isEnabled = false
             when (tarea) {
                 "consultar" -> {
                     btnSignUp.visibility = Button.GONE
@@ -316,10 +320,6 @@ class CrearCuenta : AppCompatActivity() {
                     btnToggleCheckPassword.visibility = Button.GONE
                     tvClave.visibility = TextView.GONE
                     tvConfirmarClave.visibility = TextView.GONE
-                    tvDocumento.visibility = TextView.GONE
-                    tvTipoDocumento.visibility = TextView.GONE
-                    spTipoDocumento.visibility = Spinner.GONE
-                    txtDocumento.visibility = EditText.GONE
                     disableFields()
                 }
                 "modificar" -> {

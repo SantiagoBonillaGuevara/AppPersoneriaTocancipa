@@ -43,6 +43,7 @@ class CrearAdmin : AppCompatActivity() {
     private lateinit var btnToggleCheckPassword: Button
     private lateinit var tvClave: TextView
     private lateinit var tvConfirmarClave: TextView
+    private lateinit var tvDocumento: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDbRef: DatabaseReference
     private var tarea: String = ""
@@ -83,6 +84,7 @@ class CrearAdmin : AppCompatActivity() {
         btnSignUp = findViewById(R.id.btnSignUp)
         tvClave = findViewById(R.id.tvClave)
         tvConfirmarClave = findViewById(R.id.tvConfirmarClave)
+        tvDocumento = findViewById(R.id.tvDocumento)
         tarea = intent.getStringExtra("tarea").toString()
 
         // Botón Ver Contraseña
@@ -120,6 +122,11 @@ class CrearAdmin : AppCompatActivity() {
         }else {
             txtAnuncio.text = "Gestión de Administrador"
             gridConsultar.visibility = View.VISIBLE
+            tvDocumento.visibility = TextView.GONE
+            tvDocumento.isEnabled = false
+            txtDocumento.visibility = EditText.GONE
+            txtDocumento.isEnabled = false
+            txtCorreo.isEnabled = false
             when (tarea) {
                 "consultar" -> {
                     btnSignUp.visibility = Button.GONE
@@ -243,9 +250,9 @@ class CrearAdmin : AppCompatActivity() {
                     return@setOnClickListener
                 } else{
                     val nombre = campos[0]
-                    val documento = campos[2]
-                    val correo = campos[3]
-                    val estado = campos[4]
+                    val documento = campos[3]
+                    val correo = campos[4]
+                    val estado = campos[5]
 
                     mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                     mDbRef.child(uidConsultado).setValue(
@@ -350,7 +357,11 @@ class CrearAdmin : AppCompatActivity() {
     }
     private fun verificarCampos(campos: Array<String>): Boolean {
         //Verifica que todos los campos estén diligenciados
-        return !(campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty())
+        return if(tarea != "crear"){
+            !(campos[0].isEmpty() || campos[4].isEmpty())
+        }else{
+            !(campos[0].isEmpty() || campos[1].isEmpty() || campos[2].isEmpty() || campos[3].isEmpty() || campos[4].isEmpty())
+        }
     }
 
     private fun addUserToDatabase(nombre: String, documento: String, correo: String, estado: String, uid: String) {

@@ -96,6 +96,11 @@ class CrearCita : AppCompatActivity() {
     private var fechaAntigua: String = ""
     private var modificacionExitosa: Boolean = false
 
+    // Variables Modificacion Cita
+    private var modCitaID = ""
+    private var modCitaFecha = ""
+    private var modCitaAbogado = ""
+
     private lateinit var abogadosActivos: List<String>
     private var abogadosPorTema = mutableMapOf<String, List<String>>()
     private var horariosAbogados = mutableMapOf<String, Map<String, Pair<String, String>>>()
@@ -770,7 +775,7 @@ class CrearCita : AppCompatActivity() {
                     txtDescripcion.setText(descripcionC)
                     txtFecha.text = "Fecha: $fechaC, Hora: $horaC"
                     spTema.setSelection((spTema.adapter as ArrayAdapter<String>).getPosition(temaC))
-                    println(spTema.selectedItem.toString())
+
                     // Change the format of the day and make it like the one in the calendar
                     val fecha = fechaC.split("-")
                     val year = fecha[2].toInt()
@@ -787,6 +792,9 @@ class CrearCita : AppCompatActivity() {
                     spHora.setSelection((spHora.adapter as ArrayAdapter<String>).getPosition(horaC))
                     spAutorizaCorreo.setSelection((spAutorizaCorreo.adapter as ArrayAdapter<String>).getPosition(autorizaCorreoC))
                     spCorreoVigente.setSelection((spCorreoVigente.adapter as ArrayAdapter<String>).getPosition(correoVigenteC))
+
+                    modCitaID = idCita.toString()
+                    modCitaFecha = fechaC
 
                     conseguirNombreAbogado(abogadoC, "modificar")
                     conseguirCedulaCliente(clienteC)
@@ -820,7 +828,8 @@ class CrearCita : AppCompatActivity() {
                         val nombreAbogado = childSnapshot.child("nombreCompleto").value.toString()
                         //
                         if (modo=="modificar"){
-                        spAbogado.setSelection((spAbogado.adapter as ArrayAdapter<String>).getPosition(nombreAbogado))
+                            spAbogado.setSelection((spAbogado.adapter as ArrayAdapter<String>).getPosition(nombreAbogado))
+                            modCitaAbogado = nombreAbogado
                         }
                         else if (modo=="eliminar"){
                             abogado=nombreAbogado
@@ -1104,7 +1113,13 @@ class CrearCita : AppCompatActivity() {
                                             correoVigente = spCorreoVigente.selectedItem.toString()
                                         }
                                     }
-                                    else{
+                                    else if(modo == "modificar"){
+                                        eliminarHorarioOcupado(modCitaID,modCitaAbogado, modCitaFecha)
+                                        autorizaCorreo = autorizaCorreoConsulta
+                                        correoVigente = correoVigenteConsulta
+                                        Toast.makeText(this, "Autoriza correo: $autorizaCorreo, Correo vigente: $correoVigente", Toast.LENGTH_SHORT).show()
+                                        appointmentID = txtConsultar.text.toString().toInt()
+                                    }else{
                                         autorizaCorreo = autorizaCorreoConsulta
                                         correoVigente = correoVigenteConsulta
                                         Toast.makeText(this, "Autoriza correo: $autorizaCorreo, Correo vigente: $correoVigente", Toast.LENGTH_SHORT).show()

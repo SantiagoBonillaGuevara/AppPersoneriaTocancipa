@@ -10,6 +10,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class CitaAdapterCliente(private var citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterCliente.CitaViewHolder>() {
@@ -39,11 +44,26 @@ class CitaAdapterCliente(private var citas: List<Cita>) :
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = citas[position]
 
+        val mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
+        var nombreAbogado = "hola"
+        val query = mDbRef.orderByChild("correo").equalTo(cita.correoAbogado)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (snap in snapshot.children) {
+                    nombreAbogado = snap.child("nombreCompleto").value.toString()
+                    holder.tvCorreoAbogado.text = applyBoldStyle("Nombre Abogado: ", nombreAbogado)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("CitaAdapterAbogado", "Error al obtener el nombre del cliente: ${error.message}")
+            }
+        })
+
         // Aplica estilo negrita a las etiquetas
         holder.tvTema.text = applyBoldStyle("Tema: ", cita.tema.toString())
         holder.tvId.text = applyBoldStyle("ID: ", cita.id.toString())
         holder.tvFechaHora.text = applyBoldStyle("Fecha y hora: ", "${cita.fecha} a las ${cita.hora}")
-        holder.tvCorreoAbogado.text = applyBoldStyle("Correo Abogado: ", cita.correoAbogado.toString())
         holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString())
         holder.tvEstado.text = applyBoldStyle("Estado: ", cita.estado.toString())
 

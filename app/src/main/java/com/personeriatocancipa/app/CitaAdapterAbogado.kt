@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class CitaAdapterAbogado(private var citas: List<Cita>) :
     RecyclerView.Adapter<CitaAdapterAbogado.CitaViewHolder>() {
@@ -47,10 +51,25 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
         val cita = citas[position]
 
+        val mDbRef = FirebaseDatabase.getInstance().getReference("userData")
+        var nombreCliente = ""
+        val query = mDbRef.orderByChild("correo").equalTo(cita.correoCliente)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (snap in snapshot.children) {
+                    nombreCliente = snap.child("nombreCompleto").value.toString()
+                    holder.tvCorreoCliente.text = applyBoldStyle("Nombre Cliente: ", nombreCliente)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("CitaAdapterAbogado", "Error al obtener el nombre del cliente: ${error.message}")
+            }
+        })
+
         holder.tvTema.text = applyBoldStyle("Tema: ", cita.tema.toString())
         holder.tvId.text = applyBoldStyle("ID: ", cita.id.toString())
         holder.tvFechaHora.text = applyBoldStyle("Fecha y hora: ", "${cita.fecha} a las ${cita.hora}")
-        holder.tvCorreoCliente.text = applyBoldStyle("Correo Cliente: ", cita.correoCliente.toString())
         holder.tvDescripcion.text = applyBoldStyle("Descripción: ", cita.descripcion.toString())
 
         // Configura el adaptador del Spinner con estilo

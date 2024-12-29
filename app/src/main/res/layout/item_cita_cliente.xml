@@ -44,7 +44,7 @@
         android:id="@+id/tvCorreoAbogado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Correo Abogado:"
+        android:text="Nombre Abogado:"
         android:textSize="14sp"
         android:textColor="@color/negroSecundario"
         android:paddingBottom="4dp"/>

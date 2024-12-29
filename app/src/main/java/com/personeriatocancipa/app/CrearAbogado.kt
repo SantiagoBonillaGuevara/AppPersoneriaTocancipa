@@ -198,7 +198,7 @@ class CrearAbogado : AppCompatActivity() {
         spTema = findViewById(R.id.spTema)
         ArrayAdapter.createFromResource(
             this,
-            R.array.opcionesTemaAbogado,
+            R.array.opcionesTema,
             R.drawable.spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)

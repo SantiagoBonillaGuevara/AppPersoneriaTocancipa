@@ -324,18 +324,28 @@ class CrearAbogado : AppCompatActivity() {
         btnSignUp.setOnClickListener {
             // Crear y configurar el diálogo inicial
             val builder = AlertDialog.Builder(this)
-            builder.setTitle("Permiso de Habeas Data")
-            builder.setMessage("Al crear una cuenta, autorizas el tratamiento de tus datos personales conforme a nuestra política de privacidad. ¿Aceptas continuar?")
+            builder.setTitle("Política de Tratamiento de Datos Personales")
+            builder.setMessage("Señor(a) usuario(a), autoriza a la Personería de Tocancipá, para la recolección, consulta, almacenamiento, uso, traslado o eliminación de sus datos personales, con el fin de: adelantar las gestiones, actuaciones e intervenciones que permitan el restablecimiento y goce de sus derechos, invitar a eventos de participación ciudadana u organizados por la entidad,  información con fines estadísticos, enviar información a entidades autorizadas cuando la solicitud lo amerite, evaluar la calidad del servicio y contactar al titular en los casos que se considere necesario. \n" +
+                    "\n" +
+                    "No es obligatorio para la prestación del servicio, suministrar los datos personales de carácter sensible o de niños, niñas y adolescentes. Se exime el tratamiento de datos de niños, niñas y adolescentes, salvo aquellos datos que sean de naturaleza pública. \n" +
+                    "Como titular de la información tiene derecho a conocer, actualizar y rectificar sus datos personales, así como  suprimir o revocar la autorización otorgada para su tratamiento, pedir prueba de la autorización otorgada al responsable del tratamiento y ser informado sobre el uso que le han dado a los mismos, presentar quejas ante la Superintendencia de Industria y Comercio SIC por infracción a la ley y acceder en forma gratuita a sus datos personales, acorde al o establecido en los artículos 15, 20 y 74 de la Constitución Política, , la Ley 1581 del 2012, el Decreto Reglamentario 1377 de 2013, la Ley 1266 del 31 de 2008, el Decreto Reglamentario 1727 de  2009, y demás normatividad vigente relacionada. \n" +
+                    "Consulte la Política de Tratamiento de Datos Personales Personería Municipal de Tocancipá adoptada mediante Resolución Administrativa 051 de 2020 en el siguiente link https://www.personeria-tocancipa.gov.co/politicas-y-lineamientos/politica-de-tratamiento-de-datos\n" +
+                    "¿Acepta términos y condiciones?\n")
 
             // Agregar botones de acción
-            builder.setPositiveButton("Acepto") { dialog, which ->
+            builder.setPositiveButton("Sí") { dialog, which ->
                 // Continuar con la creación de la cuenta
                 crearAbogado()
             }
 
-            builder.setNegativeButton("Cancelar") { dialog, which ->
+            builder.setNegativeButton("No") { dialog, which ->
                 // Cancelar el flujo
                 dialog.dismiss()
+                Toast.makeText(
+                    this@CrearAbogado,
+                    "Debe aceptar la política de tratamiento de datos personales para continuar",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
 
             // Mostrar el diálogo de permiso de habeas data

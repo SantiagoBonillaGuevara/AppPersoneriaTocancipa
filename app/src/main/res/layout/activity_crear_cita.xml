@@ -358,34 +358,6 @@
             android:layout_marginBottom="5dp"
             />
 
-        <!-- Fecha y Hora -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_margin="5dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="Fecha y Hora"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:layout_weight="1"
-                android:gravity="center"/>
-
-            <!-- Botón -->
-            <Button
-                android:id="@+id/btnHorarios"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Ver posibles horarios"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/negroSecundario" />
-
-        </LinearLayout>
-
         <!-- Ver Selección -->
         <TextView
             android:id="@+id/txtFecha"

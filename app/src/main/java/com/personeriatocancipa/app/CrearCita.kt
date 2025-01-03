@@ -573,9 +573,18 @@ class CrearCita : AppCompatActivity() {
             val duracionCita = duracionCitas[abogadoSeleccionado] ?: 60
             while (hora <= horaFin) {
                 horas.add(hora)
-                hora = calcularHoraFin(hora.split(":")[0].toInt(), hora.split(":")[1].toInt(), duracionCita)
+                println(hora)
+                println(duracionCita)
+                if(horarioAbogado.second != ""){
+                    hora = calcularHoraFin(hora.split(":")[0].toInt(), hora.split(":")[1].toInt(), duracionCita)
+                }else{
+                    Toast.makeText(this, "El abogado no tiene horario disponible para el día seleccionado", Toast.LENGTH_SHORT).show()
+                    seleccionFecha = Calendar.getInstance()
+                    txtDia.text = ""
+                    break
+                }
                 // Filtrar Hora Almuerzo
-                if (hora in horaAlmuerzo.first..horaAlmuerzo.second) {
+                if ((hora in horaAlmuerzo.first..horaAlmuerzo.second) && (horarioAbogado.second != "")) {
                     hora = calcularHoraFin(hora.split(":")[0].toInt(), hora.split(":")[1].toInt(), duracionCita)
                 }
             }

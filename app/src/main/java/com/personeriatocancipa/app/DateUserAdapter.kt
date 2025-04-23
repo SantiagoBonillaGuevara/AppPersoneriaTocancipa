@@ -16,12 +16,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class CitaAdapterCliente(private var citas: List<Cita>) :
-    RecyclerView.Adapter<CitaAdapterCliente.CitaViewHolder>() {
+class DateUserAdapter(private var dates: List<Date>) :
+    RecyclerView.Adapter<DateUserAdapter.CitaViewHolder>() {
 
     // Método para actualizar las citas
-    fun actualizarCitas(citasActualizadas: List<Cita>) {
-        citas = citasActualizadas
+    fun actualizarCitas(citasActualizadas: List<Date>) {
+        dates = citasActualizadas
         notifyDataSetChanged()  // Notifica que los datos han cambiado para actualizar el RecyclerView
     }
 
@@ -42,7 +42,7 @@ class CitaAdapterCliente(private var citas: List<Cita>) :
     }
 
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
-        val cita = citas[position]
+        val cita = dates[position]
 
         val mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         var nombreAbogado = "hola"
@@ -83,7 +83,7 @@ class CitaAdapterCliente(private var citas: List<Cita>) :
         }
     }
 
-    override fun getItemCount(): Int = citas.size
+    override fun getItemCount(): Int = dates.size
 
     private fun applyBoldStyle(label: String, value: String): SpannableString {
         val fullText = "$label$value"

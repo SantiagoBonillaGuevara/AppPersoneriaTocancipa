@@ -1,14 +1,10 @@
 package com.personeriatocancipa.app
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -16,7 +12,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class RecuperarPassword : AppCompatActivity() {
+class RestorePasswordActivity : AppCompatActivity() {
 
     private lateinit var txtCorreo: EditText
     private lateinit var btnRestablecer: Button
@@ -26,7 +22,7 @@ class RecuperarPassword : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_recuperar_password)
+        setContentView(R.layout.activity_restore_password)
 
         mAuth = FirebaseAuth.getInstance()
 
@@ -70,7 +66,7 @@ class RecuperarPassword : AppCompatActivity() {
                                                     restablecer(correo)
                                                 } else {
                                                     Toast.makeText(
-                                                        this@RecuperarPassword,
+                                                        this@RestorePasswordActivity,
                                                         "Correo no registrado",
                                                         Toast.LENGTH_SHORT,
                                                     ).show()
@@ -78,7 +74,7 @@ class RecuperarPassword : AppCompatActivity() {
                                             }
                                             override fun onCancelled(error: DatabaseError) {
                                                 Toast.makeText(
-                                                    this@RecuperarPassword,
+                                                    this@RestorePasswordActivity,
                                                     "Error al consultar la base de datos",
                                                     Toast.LENGTH_SHORT,
                                                 ).show()
@@ -88,7 +84,7 @@ class RecuperarPassword : AppCompatActivity() {
                                 }
                                 override fun onCancelled(error: DatabaseError) {
                                     Toast.makeText(
-                                        this@RecuperarPassword,
+                                        this@RestorePasswordActivity,
                                         "Error al consultar la base de datos",
                                         Toast.LENGTH_SHORT,
                                     ).show()
@@ -98,7 +94,7 @@ class RecuperarPassword : AppCompatActivity() {
                     }
                     override fun onCancelled(error: DatabaseError) {
                         Toast.makeText(
-                            this@RecuperarPassword,
+                            this@RestorePasswordActivity,
                             "Error al consultar la base de datos",
                             Toast.LENGTH_SHORT,
                         ).show()

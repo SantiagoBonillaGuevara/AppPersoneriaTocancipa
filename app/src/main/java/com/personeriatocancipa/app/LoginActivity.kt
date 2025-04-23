@@ -5,9 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -15,92 +12,64 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.personeriatocancipa.app.databinding.ActivityLoginBinding
 
-class Bienvenida : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
-    private lateinit var txtCorreo: EditText
-    private lateinit var txtClave: EditText
-    private lateinit var btnLogin: Button
-    private lateinit var btnSignUp: Button
-    private lateinit var btnRecuperarPassword: Button
-    private lateinit var btnTogglePassword: Button
+    private lateinit var binding: ActivityLoginBinding
     private lateinit var mAuth: FirebaseAuth
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bienvenida)
-
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mAuth = FirebaseAuth.getInstance()
+        initComponents()
+    }
 
-        //Obtiene valores de Layout
-        txtCorreo = findViewById(R.id.txtCorreo)
-        txtClave = findViewById(R.id.txtClave)
-        btnLogin = findViewById(R.id.btnLogin)
-        btnSignUp = findViewById(R.id.btnSignUp)
-        btnRecuperarPassword = findViewById(R.id.btnRecuperarPassword)
-        btnTogglePassword = findViewById(R.id.btnTogglePassword)
-
-
-        //Crea eventListener para clicks en "Log In"
-        btnLogin.setOnClickListener(){
-            val correo = txtCorreo.text.toString()
-            val clave = txtClave.text.toString()
-            login(correo, clave)
+    private fun initComponents() {
+        binding.btnLogin.setOnClickListener(){
+            login()
         }
 
-        //Crea eventListener para clicks en "Sign Up"
-        btnSignUp.setOnClickListener(){
+        binding.btnSignUp.setOnClickListener(){
             signup()
-            txtCorreo.text.clear()
-            txtClave.text.clear()
         }
 
-        //Crea eventListener para clicks en "Recuperar Contraseña"
-        btnRecuperarPassword.setOnClickListener(){
-            recuperarPassword()
+        binding.btnRecuperarPassword.setOnClickListener(){
+            restorePassword()
         }
 
-        // Botón Ver Contraseña
-        btnTogglePassword = findViewById(R.id.btnTogglePassword)
-        btnTogglePassword.setOnClickListener { v: View? ->
-            if (txtClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-                txtClave.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            } else {
-                txtClave.inputType =
-                    InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-            txtClave.setSelection(txtClave.text.length) // Mantener cursor al final
+        binding.btnTogglePassword.setOnClickListener {
+            togglePasswordVisibility()
         }
     }
 
     private fun signup() {
-        val intent = Intent(this@Bienvenida, CrearCuenta::class.java)
+        val intent = Intent(this@LoginActivity, CreateUserActivity::class.java)
         intent.putExtra("tarea","crear")
         intent.putExtra("usuario","cliente")
         startActivity(intent)
     }
 
-    private fun login(correo: String?, clave: String?) {
+    private fun login() {
+        val correo = binding.txtCorreo.text.toString()
+        val clave = binding.txtClave.text.toString()
         //Login de usuario
         if(correo.isNullOrEmpty() || clave.isNullOrEmpty()){
-            Toast.makeText(
-                this@Bienvenida,
-                "¡Ingresa información!",
-                Toast.LENGTH_SHORT
-            ) .show()
+            Toast.makeText(this@LoginActivity, "¡Ingresa información!", Toast.LENGTH_SHORT).show()
         }else{
             mAuth.signInWithEmailAndPassword(correo, clave)
                 .addOnCompleteListener(this){
                         task ->
                     if(task.isSuccessful){
                         showRoleScreen()
-                        txtCorreo.text.clear()
-                        txtClave.text.clear()
+                        binding.txtCorreo.text.clear()
+                        binding.txtClave.text.clear()
                     }else{
                         Toast.makeText(
-                            this@Bienvenida,
+                            this@LoginActivity,
                             "¡Hubo un error!",
                             Toast.LENGTH_SHORT
                         ) .show()
@@ -124,11 +93,11 @@ class Bienvenida : AppCompatActivity() {
                 if (snapshot.exists()) {
                     val estado = snapshot.child("estado").value.toString()
                     if (estado == "Activo") {
-                        val intent = Intent(this@Bienvenida, InterfazCliente::class.java)
+                        val intent = Intent(this@LoginActivity, UserActivity::class.java)
                         startActivity(intent)
                     } else {
                         Toast.makeText(
-                            this@Bienvenida,
+                            this@LoginActivity,
                             "¡Esta cuenta ha sido desactivada!",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -155,11 +124,11 @@ class Bienvenida : AppCompatActivity() {
                 if (snapshot.exists()) {
                     val estado = snapshot.child("estado").value.toString()
                     if(estado == "Activo") {
-                        val intent = Intent(this@Bienvenida, InterfazAbogado::class.java)
+                        val intent = Intent(this@LoginActivity, LawyerActivity::class.java)
                         startActivity(intent)
                     }else{
                         Toast.makeText(
-                            this@Bienvenida,
+                            this@LoginActivity,
                             "¡Esta cuenta ha sido desactivada!",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -180,7 +149,6 @@ class Bienvenida : AppCompatActivity() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val databaseRefAdmin = FirebaseDatabase.getInstance().getReference("AdminData").child(userId)
 
-
         println(userId)
         databaseRefAdmin.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -188,18 +156,18 @@ class Bienvenida : AppCompatActivity() {
                 if (snapshot.exists()) {
                     val estado = snapshot.child("estado").value.toString()
                     if(estado == "Activo") {
-                        val intent = Intent(this@Bienvenida, InterfazAdmin::class.java)
+                        val intent = Intent(this@LoginActivity, AdminActivity::class.java)
                         startActivity(intent)
                     }else{
                         Toast.makeText(
-                            this@Bienvenida,
+                            this@LoginActivity,
                             "¡Esta cuenta ha sido desactivada!",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
                     Toast.makeText(
-                        this@Bienvenida,
+                        this@LoginActivity,
                         "¡Usuario no encontrado!",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -212,9 +180,20 @@ class Bienvenida : AppCompatActivity() {
         })
     }
 
-    private fun recuperarPassword(){
-        val intent = Intent(this@Bienvenida, RecuperarPassword::class.java)
+    private fun restorePassword(){
+        val intent = Intent(this@LoginActivity, RestorePasswordActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun togglePasswordVisibility(){
+        if (binding.txtClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+            binding.txtClave.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        } else {
+            binding.txtClave.inputType =
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        }
+        binding.txtClave.setSelection(binding.txtClave.text.length) // Mantener cursor al final
     }
 
 }

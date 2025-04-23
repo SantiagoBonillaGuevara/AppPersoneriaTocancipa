@@ -22,12 +22,12 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-class CitaAdapterAbogado(private var citas: List<Cita>) :
-    RecyclerView.Adapter<CitaAdapterAbogado.CitaViewHolder>() {
+class DateLawyerAdapter(private var dates: List<Date>) :
+    RecyclerView.Adapter<DateLawyerAdapter.CitaViewHolder>() {
 
     // Método para actualizar las citas
-    fun actualizarCitas(citasActualizadas: List<Cita>) {
-        citas = citasActualizadas
+    fun actualizarCitas(citasActualizadas: List<Date>) {
+        dates = citasActualizadas
         notifyDataSetChanged()  // Notifica que los datos han cambiado para actualizar el RecyclerView
     }
 
@@ -49,7 +49,7 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
 
     @SuppressLint("ResourceType")
     override fun onBindViewHolder(holder: CitaViewHolder, position: Int) {
-        val cita = citas[position]
+        val cita = dates[position]
 
         val mDbRef = FirebaseDatabase.getInstance().getReference("userData")
         var nombreCliente = ""
@@ -125,7 +125,7 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
 
     }
 
-    override fun getItemCount(): Int = citas.size
+    override fun getItemCount(): Int = dates.size
 
     private fun applyBoldStyle(label: String, value: String): SpannableString {
         val fullText = "$label$value"
@@ -136,10 +136,10 @@ class CitaAdapterAbogado(private var citas: List<Cita>) :
         return spannable
     }
 
-    private fun actualizarEstadoEnFirebase(cita: Cita) {
+    private fun actualizarEstadoEnFirebase(date: Date) {
         val databaseReference: DatabaseReference =
             FirebaseDatabase.getInstance().getReference("citas")
-        databaseReference.child(cita.id.toString()).child("estado").setValue(cita.estado)
+        databaseReference.child(date.id.toString()).child("estado").setValue(date.estado)
     }
 
     private fun getColorForEstado(estado: String, context: android.content.Context): Int {

@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class CRUD : AppCompatActivity() {
+class ManagementActivity : AppCompatActivity() {
 
     private var tipo: String = ""
     private lateinit var btnCrear: Button
@@ -29,7 +29,7 @@ class CRUD : AppCompatActivity() {
     @SuppressLint("ResourceType", "SetTextI18n", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crud)
+        setContentView(R.layout.activity_management)
 
         btnCrear = findViewById(R.id.btnCrear)
         btnConsultar = findViewById(R.id.btnConsultar)
@@ -71,17 +71,17 @@ class CRUD : AppCompatActivity() {
         btnCrear.setOnClickListener{
             if(tipo == "usuario"){
                 if (spTipoCuenta.selectedItem.toString() == "Administrador"){
-                    intent = Intent(this@CRUD, CrearAdmin::class.java)
+                    intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
-                    intent = Intent(this@CRUD, CrearAbogado::class.java)
+                    intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
-                    intent = Intent(this@CRUD, CrearCuenta::class.java)
+                    intent = Intent(this@ManagementActivity, CreateUserActivity::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {
                     Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
                 }
             }else{
-                intent = Intent(this@CRUD, CrearCita::class.java)
+                intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
             }
             intent.putExtra("tarea", "crear")
             startActivity(intent)
@@ -90,17 +90,17 @@ class CRUD : AppCompatActivity() {
         btnConsultar.setOnClickListener{
             if(tipo == "usuario"){
                 if (spTipoCuenta.selectedItem.toString() == "Administrador"){
-                    intent = Intent(this@CRUD, CrearAdmin::class.java)
+                    intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
-                    intent = Intent(this@CRUD, CrearAbogado::class.java)
+                    intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
-                    intent = Intent(this@CRUD, CrearCuenta::class.java)
+                    intent = Intent(this@ManagementActivity, CreateUserActivity::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {
                     Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
                 }
             }else{
-                intent = Intent(this@CRUD, CrearCita::class.java)
+                intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
             }
             intent.putExtra("tarea", "consultar")
             startActivity(intent)
@@ -117,24 +117,24 @@ class CRUD : AppCompatActivity() {
         btnEliminar.setOnClickListener{
             if(tipo == "usuario"){
                 if (spTipoCuenta.selectedItem.toString() == "Administrador"){
-                    intent = Intent(this@CRUD, CrearAdmin::class.java)
+                    intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
-                    intent = Intent(this@CRUD, CrearAbogado::class.java)
+                    intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
-                    intent = Intent(this@CRUD, CrearCuenta::class.java)
+                    intent = Intent(this@ManagementActivity, CreateUserActivity::class.java)
                     intent.putExtra("usuario", "admin")
                 } else {
                     Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
                 }
             }else{
-                intent = Intent(this@CRUD, CrearCita::class.java)
+                intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
             }
             intent.putExtra("tarea", "eliminar")
             startActivity(intent)
         }
 
         btnSalir.setOnClickListener{
-            intent = Intent(this@CRUD, InterfazAdmin::class.java)
+            intent = Intent(this@ManagementActivity, AdminActivity::class.java)
             finish()
             startActivity(intent)
         }
@@ -143,17 +143,17 @@ class CRUD : AppCompatActivity() {
     private fun modificar(){
         if(tipo == "usuario"){
             if (spTipoCuenta.selectedItem.toString() == "Administrador"){
-                intent = Intent(this@CRUD, CrearAdmin::class.java)
+                intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
             }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
-                intent = Intent(this@CRUD, CrearAbogado::class.java)
+                intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
             }else if (spTipoCuenta.selectedItem.toString() == "Cliente"){
-                intent = Intent(this@CRUD, CrearCuenta::class.java)
+                intent = Intent(this@ManagementActivity, CreateUserActivity::class.java)
                 intent.putExtra("usuario", "admin")
             } else {
                 Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
             }
         } else{
-            intent = Intent(this@CRUD, CrearCita::class.java)
+            intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
         }
         intent.putExtra("tarea", "modificar")
         startActivity(intent)

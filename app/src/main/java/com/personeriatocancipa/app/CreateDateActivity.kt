@@ -2,16 +2,7 @@ package com.personeriatocancipa.app
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -25,20 +16,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.content.FileProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.Calendar
 import java.util.Properties
 import javax.mail.Message
@@ -47,7 +34,7 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
-class CrearCita : AppCompatActivity() {
+class CreateDateActivity : AppCompatActivity() {
 
     private var appointmentID = 1 // ID consecutivo para las citas
 
@@ -127,7 +114,7 @@ class CrearCita : AppCompatActivity() {
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crear_cita)
+        setContentView(R.layout.activity_create_date)
 
         nombreCliente = ""
 
@@ -233,7 +220,7 @@ class CrearCita : AppCompatActivity() {
 
                 // Configurar el adaptador del Spinner de abogados
                 val abogadoAdapter = ArrayAdapter(
-                    this@CrearCita,
+                    this@CreateDateActivity,
                     R.drawable.spinner_item, // Usa el estilo definido
                     abogados
                 )
@@ -420,7 +407,7 @@ class CrearCita : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CrearCita, "Error al obtener los horarios de los abogados", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateDateActivity, "Error al obtener los horarios de los abogados", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -451,7 +438,7 @@ class CrearCita : AppCompatActivity() {
                     // Agregar al Spinner de Abogados los abogados del primer tema
                     val abogadosPrimerTema = abogadosPorTema[spTema.selectedItem.toString()] ?: emptyList()
                     val abogadoAdapter = ArrayAdapter(
-                        this@CrearCita,
+                        this@CreateDateActivity,
                         R.drawable.spinner_item,
                         abogadosPrimerTema
                     )
@@ -470,7 +457,7 @@ class CrearCita : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CrearCita, "Error al buscar abogados activos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateDateActivity, "Error al buscar abogados activos", Toast.LENGTH_SHORT).show()
             }
         })
         return abogadosActivos
@@ -536,12 +523,12 @@ class CrearCita : AppCompatActivity() {
                     // Modificar la cita
                     scheduleAppointment("admin","modificar")
                 } else {
-                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CrearCita, "Error al modificar la cita", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateDateActivity, "Error al modificar la cita", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -621,15 +608,15 @@ class CrearCita : AppCompatActivity() {
                     eliminarHorarioOcupado(idCita.toString(),abogado, snapshot.child("fecha").value.toString())
 
                     snapshot.ref.removeValue()
-                    Toast.makeText(this@CrearCita, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "Cita eliminada con éxito", Toast.LENGTH_SHORT).show()
                     finish()
                 } else {
-                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CrearCita, "Error al eliminar la cita", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateDateActivity, "Error al eliminar la cita", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -700,13 +687,13 @@ class CrearCita : AppCompatActivity() {
                     }
 
                 } else {
-                    Toast.makeText(this@CrearCita, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "No se encontró la cita con ID $idCita", Toast.LENGTH_SHORT).show()
                 }
 
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CrearCita, "Error al consultar la cita", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateDateActivity, "Error al consultar la cita", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -731,7 +718,7 @@ class CrearCita : AppCompatActivity() {
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
-                    Toast.makeText(this@CrearCita, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -753,7 +740,7 @@ class CrearCita : AppCompatActivity() {
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
-                    Toast.makeText(this@CrearCita, "No se encontró la cédula $cedulaCliente", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "No se encontró la cédula $cedulaCliente", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun onCancelled(error: DatabaseError) {
@@ -774,7 +761,7 @@ class CrearCita : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CrearCita, "Error al obtener el último ID", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateDateActivity, "Error al obtener el último ID", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -814,7 +801,7 @@ class CrearCita : AppCompatActivity() {
                     }
                 } else {
                     // Si no se encontró el nombre en los datos
-                    Toast.makeText(this@CrearCita, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@CreateDateActivity, "No se encontró el abogado $abogado", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -851,7 +838,7 @@ class CrearCita : AppCompatActivity() {
                             }
                         } else {
                             // Si no se encontró el nombre en los datos
-                            Toast.makeText(this@CrearCita, "No se encontró el correo  $correoCliente", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@CreateDateActivity, "No se encontró el correo  $correoCliente", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -896,12 +883,12 @@ class CrearCita : AppCompatActivity() {
                                             eliminarHorarioOcupado(appointmentID.toString(),abogado, fechaAntigua)
                                             finalizarCreacion(modo)
                                         }else{
-                                            Toast.makeText(this@CrearCita, "El correo del cliente no está disponible.", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(this@CreateDateActivity, "El correo del cliente no está disponible.", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 } else {
                                     // Si no se encontró el nombre en los datos
-                                    Toast.makeText(this@CrearCita, "No se encontró el número de documento $cedulaCliente", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this@CreateDateActivity, "No se encontró el número de documento $cedulaCliente", Toast.LENGTH_SHORT).show()
                                 }
                             }
 
@@ -912,7 +899,7 @@ class CrearCita : AppCompatActivity() {
                         })
                     } else {
                         // Si no se encontró el nombre en los datos
-                        Toast.makeText(this@CrearCita, "No se encontró ese tipo de documento", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@CreateDateActivity, "No se encontró ese tipo de documento", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -1020,7 +1007,7 @@ class CrearCita : AppCompatActivity() {
                                         appointmentID = txtConsultar.text.toString().toInt()
                                     }
 
-                                    var cita = Cita(
+                                    var date = Date(
                                         appointmentID,
                                         descripcion,
                                         fecha,
@@ -1034,20 +1021,20 @@ class CrearCita : AppCompatActivity() {
                                     )
 
                                     // Enviar el correo con la información de la cita
-                                    val subject = "Cita en Personería - ID: ${cita.id}"
+                                    val subject = "Cita en Personería - ID: ${date.id}"
                                     var body=""
 
                                     if((modo == "crear")){
-                                        body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                        body = "Estimado Usuario:\n\nSu cita ha sido asignada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${date.id}.\nAbogado: ${abogado}.\nTema: ${date.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     }else if (modo == "modificar"){
-                                        body = "Estimado Usuario:\n\nSu cita ha sido modificada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nAbogado: ${abogado}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                        body = "Estimado Usuario:\n\nSu cita ha sido modificada exitosamente.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${date.id}.\nAbogado: ${abogado}.\nTema: ${date.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     }
 
                                     if(autorizaCorreo == "Sí"){
                                         sendEmailInBackground(correoCliente, subject, body)
                                     }
 
-                                    cita = Cita(
+                                    date = Date(
                                         appointmentID,
                                         descripcion,
                                         fecha,
@@ -1063,7 +1050,7 @@ class CrearCita : AppCompatActivity() {
                                     val bodyAdicionales = """
                                     Información de la cita:
                                     
-                                    ID: ${cita.id}
+                                    ID: ${date.id}
                                     Fecha: $fecha
                                     Hora: $horaSeleccionada
                                     Cliente: $nombreCliente
@@ -1074,16 +1061,16 @@ class CrearCita : AppCompatActivity() {
 
                                     //body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     if (modo == "crear"){
-                                        body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                        body = "Estimado Abogado:\n\nTiene una nueva cita.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${date.id}.\nUsuario: ${nombreCliente}.\nTema: ${date.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     }else if (modo == "modificar"){
-                                        body = "Estimado Abogado:\n\nSe ha modificado una de sus citas.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${cita.id}.\nUsuario: ${nombreCliente}.\nTema: ${cita.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
+                                        body = "Estimado Abogado:\n\nSe ha modificado una de sus citas.\n\nFecha: $fecha, $hourOfDay:$minute.\nNúmero de cita: ${date.id}.\nUsuario: ${nombreCliente}.\nTema: ${date.tema}.\nDescripción: $descripcion.\n\nAtentamente,\nPersonería de Tocancipá."
                                     }
                                     sendEmailInBackground(correoAbogado, subject, body)
 
                                     // Mostrar detalles en la pantalla
-                                    txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${cita.id}"
+                                    txtFecha.text = "Cita agendada para $fecha, $horaSeleccionada con ID: ${date.id}"
                                     modificacionExitosa = true
-                                    saveAppointmentToFirebase(cita, abogado, fecha, horaSeleccionada, horaFinCita, autorizaCorreo, correoVigente)
+                                    saveAppointmentToFirebase(date, abogado, fecha, horaSeleccionada, horaFinCita, autorizaCorreo, correoVigente)
                                 } else {
                                     Toast.makeText(this, "La hora seleccionada ya está ocupada.", Toast.LENGTH_SHORT).show()
                                 }
@@ -1175,7 +1162,7 @@ class CrearCita : AppCompatActivity() {
 
 
     private fun saveAppointmentToFirebase(
-        cita: Cita,
+        date: Date,
         abogado: String,
         fecha: String,
         horaInicio: String,
@@ -1191,9 +1178,9 @@ class CrearCita : AppCompatActivity() {
 
         if(tarea == "modificar" && modificacionExitosa){
             // Eliminar el horario ocupado anterior
-            horariosRef.child(cita.id.toString()).removeValue()
+            horariosRef.child(date.id.toString()).removeValue()
                 .addOnSuccessListener {
-                    println("Referencia a eliminar: ${horariosRef.child(cita.id.toString())}")
+                    println("Referencia a eliminar: ${horariosRef.child(date.id.toString())}")
                     println("Horario ocupado eliminado exitosamente")
                 }
                 .addOnFailureListener {
@@ -1204,14 +1191,14 @@ class CrearCita : AppCompatActivity() {
 
         // Guardar la cita y el nuevo horario ocupado
         val citaData = mapOf(
-            "id" to cita.id,
-            "descripcion" to cita.descripcion,
-            "fecha" to cita.fecha,
-            "hora" to cita.hora,
-            "correoAbogado" to cita.correoAbogado,
-            "correoCliente" to cita.correoCliente,
-            "tema" to cita.tema,
-            "estado" to cita.estado,
+            "id" to date.id,
+            "descripcion" to date.descripcion,
+            "fecha" to date.fecha,
+            "hora" to date.hora,
+            "correoAbogado" to date.correoAbogado,
+            "correoCliente" to date.correoCliente,
+            "tema" to date.tema,
+            "estado" to date.estado,
             "autorizaCorreo" to autorizaCorreo,
             "correoVigente" to correoVigente
         )
@@ -1221,10 +1208,10 @@ class CrearCita : AppCompatActivity() {
             "horaFin" to horaFin
         )
 
-        citasRef.child(cita.id.toString()).setValue(citaData)
+        citasRef.child(date.id.toString()).setValue(citaData)
             .addOnSuccessListener {
                 if(((tarea == "modificar") && (modificacionExitosa)) || (tarea == "crear")){
-                    horariosRef.child(cita.id.toString()).setValue(horarioData)
+                    horariosRef.child(date.id.toString()).setValue(horarioData)
                         .addOnSuccessListener {
                             if(tarea == "modificar"){
                                 Toast.makeText(this, "Cita modificada exitosamente", Toast.LENGTH_SHORT).show()
@@ -1241,7 +1228,7 @@ class CrearCita : AppCompatActivity() {
             .addOnFailureListener {
                 println("Error al guardar la cita: ${it.message}")
                 // Restaurar el horario eliminado si la cita falla al guardarse
-                horariosRef.child(cita.id.toString()).setValue(horarioData)
+                horariosRef.child(date.id.toString()).setValue(horarioData)
                     .addOnSuccessListener {
                         println("Horario restaurado debido a fallo en la modificación de la cita.")
                     }

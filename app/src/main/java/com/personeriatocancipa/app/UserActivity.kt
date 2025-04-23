@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class InterfazCliente : AppCompatActivity() {
+class UserActivity : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
@@ -23,7 +23,7 @@ class InterfazCliente : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cliente)
+        setContentView(R.layout.activity_user)
 
         mAuth = FirebaseAuth.getInstance()
         btnAgendarCita = findViewById(R.id.btnAgendarCita)
@@ -35,7 +35,7 @@ class InterfazCliente : AppCompatActivity() {
 
         btnAgendarCita.setOnClickListener{
             // Redirigir a la actividad de creación de cita
-            val intent = Intent(this@InterfazCliente, CrearCita::class.java)
+            val intent = Intent(this@UserActivity, CreateDateActivity::class.java)
             intent.putExtra("tarea", "crear")
             intent.putExtra("sujeto", "cliente")
             startActivity(intent)
@@ -43,13 +43,13 @@ class InterfazCliente : AppCompatActivity() {
 
         btnVerCitas.setOnClickListener{
             // Redirigir a la actividad de consulta de citas
-            val intent = Intent(this@InterfazCliente, ConsultarCitasCliente::class.java)
+            val intent = Intent(this@UserActivity, GetUserDatesActivity::class.java)
             startActivity(intent)
         }
 
         btnModificar.setOnClickListener{
             // Redirigir a la actividad de gestión de cuenta
-            val intent = Intent(this@InterfazCliente, CrearCuenta::class.java)
+            val intent = Intent(this@UserActivity, CreateUserActivity::class.java)
             intent.putExtra("tarea", "modificar")
             intent.putExtra("sujeto", "propio")
             startActivity(intent)

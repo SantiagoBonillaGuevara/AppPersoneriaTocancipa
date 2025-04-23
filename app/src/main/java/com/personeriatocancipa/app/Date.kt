@@ -1,6 +1,6 @@
 package com.personeriatocancipa.app
 
-class Cita {
+class Date {
     var id: Int? = null // Autonumérico
     var descripcion: String? = null
     var fecha: String? = null

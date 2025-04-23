@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class InterfazAbogado : AppCompatActivity() {
+class LawyerActivity : AppCompatActivity() {
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
     private lateinit var btnConsultarCitas: Button
@@ -21,7 +21,7 @@ class InterfazAbogado : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_abogado)
+        setContentView(R.layout.activity_lawyer)
 
         mAuth = FirebaseAuth.getInstance()
         btnConsultarCitas = findViewById(R.id.btnConsultarCitas)
@@ -32,13 +32,13 @@ class InterfazAbogado : AppCompatActivity() {
 
         btnConsultarCitas.setOnClickListener{
             // Redirigir a la actividad de consulta de citas
-            val intent = Intent(this@InterfazAbogado, ConsultarCitasAbogado::class.java)
+            val intent = Intent(this@LawyerActivity, GetLawyerDatesActivity::class.java)
             startActivity(intent)
         }
 
         btnModificar.setOnClickListener{
             // Redirigir a la actividad de gestión de cuenta
-            val intent = Intent(this@InterfazAbogado, CrearAbogado::class.java)
+            val intent = Intent(this@LawyerActivity, CreateLawyerActivity::class.java)
             intent.putExtra("tarea", "modificar")
             intent.putExtra("sujeto", "propio")
             startActivity(intent)

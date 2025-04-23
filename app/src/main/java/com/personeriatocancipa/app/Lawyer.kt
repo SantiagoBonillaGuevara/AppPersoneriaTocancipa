@@ -1,6 +1,6 @@
 package com.personeriatocancipa.app
 
-class Abogado {
+class Lawyer {
     var documento: String? = null // Llave primaria
     var nombreCompleto: String? = null // Llave primaria
     var cargo: String? = null

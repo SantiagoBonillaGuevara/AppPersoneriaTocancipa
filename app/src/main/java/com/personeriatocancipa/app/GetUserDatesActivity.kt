@@ -16,11 +16,11 @@ import com.google.firebase.database.*
 import java.util.Calendar
 import java.util.Locale
 
-class ConsultarCitasAbogado : AppCompatActivity() {
+class GetUserDatesActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var citasList: MutableList<Cita>
-    private lateinit var adapter: CitaAdapterAbogado
+    private lateinit var citasList: MutableList<Date>
+    private lateinit var adapter: DateUserAdapter
     private lateinit var databaseReference: DatabaseReference
     private lateinit var auth: FirebaseAuth
     private lateinit var btnSalir: Button
@@ -31,24 +31,19 @@ class ConsultarCitasAbogado : AppCompatActivity() {
     private var aniosList: MutableList<String> = mutableListOf()
     private var mesesPorAnio: MutableMap<String, MutableList<String>> = mutableMapOf()
 
-    // Variables para guardar el estado actual de los filtros
-    private var mesSeleccionado: String = ""
-    private var anioSeleccionado: String = ""
-
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_consultar_citas_abogado)
+        setContentView(R.layout.activity_get_user_dates)
 
-        recyclerView = findViewById(R.id.recyclerViewCitaAbogado)
+        recyclerView = findViewById(R.id.recyclerViewCitaCliente)
         btnSalir = findViewById(R.id.btnSalir)
+        recyclerView.layoutManager = LinearLayoutManager(this)
         spinnerAnioFiltro = findViewById(R.id.spinnerAnioFiltro)
         spinnerMesFiltro = findViewById(R.id.spinnerMesFiltro)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         citasList = mutableListOf()
-        adapter = CitaAdapterAbogado(citasList)
+        adapter = DateUserAdapter(citasList)
         recyclerView.adapter = adapter
 
         auth = FirebaseAuth.getInstance()
@@ -66,11 +61,10 @@ class ConsultarCitasAbogado : AppCompatActivity() {
         anioAdapter.setDropDownViewResource(R.drawable.spinner_dropdown_item)
         spinnerAnioFiltro.adapter = anioAdapter
 
-
         // Listener para el filtro de año
         spinnerAnioFiltro.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
-                anioSeleccionado = parentView.getItemAtPosition(position)?.toString() ?: ""
+                val anioSeleccionado = parentView.getItemAtPosition(position)?.toString() ?: ""
                 actualizarMesesPorAnio(anioSeleccionado)
                 filtrarCitasPorMesYAnio(spinnerMesFiltro.selectedItem?.toString() ?: "", anioSeleccionado)
             }
@@ -81,8 +75,8 @@ class ConsultarCitasAbogado : AppCompatActivity() {
         // Listener para el filtro de mes
         spinnerMesFiltro.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>, view: android.view.View?, position: Int, id: Long) {
-                mesSeleccionado = parentView.getItemAtPosition(position)?.toString() ?: ""
-                filtrarCitasPorMesYAnio(mesSeleccionado, anioSeleccionado)
+                val mesSeleccionado = parentView.getItemAtPosition(position)?.toString() ?: ""
+                filtrarCitasPorMesYAnio(mesSeleccionado, spinnerAnioFiltro.selectedItem?.toString() ?: "")
             }
 
             override fun onNothingSelected(parentView: AdapterView<*>) {}
@@ -95,26 +89,23 @@ class ConsultarCitasAbogado : AppCompatActivity() {
 
     private fun cargarCitas() {
         val userEmail = auth.currentUser?.email ?: ""
-        Log.d("CorreoAbogado", "Correo autenticado: $userEmail")
+        Log.d("CorreoUsuario", "Correo autenticado: $userEmail")
 
-        databaseReference.orderByChild("correoAbogado").equalTo(userEmail)
+        databaseReference.orderByChild("correoCliente").equalTo(userEmail)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    // Guardar el estado de los filtros antes de recargar las citas
-                    val mesGuardado = mesSeleccionado
-                    val anioGuardado = anioSeleccionado
-
                     citasList.clear()
                     mesesList.clear()
                     aniosList.clear()
                     mesesPorAnio.clear()
 
                     for (citaSnapshot in snapshot.children) {
-                        val cita = citaSnapshot.getValue(Cita::class.java)
-                        if (cita != null && !cita.fecha.isNullOrEmpty()) {
-                            val mes = obtenerMesDeFecha(cita.fecha!!)
-                            val anio = obtenerAnioDeFecha(cita.fecha!!)
+                        val date = citaSnapshot.getValue(Date::class.java)
+                        if (date != null && !date.fecha.isNullOrEmpty()) {
+                            val mes = obtenerMesDeFecha(date.fecha!!)
+                            val anio = obtenerAnioDeFecha(date.fecha!!)
 
+                            // Agregar meses y años únicos a las listas
                             if (!aniosList.contains(anio)) {
                                 aniosList.add(anio)
                             }
@@ -127,28 +118,24 @@ class ConsultarCitasAbogado : AppCompatActivity() {
                                 mesesPorAnio[anio]!!.add(mes)
                             }
 
-                            citasList.add(cita)
+                            citasList.add(date)
+                        } else {
+                            Log.d("ConsultarCitas", "Cita sin fecha válida: ${citaSnapshot.key}")
                         }
                     }
 
+                    // Ordenar las listas
                     aniosList.sort()
                     mesesList.sort()
 
-                    // Actualizar los adaptadores de los Spinners sin cambiar los filtros
+                    // Actualizar adaptadores de Spinner
                     (spinnerAnioFiltro.adapter as ArrayAdapter<String>).notifyDataSetChanged()
-                    actualizarMesesPorAnio(anioGuardado)
-
-                    // Restaurar los filtros después de recargar los datos
-                    spinnerAnioFiltro.setSelection(aniosList.indexOf(anioGuardado))
-                    spinnerMesFiltro.setSelection(mesesList.indexOf(mesGuardado))
-
-                    // Aplicar el filtro de citas según el estado guardado
-                    filtrarCitasPorMesYAnio(mesGuardado, anioGuardado)
+                    actualizarMesesPorAnio(aniosList.firstOrNull() ?: "")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("ConsultarCitas", "Error al cargar citas: ${error.message}")
-                    Toast.makeText(this@ConsultarCitasAbogado, "Error al cargar citas", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@GetUserDatesActivity, "Error al cargar citas", Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -160,12 +147,18 @@ class ConsultarCitasAbogado : AppCompatActivity() {
             mesesList.sort()
         }
 
+        // Notificar al adaptador que los datos cambiaron
         (spinnerMesFiltro.adapter as ArrayAdapter<String>).notifyDataSetChanged()
 
+        // Asegurarse de que haya elementos en mesesList antes de llamar a setSelection
         if (mesesList.isNotEmpty()) {
-            spinnerMesFiltro.setSelection(0) // Selecciona el primer mes disponible
+            spinnerMesFiltro.setSelection(0) // Seleccionar el primer mes disponible
+        } else {
+            Log.d("ActualizarMeses", "La lista de meses está vacía para el año $anio")
         }
     }
+
+
 
     private fun obtenerMesDeFecha(fecha: String): String {
         val parts = fecha.split("-")

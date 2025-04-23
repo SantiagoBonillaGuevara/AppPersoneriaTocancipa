@@ -23,8 +23,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-
-class CrearAdmin : AppCompatActivity() {
+class CreateAdminActivity : AppCompatActivity() {
     private lateinit var gridConsultar: LinearLayout
     private lateinit var txtAnuncio:TextView
     private lateinit var txtNombre: EditText
@@ -53,7 +52,7 @@ class CrearAdmin : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_crear_admin)
+        setContentView(R.layout.activity_create_admin)
 
         supportActionBar?.hide()
         mAuth = FirebaseAuth.getInstance()
@@ -186,7 +185,7 @@ class CrearAdmin : AppCompatActivity() {
                 val campos = conseguirCampos()
                 if (!verificarCampos(campos)) {
                     Toast.makeText(
-                        this@CrearAdmin,
+                        this@CreateAdminActivity,
                         "Diligencie todos los datos",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -201,7 +200,7 @@ class CrearAdmin : AppCompatActivity() {
 
                     if(clave != confirmarClave){
                         Toast.makeText(
-                            this@CrearAdmin,
+                            this@CreateAdminActivity,
                             "Las contraseñas no coinciden",
                             Toast.LENGTH_SHORT,
                         ).show()
@@ -217,7 +216,7 @@ class CrearAdmin : AppCompatActivity() {
                 // Cancelar el flujo
                 dialog.dismiss()
                 Toast.makeText(
-                    this@CrearAdmin,
+                    this@CreateAdminActivity,
                     "Debe aceptar la política de tratamiento de datos personales para continuar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -235,7 +234,7 @@ class CrearAdmin : AppCompatActivity() {
             val campos = conseguirCampos()
             if(campos[3].isEmpty()){
                 Toast.makeText(
-                    this@CrearAdmin,
+                    this@CreateAdminActivity,
                     "Ingrese cédula para modificar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -243,7 +242,7 @@ class CrearAdmin : AppCompatActivity() {
             }else{
                 if (!verificarCampos(campos)) {
                     Toast.makeText(
-                        this@CrearAdmin,
+                        this@CreateAdminActivity,
                         "Diligencie todos los datos",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -259,7 +258,7 @@ class CrearAdmin : AppCompatActivity() {
                         Admin(documento,nombre,correo,
                             estado))
                     Toast.makeText(
-                        this@CrearAdmin,
+                        this@CreateAdminActivity,
                         "Administrador modificado exitosamente",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -270,7 +269,7 @@ class CrearAdmin : AppCompatActivity() {
         btnEliminar.setOnClickListener{
             if(uidConsultado.isEmpty()){
                 Toast.makeText(
-                    this@CrearAdmin,
+                    this@CreateAdminActivity,
                     "Ingrese cédula para eliminar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -279,7 +278,7 @@ class CrearAdmin : AppCompatActivity() {
                 mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                 mDbRef.child(uidConsultado).removeValue()
                 Toast.makeText(
-                    this@CrearAdmin,
+                    this@CreateAdminActivity,
                     "Administrador eliminado exitosamente",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -314,22 +313,22 @@ class CrearAdmin : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     Toast.makeText(
-                        this@CrearAdmin,
+                        this@CreateAdminActivity,
                         "Ya existe un usuario con la cédula ingresada",
                         Toast.LENGTH_SHORT,
                     ).show()
                 } else {
                     mAuth.createUserWithEmailAndPassword(correo,clave)
-                        .addOnCompleteListener(this@CrearAdmin){
+                        .addOnCompleteListener(this@CreateAdminActivity){
                                 task ->
                             if (task.isSuccessful){
                                 addUserToDatabase(nombre, documento, correo, estado, mAuth.currentUser?.uid!!)
                                 Toast.makeText(
-                                    this@CrearAdmin,
+                                    this@CreateAdminActivity,
                                     "Administrador creado exitosamente",
                                     Toast.LENGTH_SHORT,
                                 ).show()
-                                val intent = Intent(this@CrearAdmin, InterfazAdmin::class.java)
+                                val intent = Intent(this@CreateAdminActivity, AdminActivity::class.java)
                                 finish()
                                 startActivity(intent)
                             }
@@ -338,7 +337,7 @@ class CrearAdmin : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearAdmin,
+                    this@CreateAdminActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -369,7 +368,7 @@ class CrearAdmin : AppCompatActivity() {
         mDbRef.child("AdminData").child(uid).setValue(
             Admin(documento, nombre, correo, estado))
         Toast.makeText(
-            this@CrearAdmin,
+            this@CreateAdminActivity,
             "Cuenta creada exitosamente",
             Toast.LENGTH_SHORT,
         ).show()
@@ -380,7 +379,7 @@ class CrearAdmin : AppCompatActivity() {
         val cedula = txtConsultar.text.toString()
         if (cedula.isEmpty()) {
             Toast.makeText(
-                this@CrearAdmin,
+                this@CreateAdminActivity,
                 "Ingrese cédula para consultar",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -415,7 +414,7 @@ class CrearAdmin : AppCompatActivity() {
                     }
                 } else {
                     Toast.makeText(
-                        this@CrearAdmin,
+                        this@CreateAdminActivity,
                         "No se encontró un usuario con la cédula ingresada",
                         Toast.LENGTH_LONG,
                     ).show()
@@ -423,7 +422,7 @@ class CrearAdmin : AppCompatActivity() {
             }
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearAdmin,
+                    this@CreateAdminActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT,
                 ).show()

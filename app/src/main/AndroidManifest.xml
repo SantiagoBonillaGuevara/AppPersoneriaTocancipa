@@ -27,25 +27,25 @@
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
         <activity
-            android:name=".RecuperarPassword"
+            android:name=".RestorePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".CrearAbogado"
+            android:name=".CreateLawyerActivity"
             android:exported="false" />
         <activity
-            android:name=".CrearAdmin"
+            android:name=".CreateAdminActivity"
             android:exported="false" />
         <activity
-            android:name=".ConsultarCitasAbogado"
+            android:name=".GetLawyerDatesActivity"
             android:exported="false" />
         <activity
-            android:name=".ConsultarCitasCliente"
+            android:name=".GetUserDatesActivity"
             android:exported="false" />
         <activity
-            android:name=".CrearCita"
+            android:name=".CreateDateActivity"
             android:exported="false" />
         <activity
-            android:name=".CRUD"
+            android:name=".ManagementActivity"
             android:exported="false" />
 
         <meta-data
@@ -69,7 +69,7 @@
         </activity>
         -->
         <activity
-            android:name=".Bienvenida"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,16 +78,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CrearCuenta"
+            android:name=".CreateUserActivity"
             android:exported="false" />
         <activity
-            android:name=".InterfazCliente"
+            android:name=".UserActivity"
             android:exported="false" />
         <activity
-            android:name=".InterfazAdmin"
+            android:name=".AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".InterfazAbogado"
+            android:name=".LawyerActivity"
             android:exported="false" />
     </application>
 

@@ -1,6 +1,6 @@
 package com.personeriatocancipa.app
 
-class Usuario {
+class User {
 
     var nombreCompleto: String? = null
     var tipoDocumento: String? = null // CC, CE, NIT, Pasaporte, PEP, PTP, RC, TI

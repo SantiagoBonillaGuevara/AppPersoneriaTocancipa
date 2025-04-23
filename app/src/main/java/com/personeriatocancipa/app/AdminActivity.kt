@@ -12,7 +12,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class InterfazAdmin : AppCompatActivity() {
+class AdminActivity : AppCompatActivity() {
 
     private lateinit var txtUsuario: TextView
     private lateinit var mAuth: FirebaseAuth
@@ -32,19 +32,19 @@ class InterfazAdmin : AppCompatActivity() {
         cargarNombre()
 
         btnGestionarUsuarios.setOnClickListener{
-            val intent = Intent(this@InterfazAdmin, CRUD::class.java)
+            val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
             intent.putExtra("tipo", "usuario")
             startActivity(intent)
         }
 
         btnGestionarCitas.setOnClickListener{
-            val intent = Intent(this@InterfazAdmin, CRUD::class.java)
+            val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
             intent.putExtra("tipo", "cita")
             startActivity(intent)
         }
 
         btnSalir.setOnClickListener{
-            val intent = Intent(this@InterfazAdmin, Bienvenida::class.java)
+            val intent = Intent(this@AdminActivity, LoginActivity::class.java)
             finish()
             startActivity(intent)
         }

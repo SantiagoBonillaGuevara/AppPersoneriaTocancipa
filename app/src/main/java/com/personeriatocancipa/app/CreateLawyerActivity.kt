@@ -22,7 +22,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class CrearAbogado : AppCompatActivity() {
+class CreateLawyerActivity : AppCompatActivity() {
 
     private lateinit var gridConsultar: LinearLayout
     private lateinit var txtConsultar: EditText
@@ -88,7 +88,7 @@ class CrearAbogado : AppCompatActivity() {
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crear_abogado)
+        setContentView(R.layout.activity_create_lawyer)
 
         supportActionBar?.hide()
         mAuth = FirebaseAuth.getInstance()
@@ -346,7 +346,7 @@ class CrearAbogado : AppCompatActivity() {
                 // Cancelar el flujo
                 dialog.dismiss()
                 Toast.makeText(
-                    this@CrearAbogado,
+                    this@CreateLawyerActivity,
                     "Debe aceptar la política de tratamiento de datos personales para continuar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -392,7 +392,7 @@ class CrearAbogado : AppCompatActivity() {
                         }
                     } else {
                         Toast.makeText(
-                            this@CrearAbogado,
+                            this@CreateLawyerActivity,
                             "No se encontró un abogado con la cédula ingresada",
                             Toast.LENGTH_LONG,
                         ).show()
@@ -401,7 +401,7 @@ class CrearAbogado : AppCompatActivity() {
 
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(
-                        this@CrearAbogado,
+                        this@CreateLawyerActivity,
                         "Error al consultar la base de datos",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -438,7 +438,7 @@ class CrearAbogado : AppCompatActivity() {
         val cedula = txtConsultar.text.toString()
         if (cedula.isEmpty()) {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Ingrese cédula para consultar",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -479,7 +479,7 @@ class CrearAbogado : AppCompatActivity() {
                     }
                 } else {
                     Toast.makeText(
-                        this@CrearAbogado,
+                        this@CreateLawyerActivity,
                         "No se encontró un usuario con la cédula ingresada",
                         Toast.LENGTH_LONG,
                     ).show()
@@ -488,7 +488,7 @@ class CrearAbogado : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearAbogado,
+                    this@CreateLawyerActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -536,7 +536,7 @@ class CrearAbogado : AppCompatActivity() {
                     }
                 } else {
                     Toast.makeText(
-                        this@CrearAbogado,
+                        this@CreateLawyerActivity,
                         "No se encontró un horario para el abogado",
                         Toast.LENGTH_LONG,
                     ).show()
@@ -545,7 +545,7 @@ class CrearAbogado : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearAbogado,
+                    this@CreateLawyerActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -600,7 +600,7 @@ class CrearAbogado : AppCompatActivity() {
 
         if (nombre.isEmpty() || clave.isEmpty() || documento.isEmpty() || correo.isEmpty()) {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Diligencie todos los datos",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -610,7 +610,7 @@ class CrearAbogado : AppCompatActivity() {
         // Verificar contraseñas iguales
         if (clave != confirmarClave) {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Las contraseñas no coinciden",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -625,7 +625,7 @@ class CrearAbogado : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     Toast.makeText(
-                        this@CrearAbogado,
+                        this@CreateLawyerActivity,
                         "Ya existe un abogado con el mismo documento",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -638,7 +638,7 @@ class CrearAbogado : AppCompatActivity() {
                     val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
                     if (checkBoxesArray.all { !it.isChecked }) {
                         Toast.makeText(
-                            this@CrearAbogado,
+                            this@CreateLawyerActivity,
                             "Seleccione al menos un día de trabajo",
                             Toast.LENGTH_SHORT,
                         ).show()
@@ -651,7 +651,7 @@ class CrearAbogado : AppCompatActivity() {
                             val fin = spinnerDiasArray[(i * 2) + 1].selectedItemPosition
                             if (inicio >= fin) {
                                 Toast.makeText(
-                                    this@CrearAbogado,
+                                    this@CreateLawyerActivity,
                                     "Seleccione un horario válido para el día ${checkBoxesArray[i].text}",
                                     Toast.LENGTH_SHORT,
                                 ).show()
@@ -663,27 +663,27 @@ class CrearAbogado : AppCompatActivity() {
                         if (it.isSuccessful) {
                             val user = mAuth.currentUser
                             val uid = user?.uid
-                            val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
+                            val lawyer = Lawyer(documento, nombre, cargo, tema, correo, estado)
                             agregarHorarioAFirebase(nombre, horario)
 
                             mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
-                            mDbRef.child(uid!!).setValue(abogado).addOnSuccessListener {
+                            mDbRef.child(uid!!).setValue(lawyer).addOnSuccessListener {
                                 Toast.makeText(
-                                    this@CrearAbogado,
+                                    this@CreateLawyerActivity,
                                     "Abogado creado exitosamente",
                                     Toast.LENGTH_SHORT,
                                 ).show()
                                 finish()
                             }.addOnFailureListener {
                                 Toast.makeText(
-                                    this@CrearAbogado,
+                                    this@CreateLawyerActivity,
                                     "Error al crear el abogado",
                                     Toast.LENGTH_SHORT,
                                 ).show()
                             }
                         } else {
                             Toast.makeText(
-                                this@CrearAbogado,
+                                this@CreateLawyerActivity,
                                 "Error al crear el abogado",
                                 Toast.LENGTH_SHORT,
                             ).show()
@@ -694,7 +694,7 @@ class CrearAbogado : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearAbogado,
+                    this@CreateLawyerActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -713,7 +713,7 @@ class CrearAbogado : AppCompatActivity() {
 
         if(documento.isEmpty()){
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Ingrese cédula para modificar",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -721,7 +721,7 @@ class CrearAbogado : AppCompatActivity() {
         }else{
             if (((sujeto != "propio") && (nombre.isEmpty() || clave.isEmpty() || correo.isEmpty())) || ((sujeto == "propio") && (nombre.isEmpty() || correo.isEmpty()))) {
                 Toast.makeText(
-                    this@CrearAbogado,
+                    this@CreateLawyerActivity,
                     "Diligencie todos los datos",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -737,7 +737,7 @@ class CrearAbogado : AppCompatActivity() {
         val spinnerDiasArray = arrayOf(spLunesInicio, spLunesFin, spMartesInicio, spMartesFin, spMiercolesInicio, spMiercolesFin, spJuevesInicio, spJuevesFin, spViernesInicio, spViernesFin)
         if (checkBoxesArray.all { !it.isChecked }) {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Seleccione al menos un día de trabajo",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -750,7 +750,7 @@ class CrearAbogado : AppCompatActivity() {
                 val fin = spinnerDiasArray[(i * 2) + 1].selectedItemPosition
                 if (inicio >= fin) {
                     Toast.makeText(
-                        this@CrearAbogado,
+                        this@CreateLawyerActivity,
                         "Seleccione un horario válido para el día ${checkBoxesArray[i].text}",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -760,20 +760,20 @@ class CrearAbogado : AppCompatActivity() {
         }
 
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
-        val abogado = Abogado(documento, nombre, cargo, tema, correo, estado)
+        val lawyer = Lawyer(documento, nombre, cargo, tema, correo, estado)
         agregarHorarioAFirebase(nombre, horario)
 
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
-        mDbRef.child(uidConsultado).setValue(abogado).addOnSuccessListener {
+        mDbRef.child(uidConsultado).setValue(lawyer).addOnSuccessListener {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Abogado modificado exitosamente",
                 Toast.LENGTH_SHORT,
             ).show()
             finish()
         }.addOnFailureListener {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Error al modificar el abogado",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -783,7 +783,7 @@ class CrearAbogado : AppCompatActivity() {
     private fun eliminarAbogado() {
         if(uidConsultado.isEmpty()){
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Ingrese cédula para eliminar",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -792,14 +792,14 @@ class CrearAbogado : AppCompatActivity() {
         mDbRef = FirebaseDatabase.getInstance().getReference("abogadoData")
         mDbRef.child(uidConsultado).removeValue().addOnSuccessListener {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Abogado eliminado exitosamente",
                 Toast.LENGTH_SHORT,
             ).show()
             finish()
         }.addOnFailureListener {
             Toast.makeText(
-                this@CrearAbogado,
+                this@CreateLawyerActivity,
                 "Error al eliminar el abogado",
                 Toast.LENGTH_SHORT,
             ).show()

@@ -25,7 +25,7 @@ import com.google.firebase.database.ValueEventListener
 import java.util.Calendar
 
 
-class CrearCuenta : AppCompatActivity() {
+class CreateUserActivity : AppCompatActivity() {
 
     //Crea variables de Layout
     private lateinit var gridConsultar: LinearLayout
@@ -80,7 +80,7 @@ class CrearCuenta : AppCompatActivity() {
     @SuppressLint("ResourceType", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_crear_cuenta)
+        setContentView(R.layout.activity_create_user)
 
         supportActionBar?.hide()
         mAuth = FirebaseAuth.getInstance()
@@ -385,7 +385,7 @@ class CrearCuenta : AppCompatActivity() {
                 // Cancelar el flujo
                 dialog.dismiss()
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Debe aceptar la política de tratamiento de datos personales para continuar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -403,7 +403,7 @@ class CrearCuenta : AppCompatActivity() {
             val campos = conseguirCampos()
             if(campos[2].isEmpty()){
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Ingrese documento para modificar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -411,7 +411,7 @@ class CrearCuenta : AppCompatActivity() {
             }else{
                 if (!verificarCampos(campos)) {
                     Toast.makeText(
-                        this@CrearCuenta,
+                        this@CreateUserActivity,
                         "Diligencie todos los datos",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -440,13 +440,13 @@ class CrearCuenta : AppCompatActivity() {
 
                     mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                     mDbRef.child(uidConsultado).setValue(
-                        Usuario(nombre, tipoDocumento, documento, fechaNacimiento,
+                        User(nombre, tipoDocumento, documento, fechaNacimiento,
                             grupoEtario, edad, direccion, sector, telefono,
                             correo, sexo, identidad, orientacion, nacionalidad,
                             escolaridad, grupoEtnico, discapacidad, estrato,
                             comunidad, estado, uidConsultado))
                     Toast.makeText(
-                        this@CrearCuenta,
+                        this@CreateUserActivity,
                         "Usuario modificado exitosamente",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -458,7 +458,7 @@ class CrearCuenta : AppCompatActivity() {
         btnEliminar.setOnClickListener{
             if(uidConsultado.isEmpty()){
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Ingrese documento para eliminar",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -467,7 +467,7 @@ class CrearCuenta : AppCompatActivity() {
                 mDbRef = FirebaseDatabase.getInstance().getReference("userData")
                 mDbRef.child(uidConsultado).removeValue()
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Usuario eliminado exitosamente",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -531,7 +531,7 @@ class CrearCuenta : AppCompatActivity() {
                         }
                     } else {
                         Toast.makeText(
-                            this@CrearCuenta,
+                            this@CreateUserActivity,
                             "No se encontró ese documento",
                             Toast.LENGTH_LONG,
                         ).show()
@@ -540,7 +540,7 @@ class CrearCuenta : AppCompatActivity() {
 
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(
-                        this@CrearCuenta,
+                        this@CreateUserActivity,
                         "Error al consultar la base de datos",
                         Toast.LENGTH_SHORT,
                     ).show()
@@ -579,7 +579,7 @@ class CrearCuenta : AppCompatActivity() {
         val campos = conseguirCampos()
         if (!verificarCampos(campos)) {
             Toast.makeText(
-                this@CrearCuenta,
+                this@CreateUserActivity,
                 "Diligencie todos los datos",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -610,7 +610,7 @@ class CrearCuenta : AppCompatActivity() {
 
             if (clave != confirmarClave) {
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Las contraseñas no coinciden",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -661,7 +661,7 @@ class CrearCuenta : AppCompatActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
                                 Toast.makeText(
-                                    this@CrearCuenta,
+                                    this@CreateUserActivity,
                                     "Ya existe un usuario con ese número y tipo de documento",
                                     Toast.LENGTH_SHORT,
                                 ).show()
@@ -673,7 +673,7 @@ class CrearCuenta : AppCompatActivity() {
                                     override fun onDataChange(snapshot: DataSnapshot) {
                                         if (snapshot.exists()) {
                                             Toast.makeText(
-                                                this@CrearCuenta,
+                                                this@CreateUserActivity,
                                                 "Ese correo ya está registrado",
                                                 Toast.LENGTH_SHORT,
                                             ).show()
@@ -685,7 +685,7 @@ class CrearCuenta : AppCompatActivity() {
                                                 override fun onDataChange(snapshot: DataSnapshot) {
                                                     if (snapshot.exists()) {
                                                         Toast.makeText(
-                                                            this@CrearCuenta,
+                                                            this@CreateUserActivity,
                                                             "Ese correo ya está registrado",
                                                             Toast.LENGTH_SHORT,
                                                         ).show()
@@ -697,14 +697,14 @@ class CrearCuenta : AppCompatActivity() {
                                                             override fun onDataChange(snapshot: DataSnapshot) {
                                                                 if (snapshot.exists()) {
                                                                     Toast.makeText(
-                                                                        this@CrearCuenta,
+                                                                        this@CreateUserActivity,
                                                                         "Ese correo ya está registrado",
                                                                         Toast.LENGTH_SHORT,
                                                                     ).show()
                                                                 } else {
                                                                     // Ese número no está registrado, se puede proceder a crear la cuenta
                                                                     mAuth.createUserWithEmailAndPassword(correo, clave)
-                                                                        .addOnCompleteListener(this@CrearCuenta) { task ->
+                                                                        .addOnCompleteListener(this@CreateUserActivity) { task ->
                                                                             if (task.isSuccessful) {
                                                                                 addUserToDatabase(
                                                                                     nombre, tipoDocumento, documento, fechaNacimiento, edad.toString(),
@@ -716,19 +716,19 @@ class CrearCuenta : AppCompatActivity() {
 
                                                                                 println(mAuth.currentUser?.uid)
                                                                                 if (usuario == "cliente") {
-                                                                                    val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
+                                                                                    val intent = Intent(this@CreateUserActivity, UserActivity::class.java)
                                                                                     finish()
                                                                                     startActivity(intent)
                                                                                 } else {
                                                                                     Toast.makeText(
-                                                                                        this@CrearCuenta,
+                                                                                        this@CreateUserActivity,
                                                                                         "Usuario creado exitosamente",
                                                                                         Toast.LENGTH_SHORT,
                                                                                     ).show()
                                                                                 }
                                                                             } else {
                                                                                 Toast.makeText(
-                                                                                    this@CrearCuenta,
+                                                                                    this@CreateUserActivity,
                                                                                     "Ha ocurrido un error",
                                                                                     Toast.LENGTH_SHORT,
                                                                                 ).show()
@@ -739,7 +739,7 @@ class CrearCuenta : AppCompatActivity() {
 
                                                             override fun onCancelled(error: DatabaseError) {
                                                                 Toast.makeText(
-                                                                    this@CrearCuenta,
+                                                                    this@CreateUserActivity,
                                                                     "Error al consultar la base de datos",
                                                                     Toast.LENGTH_SHORT,
                                                                 ).show()
@@ -750,7 +750,7 @@ class CrearCuenta : AppCompatActivity() {
 
                                                 override fun onCancelled(error: DatabaseError) {
                                                     Toast.makeText(
-                                                        this@CrearCuenta,
+                                                        this@CreateUserActivity,
                                                         "Error al consultar la base de datos",
                                                         Toast.LENGTH_SHORT,
                                                     ).show()
@@ -761,7 +761,7 @@ class CrearCuenta : AppCompatActivity() {
 
                                     override fun onCancelled(error: DatabaseError) {
                                         Toast.makeText(
-                                            this@CrearCuenta,
+                                            this@CreateUserActivity,
                                             "Error al consultar la base de datos",
                                             Toast.LENGTH_SHORT,
                                         ).show()
@@ -772,7 +772,7 @@ class CrearCuenta : AppCompatActivity() {
 
                         override fun onCancelled(error: DatabaseError) {
                             Toast.makeText(
-                                this@CrearCuenta,
+                                this@CreateUserActivity,
                                 "Error al consultar la base de datos",
                                 Toast.LENGTH_SHORT,
                             ).show()
@@ -781,7 +781,7 @@ class CrearCuenta : AppCompatActivity() {
                 } else {
                     // Ese número no está registrado, se puede proceder a crear la cuenta
                     mAuth.createUserWithEmailAndPassword(correo, clave)
-                        .addOnCompleteListener(this@CrearCuenta) { task ->
+                        .addOnCompleteListener(this@CreateUserActivity) { task ->
                             if (task.isSuccessful) {
                                 addUserToDatabase(
                                     nombre, tipoDocumento, documento, fechaNacimiento, edad.toString(),
@@ -793,19 +793,19 @@ class CrearCuenta : AppCompatActivity() {
 
                                 println(mAuth.currentUser?.uid)
                                 if (usuario == "cliente") {
-                                    val intent = Intent(this@CrearCuenta, InterfazCliente::class.java)
+                                    val intent = Intent(this@CreateUserActivity, UserActivity::class.java)
                                     finish()
                                     startActivity(intent)
                                 } else {
                                     Toast.makeText(
-                                        this@CrearCuenta,
+                                        this@CreateUserActivity,
                                         "Usuario creado exitosamente",
                                         Toast.LENGTH_SHORT,
                                     ).show()
                                 }
                             } else {
                                 Toast.makeText(
-                                    this@CrearCuenta,
+                                    this@CreateUserActivity,
                                     "Ha ocurrido un error",
                                     Toast.LENGTH_SHORT,
                                 ).show()
@@ -816,7 +816,7 @@ class CrearCuenta : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT,
                 ).show()
@@ -849,7 +849,7 @@ class CrearCuenta : AppCompatActivity() {
     ) {
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("userData").child(uid).setValue(
-            Usuario(nombre, tipoDocumento, documento, fechaNacimiento,
+            User(nombre, tipoDocumento, documento, fechaNacimiento,
                 grupoEtario, edad.toInt(), direccion, sector, telefono,
                 correo, sexo, identidad, orientacion, nacionalidad,
                 escolaridad, grupoEtnico, discapacidad, estrato,
@@ -924,7 +924,7 @@ class CrearCuenta : AppCompatActivity() {
         val tipoDocumento = spConsultarTipoDocumento.selectedItem.toString()
         if (cedula.isEmpty()) {
             Toast.makeText(
-                this@CrearCuenta,
+                this@CreateUserActivity,
                 "Ingrese documento para consultar",
                 Toast.LENGTH_SHORT,
             ).show()
@@ -1021,7 +1021,7 @@ class CrearCuenta : AppCompatActivity() {
                                 }
                             } else {
                                 Toast.makeText(
-                                    this@CrearCuenta,
+                                    this@CreateUserActivity,
                                     "No se encontró ese documento",
                                     Toast.LENGTH_LONG
                                 ).show()
@@ -1030,7 +1030,7 @@ class CrearCuenta : AppCompatActivity() {
 
                         override fun onCancelled(error: DatabaseError) {
                             Toast.makeText(
-                                this@CrearCuenta,
+                                this@CreateUserActivity,
                                 "Error al consultar la base de datos",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -1038,7 +1038,7 @@ class CrearCuenta : AppCompatActivity() {
                     })
                 } else {
                     Toast.makeText(
-                        this@CrearCuenta,
+                        this@CreateUserActivity,
                         "No se encontró ese documento",
                         Toast.LENGTH_LONG
                     ).show()
@@ -1047,7 +1047,7 @@ class CrearCuenta : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(
-                    this@CrearCuenta,
+                    this@CreateUserActivity,
                     "Error al consultar la base de datos",
                     Toast.LENGTH_SHORT
                 ).show()

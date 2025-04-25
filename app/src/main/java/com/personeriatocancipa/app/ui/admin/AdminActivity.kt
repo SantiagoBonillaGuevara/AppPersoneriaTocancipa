@@ -1,57 +1,52 @@
-package com.personeriatocancipa.app
+package com.personeriatocancipa.app.ui.admin
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.personeriatocancipa.app.ManagementActivity
+import com.personeriatocancipa.app.databinding.ActivityAdminBinding
+import com.personeriatocancipa.app.ui.common.LoginActivity
 
-class LawyerActivity : AppCompatActivity() {
-    private lateinit var txtUsuario: TextView
+class AdminActivity : AppCompatActivity() {
+
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var btnConsultarCitas: Button
-    private lateinit var btnSalir: Button
-    private lateinit var btnModificar: Button
+    private lateinit var binding: ActivityAdminBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lawyer)
+        binding = ActivityAdminBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mAuth = FirebaseAuth.getInstance()
-        btnConsultarCitas = findViewById(R.id.btnConsultarCitas)
-        btnSalir = findViewById(R.id.btnSalir)
-        btnModificar = findViewById(R.id.btnModificar)
 
         cargarNombre()
 
-        btnConsultarCitas.setOnClickListener{
-            // Redirigir a la actividad de consulta de citas
-            val intent = Intent(this@LawyerActivity, GetLawyerDatesActivity::class.java)
+        binding.btnGestionarUsuarios.setOnClickListener{
+            val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
+            intent.putExtra("tipo", "usuario")
             startActivity(intent)
         }
 
-        btnModificar.setOnClickListener{
-            // Redirigir a la actividad de gestión de cuenta
-            val intent = Intent(this@LawyerActivity, CreateLawyerActivity::class.java)
-            intent.putExtra("tarea", "modificar")
-            intent.putExtra("sujeto", "propio")
+        binding.btnGestionarCitas.setOnClickListener{
+            val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
+            intent.putExtra("tipo", "cita")
             startActivity(intent)
         }
 
-        btnSalir.setOnClickListener{
-            finish()
+        binding.btnSalir.setOnClickListener{
+            navigateToLogin()
         }
     }
 
     private fun cargarNombre() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val databaseRef = FirebaseDatabase.getInstance().getReference("abogadoData").child(userId)
+        val databaseRef = FirebaseDatabase.getInstance().getReference("AdminData").child(userId)
         val userNombreRef = databaseRef.child("nombreCompleto")
 
         userNombreRef.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -71,8 +66,12 @@ class LawyerActivity : AppCompatActivity() {
 
     private fun cargarPrimerNombre(nombreCompleto: String) {
         val primerNombre = nombreCompleto.split(" ")[0]
-        txtUsuario = findViewById(R.id.txtUsuario)
-        txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
+        binding.txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
     }
 
+    private fun navigateToLogin(){
+        val intent = Intent(this, LoginActivity::class.java)
+        finish()
+        startActivity(intent)
+    }
 }

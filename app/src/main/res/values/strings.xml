@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Personería</string>
     <string-array name="opcionesTipoDocumento">
-        <item>Cédula de Ciudadanía</item>
-        <item>Cédula de Extranjería</item>
-        <item>Número de Identificación Tributaria</item>
+        <item>CC</item>
+        <item>CE</item>
+        <item>NIT</item>
         <item>Pasaporte</item>
-        <item>Permiso Especial de Permanencia</item>
-        <item>Permiso Temporal de Permanencia</item>
-        <item>Registro Civil</item>
-        <item>Tarjeta de Identidad</item>
+        <item>PEP</item>
+        <item>PTP</item>
+        <item>RC</item>
+        <item>TI</item>
     </string-array>
     <string-array name="opcionesOrientacion">
         <item>Bisexual</item>
@@ -370,7 +370,36 @@
         <item>15:00</item>
     </string-array>
     <string-array name="opcionesAutorizacion">
-      <item>Sí</item>
-      <item>No</item>
+        <item>Sí</item>
+        <item>No</item>
     </string-array>
+    <string-array name="opcionesGrupoEtario">
+        <item>Primera infancia</item>
+        <item>Infancia</item>
+        <item>Adolescencia</item>
+        <item>Juventud</item>
+        <item>Adultez</item>
+        <item>Persona mayor</item>
+    </string-array>
+
+    <string name="politica">
+        <![CDATA[
+            Política de Tratamiento de Datos Personales
+
+            Señor(a) usuario(a), autoriza a la Personería de Tocancipá, para la recolección, consulta, almacenamiento, uso, traslado o eliminación de sus datos personales, con el fin de: adelantar las gestiones, actuaciones e intervenciones que permitan el restablecimiento y goce de sus derechos, invitar a eventos de participación ciudadana u organizados por la entidad, información con fines estadísticos, enviar información a entidades autorizadas cuando la solicitud lo amerite, evaluar la calidad del servicio y contactar al titular en los casos que se considere necesario.
+
+            No es obligatorio para la prestación del servicio, suministrar los datos personales de carácter sensible o de niños, niñas y adolescentes. Se exime el tratamiento de datos de niños, niñas y adolescentes, salvo aquellos datos que sean de naturaleza pública.
+
+            Como titular de la información tiene derecho a conocer, actualizar y rectificar sus datos personales, así como suprimir o revocar la autorización otorgada para su tratamiento, pedir prueba de la autorización otorgada al responsable del tratamiento y ser informado sobre el uso que le han dado a los mismos, presentar quejas ante la Superintendencia de Industria y Comercio (SIC) por infracción a la ley y acceder en forma gratuita a sus datos personales, acorde a lo establecido en los artículos 15, 20 y 74 de la Constitución Política, la Ley 1581 de 2012, el Decreto Reglamentario 1377 de 2013, la Ley 1266 del 31 de 2008, el Decreto Reglamentario 1727 de 2009, y demás normatividad vigente relacionada.
+
+            Consulte la Política de Tratamiento de Datos Personales Personería Municipal de Tocancipá adoptada mediante Resolución Administrativa 051 de 2020 en el siguiente link:
+            https://www.personeria-tocancipa.gov.co/politicas-y-lineamientos/politica-de-tratamiento-de-datos
+
+            ¿Acepta términos y condiciones?
+        ]]>
+    </string>
+
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

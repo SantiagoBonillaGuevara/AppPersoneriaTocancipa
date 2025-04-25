@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".LawyerActivity">
+    tools:context=".ui.lawyer.LawyerActivity">
 
     <!-- Sección superior -->
     <LinearLayout

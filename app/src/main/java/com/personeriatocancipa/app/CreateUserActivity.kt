@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.personeriatocancipa.app.domain.model.User
+import com.personeriatocancipa.app.ui.user.UserActivity
 import java.util.Calendar
 
 
@@ -444,7 +446,8 @@ class CreateUserActivity : AppCompatActivity() {
                             grupoEtario, edad, direccion, sector, telefono,
                             correo, sexo, identidad, orientacion, nacionalidad,
                             escolaridad, grupoEtnico, discapacidad, estrato,
-                            comunidad, estado, uidConsultado))
+                            comunidad, estado, uidConsultado)
+                    )
                     Toast.makeText(
                         this@CreateUserActivity,
                         "Usuario modificado exitosamente",
@@ -853,7 +856,8 @@ class CreateUserActivity : AppCompatActivity() {
                 grupoEtario, edad.toInt(), direccion, sector, telefono,
                 correo, sexo, identidad, orientacion, nacionalidad,
                 escolaridad, grupoEtnico, discapacidad, estrato,
-                comunidad, estado, uid))
+                comunidad, estado, uid)
+        )
     }
 
     private fun conseguirCampos(): Array<String> {

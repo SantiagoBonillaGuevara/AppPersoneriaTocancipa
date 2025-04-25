@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.personeriatocancipa.app.domain.model.Admin
+import com.personeriatocancipa.app.ui.admin.AdminActivity
 
 class CreateAdminActivity : AppCompatActivity() {
     private lateinit var gridConsultar: LinearLayout
@@ -256,7 +258,8 @@ class CreateAdminActivity : AppCompatActivity() {
                     mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
                     mDbRef.child(uidConsultado).setValue(
                         Admin(documento,nombre,correo,
-                            estado))
+                            estado)
+                    )
                     Toast.makeText(
                         this@CreateAdminActivity,
                         "Administrador modificado exitosamente",
@@ -366,7 +369,8 @@ class CreateAdminActivity : AppCompatActivity() {
     private fun addUserToDatabase(nombre: String, documento: String, correo: String, estado: String, uid: String) {
         mDbRef = FirebaseDatabase.getInstance().getReference()
         mDbRef.child("AdminData").child(uid).setValue(
-            Admin(documento, nombre, correo, estado))
+            Admin(documento, nombre, correo, estado)
+        )
         Toast.makeText(
             this@CreateAdminActivity,
             "Cuenta creada exitosamente",

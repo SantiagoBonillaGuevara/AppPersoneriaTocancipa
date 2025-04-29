@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "645703850530",
+    "project_id": "apppersoneria",
+    "storage_bucket": "apppersoneria.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645703850530:android:68295cc178dda66c44887b",
+        "android_client_info": {
+          "package_name": "com.personeriatocancipa.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpFajW-f__CuI2LWnKLILmcwqH2dFI0Js"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

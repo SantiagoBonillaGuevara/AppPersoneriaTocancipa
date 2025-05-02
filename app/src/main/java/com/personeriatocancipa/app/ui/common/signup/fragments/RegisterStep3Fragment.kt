@@ -31,10 +31,22 @@ class RegisterStep3Fragment : Fragment() {
         val adapterIdentidad = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesIdentidad, android.R.layout.simple_dropdown_item_1line)
         val adapterOrientacion = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesOrientacion, android.R.layout.simple_dropdown_item_1line)
         val adapterNacionalidad = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesNacionalidad, android.R.layout.simple_dropdown_item_1line)
-        binding.spinnerSexo.setAdapter(adapterSexo)
-        binding.spinnerIdentidad.setAdapter(adapterIdentidad)
-        binding.spinnerOrientacion.setAdapter(adapterOrientacion)
-        binding.spinnerNacionalidad.setAdapter(adapterNacionalidad)
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.spinnerSexo.setText("", false)
+            binding.spinnerIdentidad.setText("", false)
+            binding.spinnerOrientacion.setText("", false)
+            binding.spinnerNacionalidad.setText("", false)
+
+            binding.spinnerSexo.setAdapter(adapterSexo)
+            binding.spinnerIdentidad.setAdapter(adapterIdentidad)
+            binding.spinnerOrientacion.setAdapter(adapterOrientacion)
+            binding.spinnerNacionalidad.setAdapter(adapterNacionalidad)
+
+            binding.spinnerSexo.setText(user.sexo, false)
+            binding.spinnerIdentidad.setText(user.identidad, false)
+            binding.spinnerOrientacion.setText(user.orientacion, false)
+            binding.spinnerNacionalidad.setText(user.nacionalidad, false)
+        }
     }
 
     private fun initComponents() {
@@ -58,11 +70,11 @@ class RegisterStep3Fragment : Fragment() {
             validParams()
         }
 
-        binding.btnCancelar.setOnClickListener{
+        binding.ivClose.setOnClickListener{
             activity?.finish()
         }
 
-        binding.ivBack.setOnClickListener{
+        binding.btnVolver.setOnClickListener{
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
     }

@@ -12,6 +12,8 @@ import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep2Binding
 import com.personeriatocancipa.app.ui.common.signup.RegisterActivity
 import com.personeriatocancipa.app.ui.common.signup.RegisterViewModel
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class RegisterStep2Fragment : Fragment() {
 
@@ -28,7 +30,14 @@ class RegisterStep2Fragment : Fragment() {
 
     private fun initUI() {
         val adapterSector = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesSector, android.R.layout.simple_dropdown_item_1line)
-        binding.spinnerSector.setAdapter(adapterSector)
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.spinnerSector.setText("", false)
+            binding.spinnerSector.setAdapter(adapterSector)
+            binding.spinnerSector.setText(user.sector, false)
+            binding.txtDireccion.setText(user.direccion)
+            binding.txtCorreo.setText(user.correo)
+            binding.txtTelefono.setText(user.telefono)
+        }
     }
 
     private fun initComponents() {
@@ -40,11 +49,11 @@ class RegisterStep2Fragment : Fragment() {
             validParams()
         }
 
-        binding.btnCancelar.setOnClickListener{
+        binding.ivClose.setOnClickListener{
             activity?.finish()
         }
 
-        binding.ivBack.setOnClickListener{
+        binding.btnVolver.setOnClickListener{
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
     }
@@ -58,8 +67,15 @@ class RegisterStep2Fragment : Fragment() {
             Toast.makeText(requireContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
-        navigateToNextStep()
+        (activity as? RegisterActivity)?.validateParam("correo", correo) { existe ->
+            if (existe) {
+                Toast.makeText(requireContext(), "El correo ya está registrado", Toast.LENGTH_SHORT).show()
+            } else {
+                navigateToNextStep()
+            }
+        }
     }
+
     private fun navigateToNextStep() {
         viewModel.user.value = viewModel.user.value?.copy(
             sector = binding.spinnerSector.text.toString(),

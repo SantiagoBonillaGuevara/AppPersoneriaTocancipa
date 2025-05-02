@@ -311,7 +311,7 @@ class CreateAdminActivity : AppCompatActivity() {
     {
         // Buscar en RealtimeDatabase si ya existe un usuario con el mismo documento
         mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
-        val query = mDbRef.orderByChild("cedula").equalTo(documento)
+        val query = mDbRef.orderByChild("documento").equalTo(documento)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
@@ -380,8 +380,8 @@ class CreateAdminActivity : AppCompatActivity() {
     }
 
     private fun consultarPorCedula() {
-        val cedula = txtConsultar.text.toString()
-        if (cedula.isEmpty()) {
+        val documento = txtConsultar.text.toString()
+        if (documento.isEmpty()) {
             Toast.makeText(
                 this@CreateAdminActivity,
                 "Ingrese cédula para consultar",
@@ -391,7 +391,7 @@ class CreateAdminActivity : AppCompatActivity() {
         }
         mDbRef = FirebaseDatabase.getInstance().getReference("AdminData")
 
-        val query = mDbRef.orderByChild("cedula").equalTo(cedula)
+        val query = mDbRef.orderByChild("documento").equalTo(documento)
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 println(snapshot)
@@ -401,7 +401,7 @@ class CreateAdminActivity : AppCompatActivity() {
                         println(it)
                         val nombre = it.child("nombreCompleto").value.toString()
                         println(nombre)
-                        val documento = it.child("cedula").value.toString()
+                        val documento = it.child("documento").value.toString()
                         val estado = it.child("estado").value.toString()
                         val correo = it.child("correo").value.toString()
 

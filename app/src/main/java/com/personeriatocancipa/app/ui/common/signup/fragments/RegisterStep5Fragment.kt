@@ -10,14 +10,16 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep5Binding
+import com.personeriatocancipa.app.ui.common.signup.RegisterActivity
 import com.personeriatocancipa.app.ui.common.signup.RegisterViewModel
 
 class RegisterStep5Fragment : Fragment() {
 
     private val viewModel: RegisterViewModel by activityViewModels()
-
     private var _binding: FragmentRegisterStep5Binding? = null
     private val binding get() = _binding!!
+
+    private lateinit var password:String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -31,16 +33,16 @@ class RegisterStep5Fragment : Fragment() {
         binding.btnSignup.setOnClickListener {
             validarRegistro()
         }
-        binding.btnCancelar.setOnClickListener {
+        binding.ivClose.setOnClickListener {
             activity?.finish()
         }
-        binding.ivBack.setOnClickListener{
+        binding.btnVolver.setOnClickListener{
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
     }
 
     private fun verificarCoincidencia():Boolean{
-        val password = binding.txtContrasena.text.toString()
+        password = binding.txtContrasena.text.toString()
         val confirm = binding.txtConfirmarContrasena.text.toString()
         when {
             password.isEmpty() || confirm.isEmpty() -> {
@@ -69,7 +71,21 @@ class RegisterStep5Fragment : Fragment() {
             Toast.makeText(requireContext(), "Debes aceptar la política de tratamiento de datos personales", Toast.LENGTH_SHORT).show()
             return
         }
-        Toast.makeText(requireContext(), "Bien, validaremos su perfil", Toast.LENGTH_SHORT).show()
+        registrar()
+    }
+
+    private fun registrar() {
+        viewModel.user.value = viewModel.user.value?.copy(
+            estado = "Activo"
+        )
+        (activity as? RegisterActivity)?.registerUser(password, viewModel.user.value!!) { result ->
+            result.onSuccess {
+                Toast.makeText(requireContext(), "Usuario creado con éxito", Toast.LENGTH_SHORT).show()
+                activity?.finish()
+            }.onFailure {
+                Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

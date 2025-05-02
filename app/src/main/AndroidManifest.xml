@@ -30,6 +30,9 @@
             android:name=".ui.common.signup.RegisterActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.user.modify.ModifyActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.common.RestorePasswordActivity"
             android:exported="false" />
         <activity

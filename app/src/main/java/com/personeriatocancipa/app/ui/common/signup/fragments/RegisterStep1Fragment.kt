@@ -31,7 +31,11 @@ class RegisterStep1Fragment : Fragment() {
 
     private fun initUI() {
         val adapterTipoDoc = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesTipoDocumento, android.R.layout.simple_dropdown_item_1line)
-        binding.spinnerTipoDocumento.setAdapter(adapterTipoDoc)
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.spinnerTipoDocumento.setText("", false)
+            binding.spinnerTipoDocumento.setAdapter(adapterTipoDoc)
+            binding.spinnerTipoDocumento.setText(user.tipoDocumento, false)
+        }
     }
 
     private fun initComponents(){
@@ -43,7 +47,7 @@ class RegisterStep1Fragment : Fragment() {
             validParams()
         }
 
-        binding.btnCancelar.setOnClickListener{
+        binding.ivClose.setOnClickListener{
             activity?.finish()
         }
 
@@ -77,7 +81,29 @@ class RegisterStep1Fragment : Fragment() {
             Toast.makeText(requireContext(), "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
             return
         }
-        navigateToNextStep()
+        if (!fechaNacimientoValida(fechaNacimiento)) {
+            Toast.makeText(requireContext(), "Fecha de nacimiento inválida", Toast.LENGTH_SHORT).show()
+            return
+        }
+        (activity as? RegisterActivity)?.validateParam("documento", documento) { existe ->
+            if (existe) {
+                Toast.makeText(requireContext(), "El documento ya está registrado", Toast.LENGTH_SHORT).show()
+            } else {
+                navigateToNextStep()
+            }
+        }
+    }
+
+    private fun fechaNacimientoValida(fechaNacimiento: String): Boolean {
+        return try {
+            val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val fecha = LocalDate.parse(fechaNacimiento, formato)
+            val hoy = LocalDate.now()
+            // Debe ser antes de hoy y no una fecha imposible (por ejemplo, no antes de 1900)
+            !fecha.isAfter(hoy) && fecha.isAfter(LocalDate.of(1900, 1, 1))
+        } catch (e: Exception) {
+            false // Si ocurre un error al parsear, la fecha es inválida
+        }
     }
 
     private fun navigateToNextStep() {

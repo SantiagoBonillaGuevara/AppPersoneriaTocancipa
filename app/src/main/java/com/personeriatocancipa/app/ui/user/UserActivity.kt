@@ -17,6 +17,7 @@ import com.personeriatocancipa.app.GetUserDatesActivity
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.ActivityUserBinding
 import com.personeriatocancipa.app.ui.common.LoginActivity
+import com.personeriatocancipa.app.ui.user.modify.ModifyActivity
 
 class UserActivity : AppCompatActivity() {
 
@@ -92,7 +93,8 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun navigateToModify(){
-        val intent = Intent(this@UserActivity, CreateUserActivity::class.java)
+//        val intent = Intent(this@UserActivity, CreateUserActivity::class.java)
+        val intent = Intent(this@UserActivity, ModifyActivity::class.java)
         intent.putExtra("tarea", "modificar")
         intent.putExtra("sujeto", "propio")
         startActivity(intent)

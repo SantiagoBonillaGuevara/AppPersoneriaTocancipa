@@ -11,6 +11,7 @@ import com.personeriatocancipa.app.CreateUserActivity
 import com.personeriatocancipa.app.ui.lawyer.LawyerActivity
 import com.personeriatocancipa.app.ui.user.UserActivity
 import com.personeriatocancipa.app.data.repository.FirebaseAuthRepository
+import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityLoginBinding
 import com.personeriatocancipa.app.domain.model.Role
 import com.personeriatocancipa.app.domain.usecase.LoginUseCase
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private val loginUseCase = LoginUseCase(FirebaseAuthRepository())
+    private val loginUseCase = LoginUseCase(FirebaseAuthRepository(), FirebaseUserRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,30 +35,27 @@ class LoginActivity : AppCompatActivity() {
             login()
         }
 
-        binding.btnSignUp.setOnClickListener(){
+        binding.txtSignup.setOnClickListener(){
             signup()
         }
 
-        binding.btnRecuperarPassword.setOnClickListener(){
+        binding.txtOlvidoContrasena.setOnClickListener(){
             restorePassword()
-        }
-
-        binding.btnTogglePassword.setOnClickListener {
-            togglePasswordVisibility()
         }
     }
 
     private fun signup() {
         val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
-        /*intent.putExtra("tarea","crear")
-        intent.putExtra("usuario","cliente")*/
         startActivity(intent)
     }
 
     private fun login() {
         val correo = binding.txtCorreo.text.toString()
-        val clave = binding.txtClave.text.toString()
-
+        val clave = binding.txtContrasena.text.toString()
+        if(correo.isBlank() || clave.isBlank()){
+            Toast.makeText(this@LoginActivity, "¡Ingrese un correo y una contraseña!", Toast.LENGTH_SHORT).show()
+            return
+        }
         lifecycleScope.launch {
             val result = loginUseCase.execute(correo, clave)
             result.onSuccess { role->
@@ -77,16 +75,5 @@ class LoginActivity : AppCompatActivity() {
     private fun restorePassword(){
         val intent = Intent(this@LoginActivity, RestorePasswordActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun togglePasswordVisibility(){
-        if (binding.txtClave.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
-            binding.txtClave.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-        } else {
-            binding.txtClave.inputType =
-                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-        }
-        binding.txtClave.setSelection(binding.txtClave.text.length) // Mantener cursor al final
     }
 }

@@ -31,11 +31,25 @@ class RegisterStep4Fragment : Fragment() {
         val adapterDiscapacidad = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesDiscapacidad, android.R.layout.simple_dropdown_item_1line)
         val adapterEstrato = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesEstrato, android.R.layout.simple_dropdown_item_1line)
         val adapterComunidad = ArrayAdapter.createFromResource(requireContext(), R.array.opcionesComunidad, android.R.layout.simple_dropdown_item_1line)
-        binding.spinnerEscolaridad.setAdapter(adapterEscolaridad)
-        binding.spinnerEtnico.setAdapter(adapterEtnico)
-        binding.spinnerDiscapacidad.setAdapter(adapterDiscapacidad)
-        binding.spinnerComunidad.setAdapter(adapterComunidad)
-        binding.spinnerEstrato.setAdapter(adapterEstrato)
+        viewModel.user.observe(viewLifecycleOwner) { user ->
+            binding.spinnerEscolaridad.setText("", false)
+            binding.spinnerEtnico.setText("", false)
+            binding.spinnerDiscapacidad.setText("", false)
+            binding.spinnerEstrato.setText("", false)
+            binding.spinnerComunidad.setText("", false)
+
+            binding.spinnerEscolaridad.setAdapter(adapterEscolaridad)
+            binding.spinnerEtnico.setAdapter(adapterEtnico)
+            binding.spinnerDiscapacidad.setAdapter(adapterDiscapacidad)
+            binding.spinnerEstrato.setAdapter(adapterEstrato)
+            binding.spinnerComunidad.setAdapter(adapterComunidad)
+
+            binding.spinnerEscolaridad.setText(user.escolaridad, false)
+            binding.spinnerEtnico.setText(user.grupoEtnico, false)
+            binding.spinnerDiscapacidad.setText(user.discapacidad, false)
+            binding.spinnerEstrato.setText(user.estrato, false)
+            binding.spinnerComunidad.setText(user.comunidad, false)
+        }
     }
 
     private fun initComponents() {
@@ -63,11 +77,11 @@ class RegisterStep4Fragment : Fragment() {
             validParams()
         }
 
-        binding.btnCancelar.setOnClickListener{
+        binding.ivClose.setOnClickListener{
             activity?.finish()
         }
 
-        binding.ivBack.setOnClickListener{
+        binding.btnVolver.setOnClickListener{
             activity?.onBackPressedDispatcher?.onBackPressed()
         }
     }

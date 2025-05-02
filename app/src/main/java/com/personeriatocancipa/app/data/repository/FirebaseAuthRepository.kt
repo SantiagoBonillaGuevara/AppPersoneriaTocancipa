@@ -1,15 +1,12 @@
 package com.personeriatocancipa.app.data.repository
 
 import com.personeriatocancipa.app.data.datasource.FirebaseAuthDataSource
-import com.personeriatocancipa.app.data.datasource.FirebaseUserDataSource
-import com.personeriatocancipa.app.domain.model.Role
 import com.personeriatocancipa.app.domain.repository.AuthRepository
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class FirebaseAuthRepository(
-    private val authDataSrc: FirebaseAuthDataSource = FirebaseAuthDataSource(),
-    private val userDataSrc: FirebaseUserDataSource = FirebaseUserDataSource()
+    private val authDataSrc: FirebaseAuthDataSource = FirebaseAuthDataSource()
 ): AuthRepository {
 
     override suspend fun login(email: String, password: String): Result<String> = suspendCoroutine { cont ->
@@ -25,14 +22,6 @@ class FirebaseAuthRepository(
             .addOnFailureListener{
                 cont.resume(Result.failure(it))
             }
-    }
-
-    override suspend fun getRole(userId: String): Result<Role>{
-        return userDataSrc.getUserRole(userId)
-    }
-
-    override suspend fun isEmailRegistered(email: String): Boolean{
-        return userDataSrc.isEmailRegistered(email)
     }
 
     override suspend fun sendPasswordReset(email: String): Result<Unit> = suspendCoroutine { cont ->

@@ -7,99 +7,153 @@
     style="@style/CustomCardView"
     tools:context=".ui.common.signup.fragments.RegisterStep2Fragment">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
-            android:padding="24dp"
-            app:tint="@color/icon" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:hint="Ingrese su direccion"
-            style="@style/InputFieldOutlined"
-            app:endIconDrawable="@drawable/ic_home">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtDireccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/InputFieldOutlined"
-            android:hint="Sector"
-            app:endIconMode="dropdown_menu"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerSector"
-                android:paddingStart="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:importantForAccessibility="no"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:hint="Ingrese su correo"
-            style="@style/InputFieldOutlined"
-            app:endIconDrawable="@drawable/ic_email">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtCorreo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:hint="Ingrese su telefono"
-            style="@style/InputFieldOutlined"
-            app:endIconDrawable="@drawable/ic_phone">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/txtTelefono"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            android:padding="24dp">
 
-            <Button
-                android:id="@+id/btnCancelar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Cancelar"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/button" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:hint="Ingrese su direccion"
+                style="@style/InputFieldOutlined"
+                app:endIconDrawable="@drawable/ic_home">
 
-            <Button
-                android:id="@+id/btnSiguiente"
-                android:layout_width="wrap_content"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtDireccion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/InputFieldOutlined"
+                android:hint="Sector"
+                app:endIconMode="dropdown_menu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerSector"
+                    android:paddingStart="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:importantForAccessibility="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:hint="Ingrese su correo"
+                style="@style/InputFieldOutlined"
+                app:endIconDrawable="@drawable/ic_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:hint="Ingrese su telefono"
+                style="@style/InputFieldOutlined"
+                app:endIconDrawable="@drawable/ic_phone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Siguiente"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/button" />
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnVolver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Volver"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/gray" />
+
+                <Button
+                    android:id="@+id/btnSiguiente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Siguiente"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/button" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="end|top"
+            app:tint="@color/gray" />
+        <LinearLayout
+            android:id="@+id/stepIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="24dp"
+            android:layout_marginEnd="12dp">
+
+            <TextView
+                android:id="@+id/step1"
+                style="@style/StepCircleText"
+                android:text="1"
+                android:background="@drawable/step_circle_active"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/step2"
+                style="@style/StepCircleText"
+                android:text="2"
+                android:background="@drawable/step_circle_active"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/step3"
+                style="@style/StepCircleText"
+                android:text="3"
+                android:background="@drawable/step_circle_inactive"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/step4"
+                style="@style/StepCircleText"
+                android:text="4"
+                android:background="@drawable/step_circle_inactive"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/step5"
+                style="@style/StepCircleText"
+                android:text="5"
+                android:background="@drawable/step_circle_inactive" />
+        </LinearLayout>
+    </FrameLayout>
+
 
 </androidx.cardview.widget.CardView>

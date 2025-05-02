@@ -7,127 +7,182 @@
     style="@style/CustomCardView"
     tools:context=".ui.common.signup.fragments.RegisterStep4Fragment">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_back"
-            android:padding="24dp"
-            app:tint="@color/icon" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/InputFieldOutlined"
-            android:hint="Escolaridad"
-            app:endIconMode="dropdown_menu"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerEscolaridad"
-                android:paddingStart="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:importantForAccessibility="no"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/InputFieldOutlined"
-            android:hint="Grupo etnico"
-            app:endIconMode="dropdown_menu"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerEtnico"
-                android:paddingStart="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:importantForAccessibility="no"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/InputFieldOutlined"
-            android:hint="Discapacidad"
-            app:endIconMode="dropdown_menu"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerDiscapacidad"
-                android:paddingStart="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:importantForAccessibility="no"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/InputFieldOutlined"
-            android:hint="Estrato"
-            app:endIconMode="dropdown_menu"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerEstrato"
-                android:paddingStart="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:importantForAccessibility="no"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/InputFieldOutlined"
-            android:hint="Comunidad"
-            app:endIconMode="dropdown_menu"
-            >
-
-            <AutoCompleteTextView
-                android:id="@+id/spinnerComunidad"
-                android:paddingStart="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="none"
-                android:focusable="false"
-                android:clickable="true"
-                android:importantForAccessibility="no"/>
-        </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:orientation="vertical"
+            android:layout_marginTop="24dp"
+            android:padding="24dp">
 
-            <Button
-                android:id="@+id/btnCancelar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="Cancelar"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/button" />
 
-            <Button
-                android:id="@+id/btnSiguiente"
-                android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/InputFieldOutlined"
+                android:hint="Escolaridad"
+                app:endIconMode="dropdown_menu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerEscolaridad"
+                    android:paddingStart="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:importantForAccessibility="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/InputFieldOutlined"
+                android:hint="Grupo etnico"
+                app:endIconMode="dropdown_menu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerEtnico"
+                    android:paddingStart="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:importantForAccessibility="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/InputFieldOutlined"
+                android:hint="Discapacidad"
+                app:endIconMode="dropdown_menu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerDiscapacidad"
+                    android:paddingStart="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:importantForAccessibility="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/InputFieldOutlined"
+                android:hint="Estrato"
+                app:endIconMode="dropdown_menu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerEstrato"
+                    android:paddingStart="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:importantForAccessibility="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/InputFieldOutlined"
+                android:hint="Comunidad"
+                app:endIconMode="dropdown_menu"
+                >
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinnerComunidad"
+                    android:paddingStart="12dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:importantForAccessibility="no"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Siguiente"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/button" />
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnVolver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Volver"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/gray" />
+
+                <Button
+                    android:id="@+id/btnSiguiente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Siguiente"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/button" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_close"
+            android:layout_gravity="end|top"
+            app:tint="@color/gray" />
+        <LinearLayout
+            android:id="@+id/stepIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="24dp"
+            android:layout_marginEnd="12dp">
+
+            <TextView
+                android:id="@+id/step1"
+                style="@style/StepCircleText"
+                android:text="1"
+                android:background="@drawable/step_circle_active"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/step2"
+                style="@style/StepCircleText"
+                android:text="2"
+                android:background="@drawable/step_circle_active"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/step3"
+                style="@style/StepCircleText"
+                android:text="3"
+                android:background="@drawable/step_circle_active"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:id="@+id/step4"
+                style="@style/StepCircleText"
+                android:text="4"
+                android:background="@drawable/step_circle_active"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/step5"
+                style="@style/StepCircleText"
+                android:text="5"
+                android:background="@drawable/step_circle_inactive" />
+        </LinearLayout>
+    </FrameLayout>
+
 
 </androidx.cardview.widget.CardView>

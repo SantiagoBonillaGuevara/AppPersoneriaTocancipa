@@ -2,33 +2,27 @@ package com.personeriatocancipa.app.ui.user
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import androidx.lifecycle.lifecycleScope
 import com.personeriatocancipa.app.CreateDateActivity
-import com.personeriatocancipa.app.CreateUserActivity
 import com.personeriatocancipa.app.GetUserDatesActivity
-import com.personeriatocancipa.app.R
+import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityUserBinding
+import com.personeriatocancipa.app.domain.model.User
+import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.ui.common.LoginActivity
-import com.personeriatocancipa.app.ui.user.modify.ModifyActivity
+import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
+import kotlinx.coroutines.launch
 
 class UserActivity : AppCompatActivity() {
 
-    private lateinit var mAuth: FirebaseAuth
+    private val getUserUseCase: GetUserUseCase = GetUserUseCase(FirebaseUserRepository())
     private lateinit var binding: ActivityUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mAuth = FirebaseAuth.getInstance()
         initUI()
         initComponents()
     }
@@ -38,46 +32,36 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun initComponents(){
-        binding.btnAgendarCita.setOnClickListener{
+        binding.flDate.setOnClickListener{
             navigateToCreateDate()
         }
 
-        binding.btnVerCitas.setOnClickListener{
+        binding.flSearch.setOnClickListener{
             navigateToGetUserDates()
         }
 
-        binding.btnModificar.setOnClickListener{
+        binding.flEdit.setOnClickListener{
             navigateToModify()
         }
 
-        binding.btnSalir.setOnClickListener{
+        binding.flChat.setOnClickListener{
+            navigateToPQRS()
+        }
+
+        binding.flExit.setOnClickListener{
             navigateToLogin()
         }
     }
 
     private fun cargarNombre() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val databaseRef = FirebaseDatabase.getInstance().getReference("userData").child(userId)
-        val userNombreRef = databaseRef.child("nombreCompleto")
-
-        userNombreRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // Aquí obtienes el valor del rol
-                val userNombre = snapshot.getValue(String::class.java)
-                userNombre?.let {
-                    cargarPrimerNombre(it)
+        lifecycleScope.launch {
+            val result = getUserUseCase.execute("userData","")
+            result.onSuccess {
+                if (it is User) {
+                    binding.tvName.text = it.nombreCompleto
                 }
             }
-            override fun onCancelled(error: DatabaseError) {
-                // Maneja cualquier error de lectura de la base de datos
-                Log.w("FirebaseDatabase", "Error al obtener el nombre del usuario.", error.toException())
-            }
-        })
-    }
-
-    private fun cargarPrimerNombre(nombreCompleto: String) {
-        val primerNombre = nombreCompleto.split(" ")[0]
-        binding.txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
+        }
     }
 
     private fun navigateToCreateDate(){
@@ -93,10 +77,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun navigateToModify(){
-//        val intent = Intent(this@UserActivity, CreateUserActivity::class.java)
-        val intent = Intent(this@UserActivity, ModifyActivity::class.java)
-        intent.putExtra("tarea", "modificar")
-        intent.putExtra("sujeto", "propio")
+        val intent = Intent(this@UserActivity, ModifyUserActivity::class.java)
         startActivity(intent)
     }
 
@@ -104,5 +85,9 @@ class UserActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         finish()
         startActivity(intent)
+    }
+
+    private fun navigateToPQRS(){
+        //NAVEGA DESDE ACA AL SISTEMA DE PQRS Y CHATBOT
     }
 }

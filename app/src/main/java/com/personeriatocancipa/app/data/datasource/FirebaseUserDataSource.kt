@@ -84,7 +84,10 @@ class FirebaseUserDataSource {
     }
 
     suspend fun getUserById(node: String, uid: String): Result<RegistrableUser> = suspendCoroutine { cont ->
-        db.getReference(node).child(uid).get().addOnSuccessListener { snapshot ->
+        val id:String
+        if (uid.isNullOrEmpty()) id = FirebaseAuth.getInstance().currentUser?.uid!!
+        else id = uid
+        db.getReference(node).child(id).get().addOnSuccessListener { snapshot ->
             val user = when (node) {
                 "userData" -> snapshot.getValue(User::class.java)
                 "AdminData" -> snapshot.getValue(Admin::class.java)

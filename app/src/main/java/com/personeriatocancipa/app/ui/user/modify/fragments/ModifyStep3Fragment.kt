@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep3Binding
-import com.personeriatocancipa.app.ui.user.modify.ModifyActivity
+import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 import com.personeriatocancipa.app.ui.user.modify.ModifyViewModel
 
 class ModifyStep3Fragment: Fragment() {
@@ -89,6 +89,6 @@ class ModifyStep3Fragment: Fragment() {
             orientacion = binding.spinnerOrientacion.text.toString(),
             nacionalidad = binding.spinnerNacionalidad.text.toString()
         )
-        (activity as? ModifyActivity)?.navigateToNextStep(ModifyStep4Fragment())
+        (activity as? ModifyUserActivity)?.navigateToNextStep(ModifyStep4Fragment())
     }
 }

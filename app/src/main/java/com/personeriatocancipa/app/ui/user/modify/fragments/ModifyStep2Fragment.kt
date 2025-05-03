@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep2Binding
-import com.personeriatocancipa.app.ui.user.modify.ModifyActivity
+import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 import com.personeriatocancipa.app.ui.user.modify.ModifyViewModel
 
 class ModifyStep2Fragment: Fragment() {
@@ -77,6 +77,6 @@ class ModifyStep2Fragment: Fragment() {
             correo = binding.txtCorreo.text.toString(),
             telefono = binding.txtTelefono.text.toString(),
         )
-        (activity as? ModifyActivity)?.navigateToNextStep(ModifyStep3Fragment())
+        (activity as? ModifyUserActivity)?.navigateToNextStep(ModifyStep3Fragment())
     }
 }

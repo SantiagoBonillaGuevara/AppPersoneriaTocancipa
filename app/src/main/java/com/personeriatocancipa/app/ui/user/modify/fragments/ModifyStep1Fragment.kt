@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep1Binding
-import com.personeriatocancipa.app.ui.user.modify.ModifyActivity
+import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 import com.personeriatocancipa.app.ui.user.modify.ModifyViewModel
 import java.time.LocalDate
 import java.time.Period
@@ -26,7 +26,8 @@ class ModifyStep1Fragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadCurrentUser()
+        val usuario = arguments?.getString("usuario")
+        viewModel.loadCurrentUser(usuario)
         initUI()
         initComponents()
     }
@@ -105,7 +106,7 @@ class ModifyStep1Fragment: Fragment() {
             navigateToNextStep()
             return
         }
-        (activity as? ModifyActivity)?.validateParam("documento", documento) { existe ->
+        (activity as? ModifyUserActivity)?.validateParam("documento", documento) { existe ->
             if (existe) {
                 Toast.makeText(requireContext(), "El documento ya está registrado", Toast.LENGTH_SHORT).show()
             } else {
@@ -134,7 +135,7 @@ class ModifyStep1Fragment: Fragment() {
             edad = calcularEdad(binding.txtFechaNacimiento.text.toString()),
             grupoEtario = calcularGrupoEtario(calcularEdad(binding.txtFechaNacimiento.text.toString()))
         )
-        (activity as? ModifyActivity)?.navigateToNextStep(ModifyStep2Fragment())
+        (activity as? ModifyUserActivity)?.navigateToNextStep(ModifyStep2Fragment())
     }
 
     fun calcularEdad(fechaNacimiento: String): Int {

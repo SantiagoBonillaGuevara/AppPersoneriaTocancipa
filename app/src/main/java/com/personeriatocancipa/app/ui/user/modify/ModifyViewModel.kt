@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app.ui.user.modify
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +14,14 @@ class ModifyViewModel( private val getUserUseCase: GetUserUseCase = GetUserUseCa
     var _userLoaded = false
     var user = MutableLiveData(User())
 
-    fun loadCurrentUser() {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+    fun loadCurrentUser(uid: String? = "") {
+        val userId:String
+        if (uid.isNullOrEmpty()) userId= FirebaseAuth.getInstance().currentUser?.uid ?: return
+        else userId = uid
         if (_userLoaded) return
         _userLoaded = true
         viewModelScope.launch {
-            val result = getUserUseCase.execute("userData",uid)
+            val result = getUserUseCase.execute("userData",userId)
             result.onSuccess {
                 if (it is User) {
                     user.value = it

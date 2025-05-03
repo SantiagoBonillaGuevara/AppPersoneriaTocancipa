@@ -2,32 +2,26 @@ package com.personeriatocancipa.app.ui.lawyer
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import androidx.lifecycle.lifecycleScope
 import com.personeriatocancipa.app.CreateLawyerActivity
-import com.personeriatocancipa.app.CreateUserActivity
 import com.personeriatocancipa.app.GetLawyerDatesActivity
-import com.personeriatocancipa.app.GetUserDatesActivity
-import com.personeriatocancipa.app.R
+import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityLawyerBinding
+import com.personeriatocancipa.app.domain.model.Lawyer
+import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.ui.common.LoginActivity
+import kotlinx.coroutines.launch
 
 class LawyerActivity : AppCompatActivity() {
-    private lateinit var mAuth: FirebaseAuth
+
+    private val getUserUseCase: GetUserUseCase = GetUserUseCase(FirebaseUserRepository())
     private lateinit var binding: ActivityLawyerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLawyerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mAuth = FirebaseAuth.getInstance()
         initUI()
         initComponents()
     }
@@ -37,43 +31,30 @@ class LawyerActivity : AppCompatActivity() {
     }
 
     private fun initComponents(){
-        binding.btnConsultarCitas.setOnClickListener{
+        binding.flSearch.setOnClickListener{
             navigateToGetLawyerDates()
         }
 
-        binding.btnModificar.setOnClickListener{
+        binding.flEdit.setOnClickListener{
             navigateToModify()
         }
 
-        binding.btnSalir.setOnClickListener{
+        binding.flExit.setOnClickListener{
             navigateToLogin()
         }
     }
 
     private fun cargarNombre() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val databaseRef = FirebaseDatabase.getInstance().getReference("abogadoData").child(userId)
-        val userNombreRef = databaseRef.child("nombreCompleto")
-
-        userNombreRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // Aquí obtienes el valor del rol
-                val userNombre = snapshot.getValue(String::class.java)
-                userNombre?.let {
-                    cargarPrimerNombre(it)
+        lifecycleScope.launch {
+            val result = getUserUseCase.execute("abogadoData","")
+            result.onSuccess {
+                if (it is Lawyer) {
+                    binding.tvName.text = it.nombreCompleto
                 }
             }
-            override fun onCancelled(error: DatabaseError) {
-                // Maneja cualquier error de lectura de la base de datos
-                Log.w("FirebaseDatabase", "Error al obtener el nombre del usuario.", error.toException())
-            }
-        })
+        }
     }
 
-    private fun cargarPrimerNombre(nombreCompleto: String) {
-        val primerNombre = nombreCompleto.split(" ")[0]
-        binding.txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
-    }
 
     private fun navigateToGetLawyerDates(){
         val intent = Intent(this@LawyerActivity, GetLawyerDatesActivity::class.java)

@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep4Binding
-import com.personeriatocancipa.app.ui.user.modify.ModifyActivity
+import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 import com.personeriatocancipa.app.ui.user.modify.ModifyViewModel
 
 class ModifyStep4Fragment: Fragment() {
@@ -102,7 +102,7 @@ class ModifyStep4Fragment: Fragment() {
             estrato = binding.spinnerEstrato.text.toString(),
             comunidad = binding.spinnerComunidad.text.toString(),
         )
-        (activity as? ModifyActivity)?.modifyUser(viewModel.user.value!!) { result ->
+        (activity as? ModifyUserActivity)?.modifyUser(viewModel.user.value!!) { result ->
             result.onSuccess {
                 Toast.makeText(requireContext(), "Datos actualizados con éxito", Toast.LENGTH_SHORT).show()
                 activity?.finish()

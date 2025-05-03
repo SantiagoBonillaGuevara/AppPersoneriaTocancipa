@@ -2,76 +2,74 @@ package com.personeriatocancipa.app.ui.admin
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import androidx.lifecycle.lifecycleScope
 import com.personeriatocancipa.app.ManagementActivity
+import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityAdminBinding
+import com.personeriatocancipa.app.domain.model.Admin
+import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.ui.common.LoginActivity
+import kotlinx.coroutines.launch
 
 class AdminActivity : AppCompatActivity() {
 
-    private lateinit var mAuth: FirebaseAuth
     private lateinit var binding: ActivityAdminBinding
+    private val getUserUseCase: GetUserUseCase = GetUserUseCase(FirebaseUserRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        mAuth = FirebaseAuth.getInstance()
-
         cargarNombre()
 
-        binding.btnGestionarUsuarios.setOnClickListener{
-            val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
-            intent.putExtra("tipo", "usuario")
-            startActivity(intent)
+        binding.flUser.setOnClickListener{
+            navigateToManageUsers()
         }
 
-        binding.btnGestionarCitas.setOnClickListener{
-            val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
-            intent.putExtra("tipo", "cita")
-            startActivity(intent)
+        binding.flDate.setOnClickListener{
+            navigateToManageDates()
         }
 
-        binding.btnSalir.setOnClickListener{
+        binding.flExit.setOnClickListener{
             navigateToLogin()
         }
     }
 
     private fun cargarNombre() {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val databaseRef = FirebaseDatabase.getInstance().getReference("AdminData").child(userId)
-        val userNombreRef = databaseRef.child("nombreCompleto")
-
-        userNombreRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // Aquí obtienes el valor del rol
-                val userNombre = snapshot.getValue(String::class.java)
-                userNombre?.let {
-                    cargarPrimerNombre(it)
+        lifecycleScope.launch {
+            val result = getUserUseCase.execute("AdminData","")
+            result.onSuccess {
+                if (it is Admin) {
+                    binding.tvName.text = it.nombreCompleto
                 }
             }
-            override fun onCancelled(error: DatabaseError) {
-                // Maneja cualquier error de lectura de la base de datos
-                Log.w("FirebaseDatabase", "Error al obtener el nombre del usuario.", error.toException())
-            }
-        })
-    }
-
-    private fun cargarPrimerNombre(nombreCompleto: String) {
-        val primerNombre = nombreCompleto.split(" ")[0]
-        binding.txtUsuario.text = "Bienvenido(a), señor(a) $primerNombre"
+        }
     }
 
     private fun navigateToLogin(){
         val intent = Intent(this, LoginActivity::class.java)
         finish()
         startActivity(intent)
+    }
+
+    private fun navigateToManageUsers(){
+        val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
+        intent.putExtra("tipo", "usuario")
+        startActivity(intent)
+    }
+
+    private fun navigateToManageLawyers(){
+
+    }
+
+    private fun navigateToManageDates(){
+        val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
+        intent.putExtra("tipo", "cita")
+        startActivity(intent)
+    }
+
+    private fun navigateToModify(){
+
     }
 }

@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app.ui.user.modify
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -49,5 +50,10 @@ class ModifyUserActivity : AppCompatActivity() {
             val result = modifyUseCase.execute(user, "userData")
             onResult(result)
         }
+    }
+
+    fun finishWithSuccess() {
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 }

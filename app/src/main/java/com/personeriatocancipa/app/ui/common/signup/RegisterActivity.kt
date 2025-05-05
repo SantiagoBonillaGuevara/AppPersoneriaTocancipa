@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app.ui.common.signup
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -45,5 +46,10 @@ class RegisterActivity : AppCompatActivity() {
             val result = registerUseCase.execute(password, user, "userData")
             onResult(result)
         }
+    }
+
+    fun finishWithSuccess() {
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 }

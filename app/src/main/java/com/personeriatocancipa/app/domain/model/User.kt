@@ -20,7 +20,7 @@ data class User (
     val discapacidad: String? = null, // Auditiva, física, intelectual, visual, sordoceguera, psicosocial, múltiple, ninguna
     val estrato: String? = null, // 1, 2, 3,..., No informa
     val comunidad: String? = null, // Madre Cabeza de Familia, Víctima del conflicto armado, Discapacidad, Adulto Mayor, LGBTIQ+, Ninguna, Otros
-    override val estado: String? = null, // Activo, inactivo
+    override var estado: String? = null, // Activo, inactivo
     override val uid: String? = null // Llave primaria
 ) : RegistrableUser{
     override fun withUid(newUid: String): RegistrableUser = this.copy(uid = newUid)

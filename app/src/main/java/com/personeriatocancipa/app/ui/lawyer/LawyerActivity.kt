@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.personeriatocancipa.app.CreateLawyerActivity
 import com.personeriatocancipa.app.GetLawyerDatesActivity
 import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityLawyerBinding
@@ -62,10 +61,8 @@ class LawyerActivity : AppCompatActivity() {
     }
 
     private fun navigateToModify(){
-        val intent = Intent(this@LawyerActivity, CreateLawyerActivity::class.java)
-        intent.putExtra("tarea", "modificar")
-        intent.putExtra("sujeto", "propio")
-        startActivity(intent)
+        /*val intent = Intent(this@LawyerActivity, CreateLawyerActivity::class.java)
+        startActivity(intent)*/
     }
     private fun navigateToLogin(){
         val intent = Intent(this, LoginActivity::class.java)

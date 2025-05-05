@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewContainerUser"
+    android:background="@drawable/border_card"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    android:padding="16dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/gray"/>
+        <!-- Nombre del abogado -->
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Santiago Bonilla"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textAllCaps="true"
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivEdit"/>
+        <!-- Documento -->
+        <TextView
+            android:id="@+id/tvDocumento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Documento: 1013257961"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/tvNombre"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Cargo -->
+        <TextView
+            android:id="@+id/tvCargo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Cargo: Profesional Universitario"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/tvDocumento"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Correo -->
+        <TextView
+            android:id="@+id/tvCorreo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Correo: wilsonbogu@unisabana.edu.co"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@id/tvCargo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Estado -->
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchEstado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activo"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:thumbTint="@color/switch_thumb_color"
+            app:trackTint="@color/switch_track_color"/>
+
+        <!-- Separador -->
+        <View
+            android:id="@+id/viewSeparator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvCorreo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvTemas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Especializado en:"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/viewSeparator"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/switchEstado"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvTemas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:paddingTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTemas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"/>
+
+        <!-- Separador -->
+        <View
+            android:id="@+id/viewSeparator2"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/gray"
+            android:layout_marginVertical="4dp"
+            app:layout_constraintTop_toBottomOf="@id/rvTemas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvHorarios"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Horario:"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/viewSeparator2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/switchEstado"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvHorarios"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            android:paddingTop="4dp"
+            app:layout_constraintTop_toBottomOf="@id/tvHorarios"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/switchEstado"
+            android:orientation="vertical"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

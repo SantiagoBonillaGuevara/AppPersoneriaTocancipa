@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.personeriatocancipa.app.databinding.FragmentRegisterStep5Binding
 import com.personeriatocancipa.app.ui.common.signup.RegisterActivity
 import com.personeriatocancipa.app.ui.common.signup.RegisterViewModel
+import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 
 class RegisterStep5Fragment : Fragment() {
 
@@ -81,7 +82,7 @@ class RegisterStep5Fragment : Fragment() {
         (activity as? RegisterActivity)?.registerUser(password, viewModel.user.value!!) { result ->
             result.onSuccess {
                 Toast.makeText(requireContext(), "Usuario creado con éxito", Toast.LENGTH_SHORT).show()
-                activity?.finish()
+                (activity as? RegisterActivity)?.finishWithSuccess()
             }.onFailure {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }

@@ -105,7 +105,7 @@ class ModifyStep4Fragment: Fragment() {
         (activity as? ModifyUserActivity)?.modifyUser(viewModel.user.value!!) { result ->
             result.onSuccess {
                 Toast.makeText(requireContext(), "Datos actualizados con éxito", Toast.LENGTH_SHORT).show()
-                activity?.finish()
+                (activity as? ModifyUserActivity)?.finishWithSuccess()
             }.onFailure {
                 Toast.makeText(requireContext(), "Error: ${it.message}", Toast.LENGTH_SHORT).show()
             }

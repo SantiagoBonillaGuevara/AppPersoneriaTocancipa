@@ -27,7 +27,19 @@
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
         <activity
+            android:name=".ui.admin.ModifyAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.ManagementLawyers.modifyLawyer.ModifyLawyerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.ManagementLawyers.registerLawyer.RegisterLawyerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.ManagementUsers.ManageUsersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.ManagementLawyers.ManageLawyersActivity"
             android:exported="false" />
         <activity
             android:name=".ui.common.signup.RegisterActivity"
@@ -37,12 +49,6 @@
             android:exported="false" />
         <activity
             android:name=".ui.common.RestorePasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CreateLawyerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CreateAdminActivity"
             android:exported="false" />
         <activity
             android:name=".GetLawyerDatesActivity"

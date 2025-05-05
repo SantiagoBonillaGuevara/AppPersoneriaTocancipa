@@ -71,7 +71,7 @@ class ManagementActivity : AppCompatActivity() {
 
         btnCrear.setOnClickListener{
             if(tipo == "usuario"){
-                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
+                /*if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
@@ -80,7 +80,7 @@ class ManagementActivity : AppCompatActivity() {
                     intent.putExtra("usuario", "admin")
                 } else {
                     Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }else{
                 intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
             }
@@ -90,7 +90,7 @@ class ManagementActivity : AppCompatActivity() {
 
         btnConsultar.setOnClickListener{
             if(tipo == "usuario"){
-                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
+                /*if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
@@ -99,7 +99,7 @@ class ManagementActivity : AppCompatActivity() {
                     intent.putExtra("usuario", "admin")
                 } else {
                     Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }else{
                 intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
             }
@@ -117,7 +117,7 @@ class ManagementActivity : AppCompatActivity() {
 
         btnEliminar.setOnClickListener{
             if(tipo == "usuario"){
-                if (spTipoCuenta.selectedItem.toString() == "Administrador"){
+                /*if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                     intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
                 }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                     intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
@@ -126,7 +126,7 @@ class ManagementActivity : AppCompatActivity() {
                     intent.putExtra("usuario", "admin")
                 } else {
                     Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
-                }
+                }*/
             }else{
                 intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
             }
@@ -143,7 +143,7 @@ class ManagementActivity : AppCompatActivity() {
 
     private fun modificar(){
         if(tipo == "usuario"){
-            if (spTipoCuenta.selectedItem.toString() == "Administrador"){
+            /*if (spTipoCuenta.selectedItem.toString() == "Administrador"){
                 intent = Intent(this@ManagementActivity, CreateAdminActivity::class.java)
             }else if (spTipoCuenta.selectedItem.toString() == "Abogado"){
                 intent = Intent(this@ManagementActivity, CreateLawyerActivity::class.java)
@@ -152,7 +152,7 @@ class ManagementActivity : AppCompatActivity() {
                 intent.putExtra("usuario", "admin")
             } else {
                 Toast.makeText(this, "Seleccione un tipo de cuenta", Toast.LENGTH_SHORT).show()
-            }
+            }*/
         } else{
             intent = Intent(this@ManagementActivity, CreateDateActivity::class.java)
         }

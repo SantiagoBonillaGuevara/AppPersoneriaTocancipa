@@ -29,4 +29,8 @@ class FirebaseUserRepository(
         return userDataSrc.getUserById(node, uid)
     }
 
+    override suspend fun getUsers(node: String): Result<List<RegistrableUser>> {
+        return userDataSrc.getUsers(node)
+    }
+
 }

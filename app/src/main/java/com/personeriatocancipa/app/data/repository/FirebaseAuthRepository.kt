@@ -13,11 +13,8 @@ class FirebaseAuthRepository(
         authDataSrc.login(email, password)
             .addOnSuccessListener {
                 val uid = it.user?.uid
-                if (uid != null) {
-                    cont.resume(Result.success(uid))
-                } else {
-                    cont.resume(Result.failure(Exception("UID not found")))
-                }
+                if (uid != null) cont.resume(Result.success(uid))
+                else cont.resume(Result.failure(Exception("UID not found")))
             }
             .addOnFailureListener{
                 cont.resume(Result.failure(it))

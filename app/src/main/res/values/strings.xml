@@ -259,7 +259,7 @@
         <item>Raizal</item>
         <item>Palenquero</item>
         <item>Gitano</item>
-        <item>No pertenece a ninguno</item>
+        <item>Ninguno</item>
     </string-array>
     <string-array name="opcionesDiscapacidad">
         <item>Auditiva</item>

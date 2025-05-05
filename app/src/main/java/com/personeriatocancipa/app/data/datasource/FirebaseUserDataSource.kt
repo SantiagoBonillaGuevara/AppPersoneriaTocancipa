@@ -4,6 +4,8 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.personeriatocancipa.app.domain.model.Admin
+import com.personeriatocancipa.app.domain.model.Horario
+import com.personeriatocancipa.app.domain.model.HorarioDia
 import com.personeriatocancipa.app.domain.model.Lawyer
 import com.personeriatocancipa.app.domain.model.RegistrableUser
 import com.personeriatocancipa.app.domain.model.Role
@@ -96,6 +98,35 @@ class FirebaseUserDataSource {
             }
             if (user is RegistrableUser) cont.resume(Result.success(user))
             else cont.resume(Result.failure(Exception("No se pudo mapear el usuario desde $node")))
+        }.addOnFailureListener {
+            cont.resume(Result.failure(it))
+        }
+    }
+
+    suspend fun getUsers(node: String): Result<List<RegistrableUser>> = suspendCoroutine { cont ->
+        db.getReference(node).get().addOnSuccessListener { snapshot ->
+            val users = snapshot.children.mapNotNull {
+                when (node) {
+                    "userData" -> it.getValue(User::class.java)
+                    "AdminData" -> it.getValue(Admin::class.java)
+                    "abogadoData" -> {
+                        val lawyer = it.getValue(Lawyer::class.java)
+                        val horarioSnapshot = it.child("horario")
+
+                        val horario = Horario(
+                            Lunes = horarioSnapshot.child("lunes").getValue(HorarioDia::class.java),
+                            Martes = horarioSnapshot.child("martes").getValue(HorarioDia::class.java),
+                            Miércoles = horarioSnapshot.child("miércoles").getValue(HorarioDia::class.java),
+                            Jueves = horarioSnapshot.child("jueves").getValue(HorarioDia::class.java),
+                            Viernes = horarioSnapshot.child("viernes").getValue(HorarioDia::class.java)
+                        )
+
+                        lawyer?.copy(horario = horario)
+                    }
+                    else -> null
+                }
+            }
+            cont.resume(Result.success(users))
         }.addOnFailureListener {
             cont.resume(Result.failure(it))
         }

@@ -9,6 +9,8 @@ import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityAdminBinding
 import com.personeriatocancipa.app.domain.model.Admin
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
+import com.personeriatocancipa.app.ui.admin.ManagementLawyers.ManageLawyersActivity
+import com.personeriatocancipa.app.ui.admin.ManagementUsers.ManageUsersActivity
 import com.personeriatocancipa.app.ui.common.LoginActivity
 import kotlinx.coroutines.launch
 
@@ -25,6 +27,10 @@ class AdminActivity : AppCompatActivity() {
 
         binding.flUser.setOnClickListener{
             navigateToManageUsers()
+        }
+
+        binding.flLawyer.setOnClickListener{
+            navigateToManageLawyers()
         }
 
         binding.flDate.setOnClickListener{
@@ -54,13 +60,13 @@ class AdminActivity : AppCompatActivity() {
     }
 
     private fun navigateToManageUsers(){
-        val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
-        intent.putExtra("tipo", "usuario")
+        val intent = Intent(this@AdminActivity, ManageUsersActivity::class.java)
         startActivity(intent)
     }
 
     private fun navigateToManageLawyers(){
-
+        val intent = Intent(this@AdminActivity, ManageLawyersActivity::class.java)
+        startActivity(intent)
     }
 
     private fun navigateToManageDates(){

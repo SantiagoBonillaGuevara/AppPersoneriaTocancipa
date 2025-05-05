@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.personeriatocancipa.app.ui.admin.AdminActivity
-import com.personeriatocancipa.app.CreateUserActivity
 import com.personeriatocancipa.app.ui.lawyer.LawyerActivity
 import com.personeriatocancipa.app.ui.user.UserActivity
 import com.personeriatocancipa.app.data.repository.FirebaseAuthRepository

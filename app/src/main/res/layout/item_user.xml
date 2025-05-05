@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    android:padding="20dp"
+    android:id="@+id/viewContainerUser"
+    android:background="@drawable/border_card"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/gray"/>
+
+        <LinearLayout
+            android:id="@+id/llUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivEdit"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    style="@style/textItem"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    tools:text="Santiago Bonilla"
+                    android:textAllCaps="true"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tvTipoDocumento"
+                    style="@style/textItem"
+                    tools:text="pasaporte -"/>
+                <TextView
+                    android:id="@+id/tvDocumento"
+                    style="@style/textItem"
+                    tools:text="1013257961"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    style="@style/textItem"
+                    tools:text="sbonilla284@gmail.com"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Telefono: "/>
+
+                <TextView
+                    android:id="@+id/tvTelefono"
+                    style="@style/textItem"
+                    tools:text="325470261"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Edad: "/>
+
+                <TextView
+                    android:id="@+id/tvAge"
+                    style="@style/textItem"
+                    tools:text="20 años"/>
+                <TextView
+                    style="@style/textItem"
+                    android:text="  Grupo etario: "/>
+
+                <TextView
+                    android:id="@+id/tvEtario"
+                    style="@style/textItem"
+                    tools:text="adulto"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Direccion: "/>
+
+                <TextView
+                    android:id="@+id/tvDireccion"
+                    style="@style/textItem"
+                    tools:text="calle 129"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Sector: "/>
+
+                <TextView
+                    android:id="@+id/tvSector"
+                    style="@style/textItem"
+                    tools:text="Betania"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Nacionalidad: "/>
+
+                <TextView
+                    android:id="@+id/tvPais"
+                    style="@style/textItem"
+                    tools:text="Colombia"/>
+                <TextView
+                    style="@style/textItem"
+                    android:text="  Estrato: "/>
+
+                <TextView
+                    android:id="@+id/tvEstrato"
+                    style="@style/textItem"
+                    tools:text="3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Comunidad: "/>
+
+                <TextView
+                    android:id="@+id/tvComunidad"
+                    style="@style/textItem"
+                    tools:text="ninguna"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Grupo Etnico: "/>
+
+                <TextView
+                    android:id="@+id/tvGrupoEtnico"
+                    style="@style/textItem"
+                    tools:text="ninguna"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Discapacidad: "/>
+
+                <TextView
+                    android:id="@+id/tvDiscapacidad"
+                    style="@style/textItem"
+                    tools:text="ninguna"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Escolaridad: "/>
+
+                <TextView
+                    android:id="@+id/tvEscolaridad"
+                    style="@style/textItem"
+                    tools:text="Bachillerato"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Identidad: "/>
+
+                <TextView
+                    android:id="@+id/tvIdentidad"
+                    style="@style/textItem"
+                    tools:text="Masculino"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Sexo: "/>
+
+                <TextView
+                    android:id="@+id/tvSexo"
+                    style="@style/textItem"
+                    tools:text="hombre"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/textItem"
+                    android:text="Orientacion: "/>
+
+                <TextView
+                    android:id="@+id/tvOrientacion"
+                    style="@style/textItem"
+                    tools:text="Heterosexual"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llUser"
+            android:text="Activo"
+            app:thumbTint="@color/switch_thumb_color"
+            app:trackTint="@color/switch_track_color"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

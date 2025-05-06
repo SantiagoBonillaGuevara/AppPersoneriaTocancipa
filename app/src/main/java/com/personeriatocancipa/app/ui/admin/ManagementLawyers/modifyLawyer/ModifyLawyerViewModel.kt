@@ -3,7 +3,6 @@ package com.personeriatocancipa.app.ui.admin.ManagementLawyers.modifyLawyer
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
 import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.domain.model.Lawyer
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
@@ -16,7 +15,7 @@ class ModifyLawyerViewModel( private val getUserUseCase: GetUserUseCase = GetUse
 
     fun loadCurrentUser(uid: String? = "") {
         val userId:String
-        if (uid.isNullOrEmpty()) userId= FirebaseAuth.getInstance().currentUser?.uid ?: return
+        if (uid.isNullOrEmpty()) userId= ""
         else userId = uid
         if (_lawyerLoaded) return
         _lawyerLoaded = true

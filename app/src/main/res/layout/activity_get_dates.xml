@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.admin.ManagementUsers.ManageUsersActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="15dp"
+        android:background="@color/background">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/white" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/InputFieldOutlined"
+            android:id="@+id/txtF"
+            android:layout_marginStart="20dp"
+            android:hint="año"
+            android:layout_width="wrap_content"
+            app:endIconMode="dropdown_menu"
+            app:layout_constraintStart_toEndOf="@id/ivBack"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/spYear"
+                android:paddingStart="12dp"
+                android:layout_width="110dp"
+                android:textAlignment="textStart"
+                android:layout_height="match_parent"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:textSize="10sp"
+                android:importantForAccessibility="no"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/InputFieldOutlined"
+            android:hint="Mes"
+            android:layout_width="wrap_content"
+            app:endIconMode="dropdown_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/txtF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <AutoCompleteTextView
+                android:id="@+id/spMes"
+                android:paddingStart="12dp"
+                android:layout_width="150dp"
+                android:textAlignment="textEnd"
+                android:layout_height="match_parent"
+                android:textSize="10sp"
+                android:inputType="none"
+                android:focusable="false"
+                android:clickable="true"
+                android:importantForAccessibility="no"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"/>
+
+</LinearLayout>

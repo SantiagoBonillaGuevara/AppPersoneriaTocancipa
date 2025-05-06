@@ -87,8 +87,9 @@ class FirebaseUserDataSource {
 
     suspend fun getUserById(node: String, uid: String): Result<RegistrableUser> = suspendCoroutine { cont ->
         val id:String
-        if (uid.isNullOrEmpty()) id = FirebaseAuth.getInstance().currentUser?.uid!!
+        if (uid.isEmpty()) id = FirebaseAuth.getInstance().currentUser?.uid!!
         else id = uid
+        Log.i("FirebaseUserDataSource", "recibi uid = ${uid} entonces voy a buscar por el id ID: $id")
         db.getReference(node).child(id).get().addOnSuccessListener { snapshot ->
             val user = when (node) {
                 "userData" -> snapshot.getValue(User::class.java)
@@ -112,7 +113,6 @@ class FirebaseUserDataSource {
                     "abogadoData" -> {
                         val lawyer = it.getValue(Lawyer::class.java)
                         val horarioSnapshot = it.child("horario")
-
                         val horario = Horario(
                             Lunes = horarioSnapshot.child("lunes").getValue(HorarioDia::class.java),
                             Martes = horarioSnapshot.child("martes").getValue(HorarioDia::class.java),
@@ -120,7 +120,6 @@ class FirebaseUserDataSource {
                             Jueves = horarioSnapshot.child("jueves").getValue(HorarioDia::class.java),
                             Viernes = horarioSnapshot.child("viernes").getValue(HorarioDia::class.java)
                         )
-
                         lawyer?.copy(horario = horario)
                     }
                     else -> null

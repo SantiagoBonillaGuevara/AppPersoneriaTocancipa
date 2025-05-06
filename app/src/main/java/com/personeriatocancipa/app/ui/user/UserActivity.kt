@@ -1,22 +1,28 @@
 package com.personeriatocancipa.app.ui.user
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.personeriatocancipa.app.CreateDateActivity
-import com.personeriatocancipa.app.GetUserDatesActivity
+//import com.personeriatocancipa.app.GetUserDatesActivity
 import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityUserBinding
 import com.personeriatocancipa.app.domain.model.User
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.ui.common.LoginActivity
+import com.personeriatocancipa.app.ui.user.getDates.GetUserDatesActivity
 import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 import kotlinx.coroutines.launch
 
 class UserActivity : AppCompatActivity() {
 
     private val getUserUseCase: GetUserUseCase = GetUserUseCase(FirebaseUserRepository())
+    private lateinit var user: User
+    private lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +57,9 @@ class UserActivity : AppCompatActivity() {
         binding.flExit.setOnClickListener{
             navigateToLogin()
         }
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) cargarNombre()
+        }
     }
 
     private fun cargarNombre() {
@@ -58,7 +67,8 @@ class UserActivity : AppCompatActivity() {
             val result = getUserUseCase.execute("userData","")
             result.onSuccess {
                 if (it is User) {
-                    binding.tvName.text = it.nombreCompleto
+                    user = it
+                    binding.tvName.text = user.nombreCompleto
                 }
             }
         }
@@ -73,12 +83,13 @@ class UserActivity : AppCompatActivity() {
 
     private fun navigateToGetUserDates(){
         val intent = Intent(this@UserActivity, GetUserDatesActivity::class.java)
+        intent.putExtra("user", user.correo)
         startActivity(intent)
     }
 
     private fun navigateToModify(){
         val intent = Intent(this@UserActivity, ModifyUserActivity::class.java)
-        startActivity(intent)
+        launcher.launch(intent)
     }
 
     private fun navigateToLogin(){

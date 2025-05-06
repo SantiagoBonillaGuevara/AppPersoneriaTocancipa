@@ -5,9 +5,7 @@ import com.personeriatocancipa.app.domain.repository.AuthRepository
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FirebaseAuthRepository(
-    private val authDataSrc: FirebaseAuthDataSource = FirebaseAuthDataSource()
-): AuthRepository {
+class FirebaseAuthRepository(private val authDataSrc: FirebaseAuthDataSource = FirebaseAuthDataSource()): AuthRepository {
 
     override suspend fun login(email: String, password: String): Result<String> = suspendCoroutine { cont ->
         authDataSrc.login(email, password)

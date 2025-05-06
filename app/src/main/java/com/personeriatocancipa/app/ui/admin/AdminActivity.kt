@@ -1,7 +1,10 @@
 package com.personeriatocancipa.app.ui.admin
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.personeriatocancipa.app.ManagementActivity
@@ -17,6 +20,7 @@ import kotlinx.coroutines.launch
 class AdminActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminBinding
+    private lateinit var launcher: ActivityResultLauncher<Intent>
     private val getUserUseCase: GetUserUseCase = GetUserUseCase(FirebaseUserRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +41,16 @@ class AdminActivity : AppCompatActivity() {
             navigateToManageDates()
         }
 
+        binding.flEdit.setOnClickListener {
+            navigateToModify()
+        }
+
         binding.flExit.setOnClickListener{
             navigateToLogin()
+        }
+
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) cargarNombre()
         }
     }
 
@@ -76,6 +88,7 @@ class AdminActivity : AppCompatActivity() {
     }
 
     private fun navigateToModify(){
-
+        val intent = Intent(this@AdminActivity, ModifyAdminActivity::class.java)
+        launcher.launch(intent)
     }
 }

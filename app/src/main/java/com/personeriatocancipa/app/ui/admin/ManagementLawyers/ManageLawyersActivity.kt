@@ -71,12 +71,8 @@ class ManageLawyersActivity : AppCompatActivity() {
             }
         })
 
-        editLawyerLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                getAllLawyers()
-            }
+        editLawyerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) getAllLawyers()
         }
     }
 

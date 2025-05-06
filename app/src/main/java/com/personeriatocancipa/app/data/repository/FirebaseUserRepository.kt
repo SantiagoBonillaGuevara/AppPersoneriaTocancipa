@@ -5,9 +5,7 @@ import com.personeriatocancipa.app.domain.model.RegistrableUser
 import com.personeriatocancipa.app.domain.model.Role
 import com.personeriatocancipa.app.domain.repository.UserRepository
 
-class FirebaseUserRepository(
-    private val userDataSrc: FirebaseUserDataSource = FirebaseUserDataSource()
-):UserRepository {
+class FirebaseUserRepository(private val userDataSrc: FirebaseUserDataSource = FirebaseUserDataSource()):UserRepository {
 
     override suspend fun isParamRegistered(param: String, value: String): Boolean{
         return userDataSrc.isParamRegistered(param, value)

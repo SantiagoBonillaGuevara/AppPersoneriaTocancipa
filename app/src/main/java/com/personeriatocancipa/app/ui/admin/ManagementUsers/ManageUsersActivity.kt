@@ -76,12 +76,8 @@ class ManageUsersActivity : AppCompatActivity() {
             }
         })
 
-        editUserLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                getAllUsers()
-            }
+        editUserLauncher =  registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) getAllUsers()
         }
     }
 

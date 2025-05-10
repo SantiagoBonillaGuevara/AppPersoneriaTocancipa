@@ -30,5 +30,4 @@ class FirebaseUserRepository(private val userDataSrc: FirebaseUserDataSource = F
     override suspend fun getUsers(node: String): Result<List<RegistrableUser>> {
         return userDataSrc.getUsers(node)
     }
-
 }

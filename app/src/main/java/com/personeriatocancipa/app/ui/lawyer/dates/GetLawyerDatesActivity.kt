@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.personeriatocancipa.app.data.repository.FirebaseDateRepository
 import com.personeriatocancipa.app.databinding.ActivityGetDatesBinding
 import com.personeriatocancipa.app.domain.model.Date
+import com.personeriatocancipa.app.domain.usecase.CreateDateUseCase
 import com.personeriatocancipa.app.domain.usecase.GetDatesUseCase
-import com.personeriatocancipa.app.domain.usecase.ModifyDateUseCase
 import com.personeriatocancipa.app.ui.lawyer.dates.adapter.LawyerDatesAdapter
 import kotlinx.coroutines.launch
 
 class GetLawyerDatesActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityGetDatesBinding
-    val modifyUseCase = ModifyDateUseCase(FirebaseDateRepository())
+    val modifyUseCase = CreateDateUseCase(FirebaseDateRepository())
     private val getLawyerDatesUseCase = GetDatesUseCase(FirebaseDateRepository())
     private lateinit var correo: String
     private lateinit var dates: List<Date>

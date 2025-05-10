@@ -7,13 +7,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.personeriatocancipa.app.ManagementActivity
 import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityAdminBinding
 import com.personeriatocancipa.app.domain.model.Admin
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
-import com.personeriatocancipa.app.ui.admin.ManagementLawyers.ManageLawyersActivity
-import com.personeriatocancipa.app.ui.admin.ManagementUsers.ManageUsersActivity
+import com.personeriatocancipa.app.ui.admin.managementDates.ManageDatesActivity
+import com.personeriatocancipa.app.ui.admin.managementLawyers.ManageLawyersActivity
+import com.personeriatocancipa.app.ui.admin.managementUsers.ManageUsersActivity
 import com.personeriatocancipa.app.ui.common.LoginActivity
 import kotlinx.coroutines.launch
 
@@ -82,7 +82,7 @@ class AdminActivity : AppCompatActivity() {
     }
 
     private fun navigateToManageDates(){
-        val intent = Intent(this@AdminActivity, ManagementActivity::class.java)
+        val intent = Intent(this@AdminActivity, ManageDatesActivity::class.java)
         intent.putExtra("tipo", "cita")
         startActivity(intent)
     }

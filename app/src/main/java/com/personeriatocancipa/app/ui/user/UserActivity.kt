@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app.ui.user
 
+//import com.personeriatocancipa.app.GetUserDatesActivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -7,13 +8,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.personeriatocancipa.app.CreateDateActivity
-//import com.personeriatocancipa.app.GetUserDatesActivity
 import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityUserBinding
 import com.personeriatocancipa.app.domain.model.User
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.ui.common.LoginActivity
+import com.personeriatocancipa.app.ui.user.createDate.CreateDateActivity
 import com.personeriatocancipa.app.ui.user.getDates.GetUserDatesActivity
 import com.personeriatocancipa.app.ui.user.modify.ModifyUserActivity
 import kotlinx.coroutines.launch
@@ -76,8 +76,6 @@ class UserActivity : AppCompatActivity() {
 
     private fun navigateToCreateDate(){
         val intent = Intent(this@UserActivity, CreateDateActivity::class.java)
-        intent.putExtra("tarea", "crear")
-        intent.putExtra("sujeto", "cliente")
         startActivity(intent)
     }
 

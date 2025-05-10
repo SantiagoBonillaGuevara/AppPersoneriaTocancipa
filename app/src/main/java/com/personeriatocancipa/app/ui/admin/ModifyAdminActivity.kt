@@ -2,14 +2,9 @@ package com.personeriatocancipa.app.ui.admin
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityModifyAdminBinding
 import com.personeriatocancipa.app.domain.model.Admin

@@ -1,7 +1,7 @@
 package com.personeriatocancipa.app.domain.model
 
 data class Date (
-    var id: Int? = null, // Autonumérico
+    var id: Int? = null,
     var descripcion: String? = null,
     var fecha: String? = null,
     var hora: String? = null,

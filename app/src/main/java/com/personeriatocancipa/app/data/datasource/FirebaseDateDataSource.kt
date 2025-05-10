@@ -15,7 +15,9 @@ class FirebaseDateDataSource {
     private val db = FirebaseDatabase.getInstance().getReference("citas")
 
     suspend fun getCitasPorCorreo(typeEmail:String ,email: String): Result<List<Date>> = suspendCoroutine { cont ->
-        val query = db.orderByChild(typeEmail).equalTo(email)
+        val query = if (typeEmail.isEmpty() && email.isEmpty()) db  //no aplica el filtro si no le llegan parametros
+        else db.orderByChild(typeEmail).equalTo(email) //aplica el filtro si le llegan parametros
+
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val dates = snapshot.children.mapNotNull { it.getValue(Date::class.java) }
@@ -27,12 +29,37 @@ class FirebaseDateDataSource {
         })
     }
 
-    suspend fun updateDate(dateId: Int, updatedDate: Date): Result<Unit> = withContext(Dispatchers.IO) {
-        return@withContext try {
-            db.child(dateId.toString()).setValue(updatedDate).await()
-            Result.success(Unit)
+    suspend fun getCitasPorDia(typeEmail:String ,email: String, dia: String): Result<List<Date>> = suspendCoroutine { cont ->
+        val query = db.orderByChild(typeEmail).equalTo(email)
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val dates = snapshot.children.mapNotNull { it.getValue(Date::class.java) }.filter { it.fecha == dia }
+                cont.resume(Result.success(dates))
+            }
+            override fun onCancelled(error: DatabaseError) {
+                cont.resume(Result.failure(error.toException()))
+            }
+        })
+    }
+
+    suspend fun saveCita(id: Int, date: Date): Result<Unit> = suspendCoroutine { cont ->
+        try {
+            db.child(id.toString()).setValue(date.copy(id = id))
+                .addOnSuccessListener { cont.resume(Result.success(Unit)) }
+                .addOnFailureListener { exception -> cont.resume(Result.failure(exception)) }
         } catch (e: Exception) {
-            Result.failure(e)
+            cont.resume(Result.failure(e))
         }
     }
+
+    suspend fun getDateById(id: Int): Result<Date> = suspendCoroutine { cont ->
+        db.child(id.toString()).get().addOnSuccessListener { snapshot ->
+            val date = snapshot.getValue(Date::class.java)
+            if (date != null) cont.resume(Result.success(date))
+            else cont.resume(Result.failure(Exception("No se encontró la cita con id: $id")))
+        }.addOnFailureListener { exception ->
+            cont.resume(Result.failure(exception))
+        }
+    }
+
 }

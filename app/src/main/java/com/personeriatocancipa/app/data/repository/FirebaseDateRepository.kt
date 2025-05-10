@@ -9,7 +9,15 @@ class FirebaseDateRepository(private val dateDataSrc: FirebaseDateDataSource = F
         return dateDataSrc.getCitasPorCorreo(typeEmail, email)
     }
 
-    override suspend fun modifyDate(dateId: Int, date: Date): Result<Unit> {
-        return dateDataSrc.updateDate(dateId, date)
+    override suspend fun getCitaById(id: Int): Result<Date> {
+        return dateDataSrc.getDateById(id)
+    }
+
+    override suspend fun saveDate(id: Int,date: Date): Result<Unit> {
+        return dateDataSrc.saveCita(id,date)
+    }
+
+    override suspend fun getCitasByDay(typeEmail: String, email: String, day: String): Result<List<Date>> {
+        return dateDataSrc.getCitasPorDia(typeEmail, email, day)
     }
 }

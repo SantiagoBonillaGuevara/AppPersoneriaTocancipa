@@ -97,6 +97,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun navigateToPQRS(){
-        //NAVEGA DESDE ACA AL SISTEMA DE PQRS Y CHATBOT
+        val intent = Intent(this, ChatBotActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -14,6 +14,7 @@ import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.ui.admin.managementDates.ManageDatesActivity
 import com.personeriatocancipa.app.ui.admin.managementLawyers.ManageLawyersActivity
 import com.personeriatocancipa.app.ui.admin.managementUsers.ManageUsersActivity
+import com.personeriatocancipa.app.ui.admin.reports.ReportsActivity
 import com.personeriatocancipa.app.ui.common.LoginActivity
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,10 @@ class AdminActivity : AppCompatActivity() {
         binding = ActivityAdminBinding.inflate(layoutInflater)
         setContentView(binding.root)
         cargarNombre()
+        initComponents()
+    }
 
+    private fun initComponents(){
         binding.flUser.setOnClickListener{
             navigateToManageUsers()
         }
@@ -49,6 +53,10 @@ class AdminActivity : AppCompatActivity() {
             navigateToLogin()
         }
 
+        binding.flData.setOnClickListener{
+            navigateToReports()
+        }
+
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) cargarNombre()
         }
@@ -58,9 +66,7 @@ class AdminActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val result = getUserUseCase.execute("AdminData","")
             result.onSuccess {
-                if (it is Admin) {
-                    binding.tvName.text = it.nombreCompleto
-                }
+                if (it is Admin) binding.tvName.text = it.nombreCompleto
             }
         }
     }
@@ -83,12 +89,16 @@ class AdminActivity : AppCompatActivity() {
 
     private fun navigateToManageDates(){
         val intent = Intent(this@AdminActivity, ManageDatesActivity::class.java)
-        intent.putExtra("tipo", "cita")
         startActivity(intent)
     }
 
     private fun navigateToModify(){
         val intent = Intent(this@AdminActivity, ModifyAdminActivity::class.java)
         launcher.launch(intent)
+    }
+
+    private fun navigateToReports(){
+        val intent = Intent(this@AdminActivity, ReportsActivity::class.java)
+        startActivity(intent)
     }
 }

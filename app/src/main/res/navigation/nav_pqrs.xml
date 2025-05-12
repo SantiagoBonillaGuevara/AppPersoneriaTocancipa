@@ -56,4 +56,26 @@
         app:argType="string" />
 
 </fragment>
+    <fragment
+        android:id="@+id/pqrsAdminListFragment"
+        android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsAdminListFragment"
+        android:label="Listado Administración"
+        tools:layout="@layout/fragment_pqrs_admin_list">
+        <action
+            android:id="@+id/action_adminList_to_adminDetail"
+            app:destination="@id/pqrsAdminDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/pqrsAdminDetailFragment"
+        android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsAdminDetailFragment"
+        android:label="Detalle PQRS Admin"
+        tools:layout="@layout/fragment_pqrs_admin_detail">
+
+        <!-- <- ESTE ARGUMENTO ES CRUCIAL -->
+        <argument
+            android:name="pqrsId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

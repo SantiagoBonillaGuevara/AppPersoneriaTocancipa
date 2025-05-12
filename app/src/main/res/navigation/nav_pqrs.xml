@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_pqrs"
+    app:startDestination="@id/chatBotFragment">
+
+    <!-- Fragment de chat inicial -->
+    <fragment
+        android:id="@+id/chatBotFragment"
+        android:name="com.personeriatocancipa.app.ui.chat.fragments.ChatBotFragment"
+        android:label="Chat / PQRS"
+        tools:layout="@layout/fragment_chatbot">
+        <action
+            android:id="@+id/action_chat_to_createPqrs"
+            app:destination="@id/pqrsCreateFragment" />
+        <action
+            android:id="@+id/action_chat_to_listPqrs"
+            app:destination="@id/pqrsListFragment" />
+    </fragment>
+
+    <!-- Flujo de crear PQRS -->
+    <fragment
+        android:id="@+id/pqrsCreateFragment"
+        android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsCreateFragment"
+        android:label="Crear PQRS"
+        tools:layout="@layout/fragment_pqrs_create">
+        <action
+            android:id="@+id/action_create_to_list"
+            app:destination="@id/pqrsListFragment"
+            app:popUpTo="@id/chatBotFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <!-- Flujo de listar PQRS -->
+    <fragment
+        android:id="@+id/pqrsListFragment"
+        android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsListFragment"
+        android:label="Mis PQRS"
+        tools:layout="@layout/fragment_pqrs_list">
+        <action
+            android:id="@+id/action_list_to_detail"
+            app:destination="@id/pqrsDetailFragment" />
+    </fragment>
+
+    <!-- Detalle de una PQRS -->
+    <fragment
+    android:id="@+id/pqrsDetailFragment"
+    android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsDetailFragment"
+    android:label="Detalle PQRS"
+    tools:layout="@layout/fragment_pqrs_detail">
+
+    <!-- Declaración del argumento que vas a pasar -->
+    <argument
+        android:name="pqrsId"
+        app:argType="string" />
+
+</fragment>
+</navigation>

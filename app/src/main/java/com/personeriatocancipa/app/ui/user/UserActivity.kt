@@ -12,6 +12,7 @@ import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityUserBinding
 import com.personeriatocancipa.app.domain.model.User
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
+import com.personeriatocancipa.app.ui.chat.ChatBotActivity
 import com.personeriatocancipa.app.ui.common.LoginActivity
 import com.personeriatocancipa.app.ui.user.createDate.CreateDateActivity
 import com.personeriatocancipa.app.ui.user.getDates.GetUserDatesActivity
@@ -97,7 +98,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun navigateToPQRS(){
-        val intent = Intent(this, ChatBotActivity::class.java)
+        val intent = Intent(this,ChatBotActivity::class.java)
         startActivity(intent)
     }
 }

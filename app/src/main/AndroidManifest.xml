@@ -30,6 +30,9 @@
             android:name=".ui.chat.ChatBotActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.admin.reports.ReportsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.managementDates.editDate.EditDateActivity"
             android:exported="false" />
         <activity

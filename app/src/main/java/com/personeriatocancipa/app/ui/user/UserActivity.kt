@@ -98,7 +98,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun navigateToPQRS(){
-        val intent = Intent(this,ChatBotActivity::class.java)
+        val intent = Intent(this, ChatBotActivity::class.java)
         startActivity(intent)
     }
 }

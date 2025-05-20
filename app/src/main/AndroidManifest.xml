@@ -27,6 +27,9 @@
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
         <activity
+            android:name=".ui.admin.PqrsAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.chat.ChatBotActivity"
             android:exported="false" />
         <activity

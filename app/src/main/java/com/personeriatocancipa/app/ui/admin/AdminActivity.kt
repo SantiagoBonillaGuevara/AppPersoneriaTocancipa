@@ -57,6 +57,12 @@ class AdminActivity : AppCompatActivity() {
             navigateToReports()
         }
 
+        binding.btnPqrsAdmin.setOnClickListener {
+            startActivity(Intent(this, PqrsAdminActivity::class.java))
+        }
+
+
+
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) cargarNombre()
         }

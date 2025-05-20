@@ -67,6 +67,19 @@
     </fragment>
 
     <fragment
+        android:id="@+id/pqrsMenuFragment"
+        android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsMenuFragment"
+        android:label="Menú PQRS"
+        tools:layout="@layout/fragment_pqrs_menu">
+        <action
+            android:id="@+id/action_menu_to_create"
+            app:destination="@id/pqrsCreateFragment" />
+        <action
+            android:id="@+id/action_menu_to_list"
+            app:destination="@id/pqrsListFragment" />
+    </fragment>
+
+    <fragment
         android:id="@+id/pqrsAdminDetailFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsAdminDetailFragment"
         android:label="Detalle PQRS Admin"

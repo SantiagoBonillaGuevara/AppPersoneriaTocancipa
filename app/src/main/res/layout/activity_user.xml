@@ -134,10 +134,11 @@
                         android:textColor="@color/white"
                         android:textSize="15sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/flChat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/background"

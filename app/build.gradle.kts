@@ -73,7 +73,9 @@ dependencies {
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Para generación de PDF
-    implementation ("com.itextpdf:itextg:5.5.10")
+    implementation(libs.firebase.firestore.ktx)
+    implementation ("com.itextpdf:itextpdf:5.5.13.3")
+    implementation("com.itextpdf:itext7-core:7.1.15")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

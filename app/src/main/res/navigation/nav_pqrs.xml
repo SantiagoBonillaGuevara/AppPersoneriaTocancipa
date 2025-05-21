@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app   ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools ="http://schemas.android.com/tools"
     android:id="@+id/nav_pqrs"
     app:startDestination="@id/homeFragment">
 
-    <!-- 1. HomeFragment -->
+    <!-- 1. Pantalla principal (HomeFragment) -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.personeriatocancipa.app.ui.home.HomeFragment"
@@ -17,10 +18,15 @@
             android:id="@+id/action_homeFragment_to_chatBotFragment"
             app:destination="@id/chatBotFragment" />
 
-        <!-- → Menú PQRS -->
+        <!-- → Menú PQRS (usuario) -->
         <action
             android:id="@+id/action_homeFragment_to_pqrsMenuFragment"
             app:destination="@id/pqrsMenuFragment" />
+
+        <!-- → Listado Admin -->
+        <action
+            android:id="@+id/action_homeFragment_to_pqrsAdminListFragment"
+            app:destination="@id/pqrsAdminListFragment" />
     </fragment>
 
     <!-- 2. ChatBotFragment -->
@@ -30,17 +36,17 @@
         android:label="Chat / PQRS"
         tools:layout="@layout/fragment_chatbot">
 
-        <!-- btnCreatePqrs -->
+        <!-- → Crear PQRS -->
         <action
             android:id="@+id/action_chatBotFragment_to_pqrsCreateFragment"
             app:destination="@id/pqrsCreateFragment" />
 
-        <!-- btnListPqrs -->
+        <!-- → Listar mis PQRS -->
         <action
             android:id="@+id/action_chatBotFragment_to_pqrsListFragment"
             app:destination="@id/pqrsListFragment" />
 
-        <!-- (opcional) volver a Home -->
+        <!-- ← Volver a Home -->
         <action
             android:id="@+id/action_chatBotFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -48,24 +54,24 @@
             app:popUpToInclusive="false" />
     </fragment>
 
-    <!-- 3. PqrsMenuFragment -->
+    <!-- 3. Menú PQRS usuario -->
     <fragment
         android:id="@+id/pqrsMenuFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsMenuFragment"
         android:label="Menú PQRS"
         tools:layout="@layout/fragment_pqrs_menu">
 
-        <!-- Crear PQRS -->
+        <!-- → Crear PQRS -->
         <action
             android:id="@+id/action_pqrsMenuFragment_to_pqrsCreateFragment"
             app:destination="@id/pqrsCreateFragment" />
 
-        <!-- Mis PQRS -->
+        <!-- → Listar mis PQRS -->
         <action
             android:id="@+id/action_pqrsMenuFragment_to_pqrsListFragment"
             app:destination="@id/pqrsListFragment" />
 
-        <!-- volver a Home -->
+        <!-- ← Volver a Home -->
         <action
             android:id="@+id/action_pqrsMenuFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -73,40 +79,40 @@
             app:popUpToInclusive="false" />
     </fragment>
 
-    <!-- 4. PqrsCreateFragment -->
+    <!-- 4. Crear PQRS -->
     <fragment
         android:id="@+id/pqrsCreateFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsCreateFragment"
         android:label="Crear PQRS"
         tools:layout="@layout/fragment_pqrs_create">
 
-        <!-- → ChatBot al enviar -->
+        <!-- ← Volver a ChatBot al enviar -->
         <action
             android:id="@+id/action_pqrsCreateFragment_to_chatBotFragment"
             app:destination="@id/chatBotFragment"
             app:popUpTo="@id/chatBotFragment"
             app:popUpToInclusive="false" />
 
-        <!-- → Lista usuario (opcional) -->
+        <!-- → Opcional: Ver lista usuario -->
         <action
             android:id="@+id/action_pqrsCreateFragment_to_pqrsListFragment"
             app:destination="@id/pqrsListFragment" />
     </fragment>
 
-    <!-- 5. PqrsListFragment (usuario) -->
+    <!-- 5. Listar mis PQRS (usuario) -->
     <fragment
         android:id="@+id/pqrsListFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsListFragment"
         android:label="Mis PQRS"
         tools:layout="@layout/fragment_pqrs_list">
 
-        <!-- onItemClick → detalle -->
+        <!-- → Detalle PQRS -->
         <action
             android:id="@+id/action_pqrsListFragment_to_pqrsDetailFragment"
             app:destination="@id/pqrsDetailFragment" />
     </fragment>
 
-    <!-- 6. PqrsDetailFragment -->
+    <!-- 6. Detalle PQRS usuario -->
     <fragment
         android:id="@+id/pqrsDetailFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsDetailFragment"
@@ -118,20 +124,20 @@
             app:argType="string" />
     </fragment>
 
-    <!-- 7. PqrsAdminListFragment (admin) -->
+    <!-- 7. Listado PQRS admin -->
     <fragment
         android:id="@+id/pqrsAdminListFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsAdminListFragment"
         android:label="Listado Administración"
         tools:layout="@layout/fragment_pqrs_admin_list">
 
-        <!-- click → admin detail -->
+        <!-- → Detalle PQRS admin -->
         <action
             android:id="@+id/action_pqrsAdminListFragment_to_pqrsAdminDetailFragment"
             app:destination="@id/pqrsAdminDetailFragment" />
     </fragment>
 
-    <!-- 8. PqrsAdminDetailFragment -->
+    <!-- 8. Detalle PQRS admin -->
     <fragment
         android:id="@+id/pqrsAdminDetailFragment"
         android:name="com.personeriatocancipa.app.ui.pqrs.fragments.PqrsAdminDetailFragment"

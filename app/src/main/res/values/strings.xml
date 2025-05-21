@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Personería</string>
+    <string name="home_title">Inicio</string>
+    <string name="home_btn_chatbot">Ir al ChatBot</string>
+    <string name="home_btn_pqrs">Ir a PQRS</string>
+
     <string-array name="opcionesTipoDocumento">
         <item>CC</item>
         <item>CE</item>

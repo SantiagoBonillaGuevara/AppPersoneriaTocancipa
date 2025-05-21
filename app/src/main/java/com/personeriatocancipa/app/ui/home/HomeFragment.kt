@@ -1,5 +1,6 @@
 package com.personeriatocancipa.app.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentHomeBinding
+import com.personeriatocancipa.app.ui.user.UserActivity
 
 class HomeFragment : Fragment() {
 
@@ -26,9 +28,19 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 1) Flecha “up” en toolbar → vuelve a la Activity principal de usuario
+        binding.toolbar.setNavigationOnClickListener {
+            val intent = Intent(requireContext(), UserActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
+
+        // 2) Navegar al ChatBot dentro de tu NavGraph nav_pqrs.xml
         binding.btnChatBot.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_chatBotFragment)
         }
+
+        // 3) Navegar al módulo PQRS dentro de tu NavGraph
         binding.btnPqrs.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_pqrsMenuFragment)
         }

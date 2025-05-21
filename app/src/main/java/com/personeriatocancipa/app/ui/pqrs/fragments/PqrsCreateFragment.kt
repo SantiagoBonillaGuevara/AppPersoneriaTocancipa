@@ -14,12 +14,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.databinding.FragmentPqrsCreateBinding
 import com.personeriatocancipa.app.domain.model.Pqrs
 import com.personeriatocancipa.app.domain.usecase.CreatePqrsUseCase
 import com.personeriatocancipa.app.data.repository.FirebasePqrsRepository
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
 class PqrsCreateFragment : Fragment() {
@@ -27,7 +29,6 @@ class PqrsCreateFragment : Fragment() {
     private var _binding: FragmentPqrsCreateBinding? = null
     private val binding get() = _binding!!
 
-    // Inicializa tu UseCase correctamente
     private val createPqrsUseCase by lazy {
         CreatePqrsUseCase(FirebasePqrsRepository())
     }
@@ -59,23 +60,18 @@ class PqrsCreateFragment : Fragment() {
 
         // Spinner de tipos
         val types = listOf("Petición", "Queja", "Reclamo", "Sugerencia")
-        binding.spinnerType.adapter =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, types)
-
-        // Adjuntar archivo (placeholder)
-        binding.btnAttach.setOnClickListener {
-            Toast.makeText(requireContext(), "Funcionalidad de adjuntar pendiente", Toast.LENGTH_SHORT).show()
-        }
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, types)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerType.adapter = adapter
 
         binding.btnAttach.setOnClickListener {
             pickFileLauncher.launch("*/*")
         }
 
-        // Enviar PQRS
         binding.btnSend.setOnClickListener {
             val type = binding.spinnerType.selectedItem.toString()
             val title = binding.etTitle.text.toString().trim()
-            val desc  = binding.etDescription.text.toString().trim()
+            val desc = binding.etDescription.text.toString().trim()
 
             if (title.isEmpty() || desc.isEmpty()) {
                 Toast.makeText(requireContext(), "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
@@ -83,32 +79,50 @@ class PqrsCreateFragment : Fragment() {
             }
 
             val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-                ?: return@setOnClickListener Toast
-                    .makeText(requireContext(),"Usuario no autenticado",Toast.LENGTH_SHORT)
-                    .show()
+            if (currentUserId == null) {
+                Toast.makeText(requireContext(), "Usuario no autenticado", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            val pqrs = Pqrs(
-                id = UUID.randomUUID().toString(),
-                userId = FirebaseAuth.getInstance().currentUser?.uid.orEmpty(),
-                type = type,
-                title = title,
-                description = desc,
-                attachment = attachedFileUri?.toString() ?: "",
-                date = System.currentTimeMillis()
-            )
+            binding.progressBar.visibility = View.VISIBLE
 
-
-            // Llamada al UseCase
             lifecycleScope.launch {
+                // Subida opcional de adjunto
+                val attachmentUrl = attachedFileUri?.let { uri ->
+                    try {
+                        val ref = FirebaseStorage.getInstance()
+                            .getReference("pqrs_attachments/${UUID.randomUUID()}")
+                        ref.putFile(uri).await()
+                        ref.downloadUrl.await().toString()
+                    } catch (e: Exception) {
+                        Snackbar.make(binding.root, "Error al subir archivo: ${e.message}", Snackbar.LENGTH_LONG).show()
+                        ""
+                    }
+                } ?: ""
+
+                val pqrs = Pqrs(
+                    id = UUID.randomUUID().toString(),
+                    userId = currentUserId,
+                    type = type,
+                    title = title,
+                    description = desc,
+                    attachment = attachmentUrl,
+                    date = System.currentTimeMillis()
+                )
+
                 createPqrsUseCase.execute(pqrs)
                     .onSuccess {
                         Toast.makeText(requireContext(), "PQRS enviada correctamente", Toast.LENGTH_SHORT).show()
-                        findNavController().navigate(R.id.pqrsListFragment)
+                        // → aquí: navega al ChatBotFragment
+                        findNavController().navigate(
+                            R.id.action_pqrsCreateFragment_to_chatBotFragment
+                        )
                     }
                     .onFailure {
-                        Snackbar.make(binding.root, "Error al enviar PQRS", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(binding.root, "Error al enviar PQRS: ${it.message}", Snackbar.LENGTH_LONG).show()
                     }
 
+                binding.progressBar.visibility = View.GONE
             }
         }
     }

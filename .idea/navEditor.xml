@@ -19,12 +19,38 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_chatBotFragment_to_homeFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_chat_to_createPqrs">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="action_chat_to_listPqrs">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="homeFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_homeFragment_to_chatBotFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -78,7 +104,7 @@
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_create_to_list">
+                            <entry key="action_pqrsCreateFragment_to_chatBotFragment">
                               <value>
                                 <LayoutPositions />
                               </value>

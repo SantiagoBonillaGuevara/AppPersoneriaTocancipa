@@ -11,5 +11,6 @@ data class Pqrs(
     val description: String = "",
     val attachment: String? = null,
     val response: String? = null,
-    val date: Long = 0L
+    val date: Long = 0L,
+    val status: String = ""
 )

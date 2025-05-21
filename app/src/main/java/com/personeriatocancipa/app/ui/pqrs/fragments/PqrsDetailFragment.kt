@@ -42,12 +42,15 @@ class PqrsDetailFragment : Fragment() {
                 b.tvDescription.text = p.description
                 val formatted = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(p.date))
                 b.tvDate.text = formatted
+
+                // Mostrar respuesta si existe
+                if (!p.response.isNullOrBlank()) {
+                    b.llResponse.visibility = View.VISIBLE
+                    b.tvResponse.text = p.response
+                }
             }
         }
 
-        b.btnBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
     }
 
     override fun onDestroyView() {

@@ -18,6 +18,7 @@ class FirebasePqrsDataSource {
 
     private val db = FirebaseDatabase.getInstance().getReference("pqrs")
 
+    // Crea una nueva PQRS (se guarda con todos los campos, incluyendo response si viene vacío o nulo)
     suspend fun createPqrs(pqrs: Pqrs): Result<Unit> = suspendCoroutine { cont ->
         try {
             db.child(pqrs.id)
@@ -29,6 +30,7 @@ class FirebasePqrsDataSource {
         }
     }
 
+    // Devuelve solo las PQRS del usuario autenticado
     fun getMyPqrs(userId: String): Flow<List<Pqrs>> = callbackFlow {
         val sub = db.orderByChild("userId").equalTo(userId)
             .addValueEventListener(object : ValueEventListener {
@@ -44,6 +46,7 @@ class FirebasePqrsDataSource {
         awaitClose { db.removeEventListener(sub) }
     }
 
+    // Consulta individual por ID
     suspend fun getPqrsById(id: String): Result<Pqrs> = suspendCoroutine { cont ->
         db.child(id).get()
             .addOnSuccessListener { snap ->
@@ -54,6 +57,7 @@ class FirebasePqrsDataSource {
             .addOnFailureListener { e -> cont.resume(Result.failure(e)) }
     }
 
+    // Devuelve todas las PQRS para el administrador
     fun getAllPqrs(): Flow<List<Pqrs>> = callbackFlow {
         val sub = db.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -68,6 +72,7 @@ class FirebasePqrsDataSource {
         awaitClose { db.removeEventListener(sub) }
     }
 
+    // Permite guardar una respuesta del admin en el campo "response"
     suspend fun respondPqrs(id: String, response: String): Result<Unit> = suspendCoroutine { cont ->
         try {
             db.child(id)

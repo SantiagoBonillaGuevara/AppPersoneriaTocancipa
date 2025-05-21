@@ -32,6 +32,9 @@ class PqrsAdminListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        b.toolbarAdminList.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
 
         val adapter = PqrsAdminAdapter { id ->
             // <-- Aquí usamos el ID correcto de la acción:

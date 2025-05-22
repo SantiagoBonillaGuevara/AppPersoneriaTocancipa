@@ -18,28 +18,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 2) Botón “Nueva PQRS” -->
-    <Button
-        android:id="@+id/btnCreatePqrs"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/faqContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nueva PQRS"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/etMessageInput"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/etMessageInput"
-        app:layout_constraintHorizontal_bias="0"
-        android:layout_marginBottom="8dp" />
-
-    <!-- 3) Botón “Mis PQRS” -->
-    <Button
-        android:id="@+id/btnListPqrs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mis PQRS"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/etMessageInput"
-        app:layout_constraintHorizontal_bias="1"
-        android:layout_marginBottom="8dp" />
+        android:gravity="center"
+        android:padding="8dp">
 
+        <Button
+            android:id="@+id/btnFaq1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¿Qué es una PQRS?" />
+
+        <Button
+            android:id="@+id/btnFaq2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¿Cómo envío una PQRS?" />
+
+        <Button
+            android:id="@+id/btnFaq3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="¿Cuánto tarda la respuesta?" />
+
+    </LinearLayout>
     <!-- 4) Campo de texto para el mensaje -->
     <EditText
         android:id="@+id/etMessageInput"

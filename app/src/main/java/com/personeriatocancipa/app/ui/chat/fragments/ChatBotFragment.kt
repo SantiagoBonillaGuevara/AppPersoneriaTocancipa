@@ -50,6 +50,10 @@ class ChatBotFragment : Fragment() {
                 }
             }
         }
+        b.btnFaq1.setOnClickListener { viewModel.sendMessage("¿Qué es una PQRS?") }
+        b.btnFaq2.setOnClickListener { viewModel.sendMessage("¿Cómo envío una PQRS?") }
+        b.btnFaq3.setOnClickListener { viewModel.sendMessage("¿Cuánto tarda la respuesta?") }
+
 
         // 4) Envía mensaje al pulsar enviar
         b.btnSendMessage.setOnClickListener {

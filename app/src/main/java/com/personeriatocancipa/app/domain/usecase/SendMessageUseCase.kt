@@ -11,47 +11,53 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 
-/**
- * UseCase que envía un mensaje al modelo Gemini (text-bison-001) y devuelve la respuesta.
- * Usa Moshi para serializar/deserializar JSON.
- */
 class SendMessageUseCase(
     private val apiKey: String,
     private val client: OkHttpClient = OkHttpClient()
 ) {
-    // Moshi builder with Kotlin reflection
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
+    // 1) Nuevas clases de datos
     @JsonClass(generateAdapter = true)
-    data class GenerateTextRequest(val prompt: Prompt) {
+    data class GenerateContentRequest(val contents: List<Content>) {
         @JsonClass(generateAdapter = true)
-        data class Prompt(val text: String)
+        data class Content(val role: String, val parts: List<Part>)
+        @JsonClass(generateAdapter = true)
+        data class Part(val text: String)
     }
 
     @JsonClass(generateAdapter = true)
-    data class GenerateTextResponse(val candidates: List<Candidate>) {
+    data class GenerateContentResponse(val candidates: List<Candidate>) {
         @JsonClass(generateAdapter = true)
-        data class Candidate(val output: String)
+        data class Candidate(val content: Content, val finishReason: String?) {
+            @JsonClass(generateAdapter = true)
+            data class Content(val parts: List<GenerateContentRequest.Part>, val role: String)
+        }
     }
 
     suspend operator fun invoke(userMessage: String): Result<String> =
         withContext(Dispatchers.IO) {
             try {
+                // 2) Nuevo endpoint
                 val url =
-                    "https://generativelanguage.googleapis.com/v1beta2/models/text-bison-001:generateText?key=$apiKey"
+                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=$apiKey"
 
-                // build the request JSON
-                val reqObj = GenerateTextRequest(
-                    GenerateTextRequest.Prompt(text = userMessage)
+                // 3) Montar el body con la nueva estructura
+                val reqObj = GenerateContentRequest(
+                    listOf(
+                        GenerateContentRequest.Content(
+                            role = "user",
+                            parts = listOf(GenerateContentRequest.Part(text = userMessage))
+                        )
+                    )
                 )
-                val reqAdapter = moshi.adapter(GenerateTextRequest::class.java)
+                val reqAdapter = moshi.adapter(GenerateContentRequest::class.java)
                 val reqJson = reqAdapter.toJson(reqObj)
-                val body = reqJson
-                    .toRequestBody("application/json".toMediaType())
+                val body = reqJson.toRequestBody("application/json".toMediaType())
 
-                // fire the HTTP call
+                // 4) Llamada HTTP
                 val request = Request.Builder()
                     .url(url)
                     .post(body)
@@ -62,12 +68,17 @@ class SendMessageUseCase(
                         return@withContext Result.failure(Exception("Gemini API error ${resp.code}"))
                     }
 
-                    // parse the response
+                    // 5) Parsear respuesta con la nueva clase
                     val respStr = resp.body!!.string()
-                    val respAdapter = moshi.adapter(GenerateTextResponse::class.java)
+                    val respAdapter = moshi.adapter(GenerateContentResponse::class.java)
                     val parsed = respAdapter.fromJson(respStr)
                         ?: return@withContext Result.failure(Exception("Invalid JSON from Gemini"))
-                    val output = parsed.candidates.firstOrNull()?.output
+                    val output = parsed.candidates
+                        .firstOrNull()
+                        ?.content
+                        ?.parts
+                        ?.firstOrNull()
+                        ?.text
                         ?: return@withContext Result.failure(Exception("Empty response from model"))
 
                     Result.success(output)

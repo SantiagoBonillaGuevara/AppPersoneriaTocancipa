@@ -1,3 +1,4 @@
+// app/src/main/java/com/personeriatocancipa/app/ui/chat/fragments/ChatBotFragment.kt
 package com.personeriatocancipa.app.ui.chat.fragments
 
 import android.os.Bundle
@@ -5,60 +6,66 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.personeriatocancipa.app.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.personeriatocancipa.app.BuildConfig
 import com.personeriatocancipa.app.databinding.FragmentChatbotBinding
-import kotlinx.coroutines.launch
+import com.personeriatocancipa.app.domain.usecase.SendMessageUseCase
+import com.personeriatocancipa.app.ui.chat.ChatBotAdapter
+import com.personeriatocancipa.app.ui.chat.viewmodel.ChatBotViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 class ChatBotFragment : Fragment() {
 
-    private var _binding: FragmentChatbotBinding? = null
-    private val binding get() = _binding!!
+    private var _b: FragmentChatbotBinding? = null
+    private val b get() = _b!!
+
+    // 1) Crea tu ViewModel pasando la API key
+    private val viewModel: ChatBotViewModel by viewModels {
+        ChatBotViewModel.Factory(
+            SendMessageUseCase(BuildConfig.GEMINI_API_KEY)
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentChatbotBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    ) = FragmentChatbotBinding.inflate(inflater, container, false).also { _b = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // NAVEGACIÓN A CREAR PQRS
-        binding.btnCreatePqrs.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_chatBotFragment_to_pqrsCreateFragment
-            )
-        }
+        // 2) Instancia y configura el adapter
+        val adapter = ChatBotAdapter()
+        b.rvMessages.layoutManager = LinearLayoutManager(requireContext())
+        b.rvMessages.adapter = adapter
 
-        // NAVEGACIÓN A LISTAR PQRS
-        binding.btnListPqrs.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_chatBotFragment_to_pqrsListFragment
-            )
-        }
-
-        // ENVÍO DE MENSAJE AL BOT
-        binding.btnSendMessage.setOnClickListener {
-            val text = binding.etMessageInput.text.toString().trim()
-            if (text.isNotEmpty()) {
-                // Aquí implementas la lógica real de tu bot.
-                // Por ejemplo, si tienes un ViewModel:
-                // lifecycleScope.launch { chatBotViewModel.sendMessage(text) }
-                // y luego actualizas el RecyclerView observando LiveData/Flow.
-
-                // Por ahora limpia el campo:
-                binding.etMessageInput.text?.clear()
+        // 3) Observa la conversación y actualiza el adapter
+        lifecycleScope.launchWhenStarted {
+            viewModel.conversation.collectLatest { list ->
+                adapter.submitList(list)
+                // auto-scroll al último mensaje
+                if (list.isNotEmpty()) {
+                    b.rvMessages.scrollToPosition(list.size - 1)
+                }
             }
+        }
+
+        // 4) Envía mensaje al pulsar enviar
+        b.btnSendMessage.setOnClickListener {
+            val text = b.etMessageInput.text.toString().trim()
+            b.etMessageInput.text?.clear()
+            viewModel.sendMessage(text)
+        }
+
+        // 5) Botón de "volver"
+        b.btnGoHome.setOnClickListener {
+            requireActivity().onBackPressed()
         }
     }
 
-
-
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _b = null
     }
 }

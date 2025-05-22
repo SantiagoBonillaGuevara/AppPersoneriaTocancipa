@@ -52,7 +52,6 @@ class PqrsDetailFragment : Fragment() {
         }
 
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _b = null

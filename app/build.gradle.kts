@@ -20,7 +20,7 @@ android {
         buildConfigField(
             "String",
             "GEMINI_API_KEY",
-            "\"API-KEY\"" //no va en github
+            "\"API-KEY\""
         )
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

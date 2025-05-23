@@ -25,6 +25,7 @@
             android:orientation="vertical"
             android:layout_marginTop="24dp"
             android:padding="24dp"
+            android:background="@color/white"
             android:gravity="center">
 
             <ImageView
@@ -41,10 +42,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Personería de Tocancipá"
+                android:text="@string/login_personeria"
                 android:textAlignment="center"
                 android:textSize="30sp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 tools:ignore="RtlCompat"/>
@@ -52,10 +53,10 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bienvenido"
+                android:text="@string/login_greeting"
                 android:textAlignment="center"
                 android:textSize="25dp"
-                android:textColor="@color/black"
+                android:textColor="@color/text_color"
                 android:paddingBottom="5dp" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -87,10 +88,11 @@
                 android:id="@+id/txtOlvidoContrasena"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Olvidé mi contraseña"
+                android:textStyle="bold"
+                android:text="@string/login_passw_forgot"
                 android:textAlignment="textEnd"
                 android:textSize="14sp"
-                android:textColor="@color/black"/>
+                android:textColor="@color/button"/>
 
             <Button
                 android:id="@+id/btnLogin"
@@ -98,18 +100,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="24dp"
-                android:text="Iniciar sesión"
+                android:text="@string/login_btn_login"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/button" />
+                android:backgroundTint="@color/text_color_secondary" />
 
             <TextView
                 android:id="@+id/txtSignup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No tienes cuenta? Regístrate"
+                android:text="@string/login_no_count"
                 android:textAlignment="center"
                 android:textSize="14sp"
-                android:textColor="@color/black"/>
+                android:textStyle="bold"
+                android:textColor="@color/text_color_secondary"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

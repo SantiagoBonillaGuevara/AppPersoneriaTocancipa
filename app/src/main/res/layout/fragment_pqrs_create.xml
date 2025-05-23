@@ -12,14 +12,16 @@
 
         <Spinner
             android:id="@+id/spinnerType"
+            android:background="@drawable/bg_edittext"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="36dp" />
 
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Título"
+            android:background="@drawable/bg_edittext"
             android:layout_marginTop="16dp"/>
 
         <EditText
@@ -27,6 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:hint="Descripción"
+            android:background="@drawable/bg_edittext"
+            android:padding="10dp"
             android:inputType="textMultiLine"
             android:gravity="top"
             android:layout_marginTop="16dp"/>
@@ -58,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Enviar"
+            style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
             android:layout_marginTop="24dp"/>
 
     </LinearLayout>

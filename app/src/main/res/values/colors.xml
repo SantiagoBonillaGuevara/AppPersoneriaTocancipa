@@ -19,4 +19,8 @@
     <color name="light_gray">#D3D3D3</color>
     <color name="sky_blue">#87CEEB</color>
     <color name="light_green">#A5D6A7</color>
+
+
+    <color name="text_color">#1C1C1C</color>
+    <color name="text_color_secondary">#7DC361</color>
 </resources>

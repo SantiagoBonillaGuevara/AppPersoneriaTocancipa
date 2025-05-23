@@ -61,11 +61,6 @@ class ChatBotFragment : Fragment() {
             b.etMessageInput.text?.clear()
             viewModel.sendMessage(text)
         }
-
-        // 5) Botón de "volver"
-        b.btnGoHome.setOnClickListener {
-            requireActivity().onBackPressed()
-        }
     }
 
     override fun onDestroyView() {

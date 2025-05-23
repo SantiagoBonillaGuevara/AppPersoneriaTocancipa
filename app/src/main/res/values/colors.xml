@@ -10,6 +10,7 @@
     <color name="Rojo">#ff0000</color>
 
 
+    <color name="transparent">#00FFFFFF</color>
     <color name="background">#0071B3</color>
     <color name="button">#4CAF50</color>
     <color name="icon">#444444</color>

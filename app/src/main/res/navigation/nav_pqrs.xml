@@ -16,17 +16,23 @@
         <!-- → ChatBot -->
         <action
             android:id="@+id/action_homeFragment_to_chatBotFragment"
-            app:destination="@id/chatBotFragment" />
+            app:destination="@id/chatBotFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
 
         <!-- → Menú PQRS (usuario) -->
         <action
             android:id="@+id/action_homeFragment_to_pqrsMenuFragment"
-            app:destination="@id/pqrsMenuFragment" />
+            app:destination="@id/pqrsMenuFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
 
         <!-- → Listado PQRS (admin) -->
         <action
             android:id="@+id/action_homeFragment_to_pqrsAdminListFragment"
-            app:destination="@id/pqrsAdminListFragment" />
+            app:destination="@id/pqrsAdminListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <!-- 2. ChatBotFragment -->
@@ -50,6 +56,8 @@
         <action
             android:id="@+id/action_chatBotFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -64,17 +72,23 @@
         <!-- → Crear PQRS -->
         <action
             android:id="@+id/action_pqrsMenuFragment_to_pqrsCreateFragment"
-            app:destination="@id/pqrsCreateFragment" />
+            app:destination="@id/pqrsCreateFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
 
         <!-- → Listar mis PQRS -->
         <action
             android:id="@+id/action_pqrsMenuFragment_to_pqrsListFragment"
-            app:destination="@id/pqrsListFragment" />
+            app:destination="@id/pqrsListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
 
         <!-- ← Volver a HomeFragment -->
         <action
             android:id="@+id/action_pqrsMenuFragment_to_homeFragment"
             app:destination="@id/homeFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -96,7 +110,9 @@
         <!-- → (opcional) Ver lista usuario -->
         <action
             android:id="@+id/action_pqrsCreateFragment_to_pqrsListFragment"
-            app:destination="@id/pqrsListFragment" />
+            app:destination="@id/pqrsListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
     </fragment>
 
     <!-- 5. PqrsListFragment (usuario) -->
@@ -109,7 +125,9 @@
         <!-- → Detalle PQRS -->
         <action
             android:id="@+id/action_pqrsListFragment_to_pqrsDetailFragment"
-            app:destination="@id/pqrsDetailFragment" />
+            app:destination="@id/pqrsDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <!-- 6. PqrsDetailFragment (usuario) -->
@@ -134,7 +152,9 @@
         <!-- → Detalle PQRS admin -->
         <action
             android:id="@+id/action_pqrsAdminListFragment_to_pqrsAdminDetailFragment"
-            app:destination="@id/pqrsAdminDetailFragment" />
+            app:destination="@id/pqrsAdminDetailFragment"
+            app:enterAnim="@android:anim/slide_out_right"
+            app:exitAnim="@android:anim/slide_in_left" />
     </fragment>
 
     <!-- 8. PqrsAdminDetailFragment (admin) -->

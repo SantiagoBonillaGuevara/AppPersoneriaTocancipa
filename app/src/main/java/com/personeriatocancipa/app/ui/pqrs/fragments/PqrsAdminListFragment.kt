@@ -43,6 +43,10 @@ class PqrsAdminListFragment : Fragment() {
                 bundleOf("pqrsId" to id)
             )
         }
+        // Asigna la función al botón de navegación
+        b.toolbarAdminList.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         // Muy importante: asignar el LayoutManagerz
         b.rvPqrsAdmin.layoutManager = LinearLayoutManager(requireContext())

@@ -28,13 +28,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // 1) Flecha “up” en toolbar → vuelve a la Activity principal de usuario
-        binding.toolbar.setNavigationOnClickListener {
-            val intent = Intent(requireContext(), UserActivity::class.java)
-            startActivity(intent)
-            requireActivity().finish()
-        }
-
         // 2) Navegar al ChatBot dentro de tu NavGraph nav_pqrs.xml
         binding.btnChatBot.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_chatBotFragment)

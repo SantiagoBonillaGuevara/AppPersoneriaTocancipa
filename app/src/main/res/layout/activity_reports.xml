@@ -79,7 +79,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:layout_marginBottom="8dp"/>
-            <com.github.mikephil.charting.charts.LineChart
+            <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/lineChart"
                 android:layout_width="match_parent"
                 android:layout_height="300dp" />

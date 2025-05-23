@@ -4,6 +4,7 @@ import android.graphics.Color
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
@@ -20,7 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class ChartHelper(private val barChart: BarChart, private val pieChart: PieChart, private val lineChart: LineChart) {
+class ChartHelper(private val barChart: BarChart, private val pieChart: PieChart, private val citasChart: BarChart) {
 
     fun setupBarChart(dates: List<Date>) {
         // Aquí va tu lógica para crear el BarChart
@@ -56,34 +57,35 @@ class ChartHelper(private val barChart: BarChart, private val pieChart: PieChart
 
         // Contar las citas por día de la semana
         dates.forEach { date ->
-            val dayOfWeek = getDayOfWeek(date.fecha!!)  // Obtén el día de la semana de la fecha
+            val dayOfWeek = getDayOfWeek(date.fecha!!)  // Asegúrate de que getDayOfWeek devuelva nombres exactos como en daysOfWeek
             dayCount[dayOfWeek] = dayCount.getOrDefault(dayOfWeek, 0) + 1
         }
 
-        val entries = ArrayList<Entry>()
+        val entries = ArrayList<BarEntry>()
         val labels = ArrayList<String>()
 
         daysOfWeek.forEachIndexed { index, day ->
             val count = dayCount[day] ?: 0
-            entries.add(Entry(index.toFloat(), count.toFloat()))
+            entries.add(BarEntry(index.toFloat(), count.toFloat()))
             labels.add(day)
         }
 
-        val dataSet = LineDataSet(entries, "Número de citas por día")
-        dataSet.color = Color.rgb(0, 155, 0)
+        val dataSet = BarDataSet(entries, "Número de citas por día")
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS.toList()) // Colores variados para cada barra
         dataSet.valueTextColor = Color.BLACK
         dataSet.valueTextSize = 12f
-        dataSet.lineWidth = 3f
-        dataSet.setCircleColor(Color.rgb(0, 100, 0))
 
-        val data = LineData(dataSet)
-        lineChart.data = data
+        val data = BarData(dataSet)
+        citasChart.data = data
 
         // Configuración visual
-        lineChart.description.text = "Citas por día de la semana"
-        lineChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-        lineChart.animateX(1000)
-        lineChart.invalidate()
+        citasChart.setFitBars(true)
+        citasChart.description.text = "Citas por día de la semana"
+        citasChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+        citasChart.xAxis.granularity = 1f
+        citasChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+        citasChart.animateY(1000)
+        citasChart.invalidate()
     }
 
     fun setupPieChart(dates: List<Date>) {

@@ -1,63 +1,78 @@
+// app/src/main/java/com/personeriatocancipa/app/ui/pqrs/fragments/PqrsAdminDetailFragment.kt
 package com.personeriatocancipa.app.ui.pqrs.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.snackbar.Snackbar
-import com.personeriatocancipa.app.databinding.FragmentPqrsAdminDetailBinding
+import com.personeriatocancipa.app.R
 import com.personeriatocancipa.app.data.repository.FirebasePqrsRepository
+import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
+import com.personeriatocancipa.app.databinding.FragmentPqrsAdminDetailBinding
 import com.personeriatocancipa.app.domain.usecase.GetPqrsByIdUseCase
+import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
 import com.personeriatocancipa.app.domain.usecase.RespondPqrsUseCase
-import kotlinx.coroutines.launch
+import com.personeriatocancipa.app.ui.pqrs.viewmodel.PqrsAdminDetailViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class PqrsAdminDetailFragment : Fragment() {
-    private var _b: FragmentPqrsAdminDetailBinding? = null
-    private val b get() = _b!!
+class PqrsAdminDetailFragment : Fragment(R.layout.fragment_pqrs_admin_detail) {
+
+    private var _binding: FragmentPqrsAdminDetailBinding? = null
+    private val b get() = _binding!!
+
+    // 1) Recibimos el argumento con el ID de la PQRS
     private val args: PqrsAdminDetailFragmentArgs by navArgs()
-    private val detailUseCase = GetPqrsByIdUseCase(FirebasePqrsRepository())
-    private val respondUseCase = RespondPqrsUseCase(FirebasePqrsRepository())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _b = FragmentPqrsAdminDetailBinding.inflate(inflater, container, false)
-        return b.root
+    // 2) Creamos el ViewModel inyectando los use-cases necesarios
+    private val viewModel: PqrsAdminDetailViewModel by viewModels {
+        // repositorios
+        val pqrsRepo  = FirebasePqrsRepository()
+        val userRepo  = FirebaseUserRepository()
+        PqrsAdminDetailViewModel.Factory(
+            GetPqrsByIdUseCase(pqrsRepo),
+            GetUserUseCase(userRepo),
+            RespondPqrsUseCase(pqrsRepo)
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentPqrsAdminDetailBinding.bind(view)
 
-        lifecycleScope.launch {
-            detailUseCase.execute(args.pqrsId).onSuccess { p ->
-                b.tvType.text = p.type
-                b.tvDescription.text = p.description
-                b.tvUserId.text = p.userId
-            }
+        // 3) Flecha de "volver"
+        b.toolbarAdminDetail.setNavigationOnClickListener {
+            findNavController().popBackStack()
         }
 
+        // 4) Cargar datos de la PQRS + nombre de usuario
+        viewModel.loadPqrsById(args.pqrsId)
+        viewModel.pqrsDetail.observe(viewLifecycleOwner) { detail ->
+            b.tvDetailUserName.text = detail.userName
+            b.tvDetailType.text     = detail.type
+            b.tvDetailDate.text     = SimpleDateFormat(
+                "dd/MM/yyyy HH:mm",
+                Locale.getDefault()
+            ).format(Date(detail.date))
+            b.tvDetailTitle.text       = detail.title
+            b.tvDetailDescription.text = detail.description
+        }
+
+        // 5) Enviar la respuesta y volver al listado
         b.btnSendResponse.setOnClickListener {
-            val resp = b.etResponse.text.toString().trim()
-            if (resp.isNotEmpty()) {
-                lifecycleScope.launch {
-                    respondUseCase.execute(args.pqrsId, resp)
-                        .onSuccess { findNavController().navigateUp() }
-                        .onFailure {
-                            Snackbar.make(b.root, "Error al enviar respuesta", Snackbar.LENGTH_SHORT).show()
-                        }
-                }
+            val respuesta = b.etResponse.text.toString().trim()
+            if (respuesta.isNotEmpty()) {
+                viewModel.sendResponse(args.pqrsId, respuesta)
+                findNavController().popBackStack()
             }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _b = null
+        _binding = null
     }
 }

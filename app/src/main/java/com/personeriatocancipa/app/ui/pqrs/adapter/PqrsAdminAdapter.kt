@@ -1,60 +1,46 @@
+// app/src/main/java/com/personeriatocancipa/app/ui/pqrs/adapter/PqrsAdminAdapter.kt
 package com.personeriatocancipa.app.ui.pqrs.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.personeriatocancipa.app.databinding.ItemPqrsAdminBinding
-import com.personeriatocancipa.app.domain.model.Pqrs
+import com.personeriatocancipa.app.domain.model.PqrsUiModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class PqrsAdminAdapter(
-    private val onClick: (pqrsId: String) -> Unit
-) : ListAdapter<Pqrs, PqrsAdminAdapter.PqrsViewHolder>(DiffCallback()) {
+    private val onClick: (PqrsUiModel) -> Unit
+) : ListAdapter<PqrsUiModel, PqrsAdminAdapter.Holder>(DiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PqrsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemPqrsAdminBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
-        return PqrsViewHolder(binding)
+        return Holder(binding)
     }
 
-    override fun onBindViewHolder(holder: PqrsViewHolder, position: Int) {
-        holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(getItem(position), onClick)
     }
 
-    inner class PqrsViewHolder(private val b: ItemPqrsAdminBinding) :
-        RecyclerView.ViewHolder(b.root), View.OnClickListener {
-
-        private var current: Pqrs? = null
-
-        init {
-            b.root.setOnClickListener(this)
-        }
-
-        fun bind(item: Pqrs) {
-            current = item
-            b.tvType.text = item.type
-            b.tvTitle.text = item.title
-            b.tvStatus.text = item.status
-
-            // Formatea la fecha (suponiendo que item.date es un Long timestamp)
-            val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            b.tvDate.text = sdf.format(Date(item.date))
-
-            // Mostrar el identificador del usuario (o su email/nombre si ya está cargado)
-            b.tvUser.text = item.userId
-        }
-
-        override fun onClick(v: View?) {
-            current?.let { onClick(it.id) }
+    class Holder(private val b: ItemPqrsAdminBinding)
+        : RecyclerView.ViewHolder(b.root) {
+        private val fmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        fun bind(item: PqrsUiModel, onClick: (PqrsUiModel) -> Unit) {
+            b.tvUserName.text    = item.userName
+            b.tvType.text        = item.type
+            b.tvTitle.text       = item.title
+            b.tvDescription.text = item.description
+            b.tvDate.text        = fmt.format(Date(item.date))
+            b.root.setOnClickListener { onClick(item) }
         }
     }
 
-    class DiffCallback : DiffUtil.ItemCallback<Pqrs>() {
-        override fun areItemsTheSame(old: Pqrs, new: Pqrs) = old.id == new.id
-        override fun areContentsTheSame(old: Pqrs, new: Pqrs) = old == new
+    object DiffCallback : DiffUtil.ItemCallback<PqrsUiModel>() {
+        override fun areItemsTheSame(a: PqrsUiModel, b: PqrsUiModel) = a.id == b.id
+        override fun areContentsTheSame(a: PqrsUiModel, b: PqrsUiModel) = a == b
     }
 }

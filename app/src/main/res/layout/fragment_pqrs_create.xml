@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp">
 
     <LinearLayout
@@ -39,6 +41,9 @@
             android:id="@+id/btnAttach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="?attr/materialButtonOutlinedStyle"
+            app:strokeColor="@color/button"
+            android:textColor="@color/button"
             android:text="Adjuntar archivo"
             android:layout_marginTop="16dp"/>
 
@@ -62,7 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Enviar"
-            style="@style/ThemeOverlay.Material3.Button.ElevatedButton"
+            android:textColor="@color/button"
+            android:textStyle="bold"
+            style="?attr/borderlessButtonStyle"
             android:layout_marginTop="24dp"/>
 
     </LinearLayout>

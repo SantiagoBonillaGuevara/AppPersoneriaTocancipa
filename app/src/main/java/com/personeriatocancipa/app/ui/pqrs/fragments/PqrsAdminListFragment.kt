@@ -41,7 +41,7 @@ class PqrsAdminListFragment : Fragment(R.layout.fragment_pqrs_admin_list) {
 
         // Flecha volver
         b.toolbarAdminList.setNavigationOnClickListener {
-            findNavController().popBackStack()
+            requireActivity().finish()
         }
 
         val adapter = PqrsAdminAdapter { item ->

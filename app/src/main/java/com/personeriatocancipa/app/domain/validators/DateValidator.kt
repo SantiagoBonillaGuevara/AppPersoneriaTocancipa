@@ -31,7 +31,6 @@ class DateValidator {
         val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return try {
             val fechaSeleccionada = formato.parse(fecha)
-            val hoy = Calendar.getInstance()
             val limite = Calendar.getInstance().apply {
                 add(Calendar.DAY_OF_YEAR, diasMinimos)
             }

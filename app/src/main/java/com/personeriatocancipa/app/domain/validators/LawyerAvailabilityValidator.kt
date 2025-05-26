@@ -12,7 +12,7 @@ class LawyerAvailabilityValidator {
     fun getAvailableHoursForAppointment(lawyer: Lawyer, selectedDate: String, citas: List<com.personeriatocancipa.app.domain.model.Date>): List<String> {
         // Obtener el día de la semana de la fecha seleccionada (lunes = 1, martes = 2, ...)
         val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(selectedDate)
-        val calendar = Calendar.getInstance().apply { time = date }
+        val calendar = Calendar.getInstance().apply { time = date!! }
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
         if(citas.isEmpty()) return getAvailableHoursForDay(lawyer, dayOfWeek).filter { it != "12:00" }

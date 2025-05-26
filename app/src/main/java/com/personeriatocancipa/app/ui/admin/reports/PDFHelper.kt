@@ -1,6 +1,5 @@
 package com.personeriatocancipa.app.ui.admin.reports
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.os.Environment
 import com.itextpdf.text.BaseColor

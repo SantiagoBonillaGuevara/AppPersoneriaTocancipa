@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
 }
@@ -75,8 +75,13 @@ dependencies {
     implementation("com.google.firebase:firebase-storage-ktx")
 
     // Glide
-    implementation("com.github.bumptech.glide:glide:4.14.2")
-    kapt("com.github.bumptech.glide:compiler:4.14.2")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    ksp("com.github.bumptech.glide:ksp:4.15.1")
+
+    //(opcional, si necesitas persistencia local o si el ksp no agarra bien en el build)
+    //implementation("androidx.room:room-runtime:2.6.1")
+    //ksp("androidx.room:room-compiler:2.6.1")
+
 
     // Navigation
     implementation(libs.androidx.navigation.fragment)

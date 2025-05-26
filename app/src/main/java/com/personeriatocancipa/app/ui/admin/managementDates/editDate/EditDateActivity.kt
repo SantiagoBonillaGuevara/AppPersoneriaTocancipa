@@ -65,7 +65,7 @@ class EditDateActivity : AppCompatActivity() {
     fun isAvailableOnDay(lawyer: Lawyer, fecha: String): Boolean {
         // Convertir la fecha en un día de la semana
         val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(fecha)
-        val calendar = Calendar.getInstance().apply { time = date }
+        val calendar = Calendar.getInstance().apply { time = date!! }
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         // Verificar si el abogado tiene horario para ese día
         return when (dayOfWeek) {

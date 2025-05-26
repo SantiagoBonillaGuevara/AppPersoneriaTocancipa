@@ -106,7 +106,7 @@ class RegisterLawyerStep3Fragment : Fragment() {
         val formato = SimpleDateFormat("HH:mm", Locale.getDefault())
         val horaInicio = formato.parse(inicio)
         val horaFin = formato.parse(fin)
-        return horaInicio.before(horaFin)
+        return horaInicio!!.before(horaFin)
     }
 
     fun mostrarListaHoras(editText: EditText) {

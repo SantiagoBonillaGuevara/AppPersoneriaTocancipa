@@ -56,10 +56,10 @@ class CreateDateActivity : AppCompatActivity() {
         var builder = AlertDialog.Builder(this)
         builder.setTitle("Envío de confirmación a Correo Electrónico")
         builder.setMessage("¿Está de acuerdo con que se le envíe respuesta o información sobre la gestión de su PETICIÓN vía correo electrónico?")
-        builder.setPositiveButton("Sí") { dialog, which ->
+        builder.setPositiveButton("Sí") { _, _ ->
             viewModel.date.value?.autorizaCorreo = "Sí"
         }
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { _, _ ->
             viewModel.date.value?.autorizaCorreo = "No"
         }
         builder.create().show()
@@ -68,10 +68,10 @@ class CreateDateActivity : AppCompatActivity() {
         builder = AlertDialog.Builder(this)
         builder.setTitle("Vigencia de correo electrónico")
         builder.setMessage("Certifico que el correo electrónico ingresado se encuentra vigente, y se autoriza a la Personería de Tocancipá para que realice notificaciones electrónicas a través de este medio de las actuaciones realizadas por la entidad, en los términos del artículo 56 de la Ley 1437 de 2011, y las normas que la modifiquen, aclaren o sustituyan")
-        builder.setPositiveButton("Sí") { dialog, which ->
+        builder.setPositiveButton("Sí") { _, _ ->
             viewModel.date.value?.correoVigente = "Sí"
         }
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { _, _ ->
             viewModel.date.value?.correoVigente = "No"
         }
         builder.create().show()
@@ -102,7 +102,7 @@ class CreateDateActivity : AppCompatActivity() {
     fun isAvailableOnDay(lawyer: Lawyer, fecha: String): Boolean {
         // Convertir la fecha en un día de la semana
         val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(fecha)
-        val calendar = Calendar.getInstance().apply { time = date }
+        val calendar = Calendar.getInstance().apply { time = date!! }
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         // Verificar si el abogado tiene horario para ese día
         return when (dayOfWeek) {

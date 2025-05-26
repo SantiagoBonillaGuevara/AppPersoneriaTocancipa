@@ -15,7 +15,7 @@ class GetPqrsWithUserUseCase(
     fun execute(): Flow<List<PqrsUiModel>> = flow {
         getAllPqrsUseCase().collect { pqrsList ->
             val uiList = pqrsList.map { pqrs ->
-                val userResult = getUserUseCase.execute("users", pqrs.userId)
+                val userResult = getUserUseCase.execute("userData", pqrs.userId)
                 val fullName = userResult
                     .getOrNull()
                     ?.nombreCompleto

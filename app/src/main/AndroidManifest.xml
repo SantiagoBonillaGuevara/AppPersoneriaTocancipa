@@ -27,6 +27,16 @@
         android:theme="@style/Theme.Citas"
         tools:targetApi="31">
         <activity
+            android:name=".ui.admin.managementAdminPqrs.registerAdminPqrs.RegisterAdminPqrsActivity"
+            android:label="Registrar Admin PQRS"
+            android:exported="false" />
+        <activity
+            android:name=".ui.admin.managementAdminPqrs.ManageAdminPqrsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.pqrs.PqrsAdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.PqrsAdminActivity"
             android:exported="false" />
         <activity

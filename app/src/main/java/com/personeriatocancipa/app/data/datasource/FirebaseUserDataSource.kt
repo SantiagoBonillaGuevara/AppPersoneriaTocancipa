@@ -31,7 +31,7 @@ class FirebaseUserDataSource {
             db.getReference(path).child(userId).get()
                 .addOnSuccessListener {
                     val estado = it.child("estado").value?.toString()
-                    if (it.exists() && estado=="Activo") {
+                    if (it.exists() && estado == "Activo") {
                         cont.resume(Result.success(role))
                     } else {
                         Log.i("FirebaseUserDataSource", "Cuenta inactiva o no existente en $path")
@@ -47,7 +47,7 @@ class FirebaseUserDataSource {
     }
 
     suspend fun isParamRegistered(param: String, value: String): Boolean = suspendCoroutine { cont ->
-        val paths:List<String> = UserCollectionProvider().getCollectionsName()
+        val paths: List<String> = UserCollectionProvider().getCollectionsName()
 
         fun check(pathsLeft: List<String>) {
             if (pathsLeft.isEmpty()) {
@@ -65,7 +65,7 @@ class FirebaseUserDataSource {
                     }
                 }
                 .addOnFailureListener {
-                    cont.resume(false) // podrías registrar log si lo necesitas
+                    cont.resume(false)
                 }
         }
 
@@ -86,49 +86,56 @@ class FirebaseUserDataSource {
     }
 
     suspend fun getUserById(node: String, uid: String): Result<RegistrableUser> = suspendCoroutine { cont ->
-        val id:String
-        if (uid.isEmpty()) id = FirebaseAuth.getInstance().currentUser?.uid!!
-        else id = uid
-        Log.i("FirebaseUserDataSource", "recibi uid = ${uid} entonces voy a buscar por el id ID: $id")
-        db.getReference(node).child(id).get().addOnSuccessListener { snapshot ->
-            val user = when (node) {
-                "userData" -> snapshot.getValue(User::class.java)
-                "AdminData" -> snapshot.getValue(Admin::class.java)
-                "abogadoData" -> snapshot.getValue(Lawyer::class.java)
-                else -> null
+        val id = if (uid.isEmpty()) auth.currentUser?.uid!! else uid
+        Log.i("FirebaseUserDataSource", "recibi uid = $uid entonces voy a buscar por el id ID: $id")
+        db.getReference(node).child(id).get()
+            .addOnSuccessListener { snapshot ->
+                val user = when (node) {
+                    "userData"      -> snapshot.getValue(User::class.java)
+                    "AdminData",
+                    "AdminPqrsData" -> snapshot.getValue(Admin::class.java)
+                    "abogadoData"   -> snapshot.getValue(Lawyer::class.java)
+                    else            -> null
+                }
+                if (user is RegistrableUser) cont.resume(Result.success(user))
+                else                        cont.resume(Result.failure(Exception("No se pudo mapear el usuario desde $node")))
             }
-            if (user is RegistrableUser) cont.resume(Result.success(user))
-            else cont.resume(Result.failure(Exception("No se pudo mapear el usuario desde $node")))
-        }.addOnFailureListener {
-            cont.resume(Result.failure(it))
-        }
+            .addOnFailureListener {
+                cont.resume(Result.failure(it))
+            }
     }
 
     suspend fun getUsers(node: String): Result<List<RegistrableUser>> = suspendCoroutine { cont ->
-        db.getReference(node).get().addOnSuccessListener { snapshot ->
-            val users = snapshot.children.mapNotNull {
-                when (node) {
-                    "userData" -> it.getValue(User::class.java)
-                    "AdminData" -> it.getValue(Admin::class.java)
-                    "AdminPqrsData" -> it.getValue(Admin::class.java)
-                    "abogadoData" -> {
-                        val lawyer = it.getValue(Lawyer::class.java)
-                        val horarioSnapshot = it.child("horario")
-                        val horario = Horario(
-                            Lunes = horarioSnapshot.child("lunes").getValue(HorarioDia::class.java),
-                            Martes = horarioSnapshot.child("martes").getValue(HorarioDia::class.java),
-                            Miércoles = horarioSnapshot.child("miércoles").getValue(HorarioDia::class.java),
-                            Jueves = horarioSnapshot.child("jueves").getValue(HorarioDia::class.java),
-                            Viernes = horarioSnapshot.child("viernes").getValue(HorarioDia::class.java)
-                        )
-                        lawyer?.copy(horario = horario)
+        db.getReference(node).get()
+            .addOnSuccessListener { snapshot ->
+                // para cada hijo, primero verifico que snapshot.value sea un Map
+                val users = snapshot.children.mapNotNull { child ->
+                    val raw = child.value
+                    if (raw !is Map<*, *>) {
+                        // no es un objeto, lo salto
+                        return@mapNotNull null
                     }
-                    else -> null
+                    // ahora sí lo convierto, sabiendo que hay estructura de objeto
+                    when (node) {
+                        "userData" -> child.getValue(User::class.java)
+                        "AdminData", "AdminPqrsData" -> child.getValue(Admin::class.java)
+                        "abogadoData" -> {
+                            val lawyer = child.getValue(Lawyer::class.java) ?: return@mapNotNull null
+                            val hSnap = child.child("horario")
+                            val horario = Horario(
+                                Lunes    = hSnap.child("Lunes").getValue(HorarioDia::class.java),
+                                Martes   = hSnap.child("Martes").getValue(HorarioDia::class.java),
+                                Miércoles= hSnap.child("Miércoles").getValue(HorarioDia::class.java),
+                                Jueves   = hSnap.child("Jueves").getValue(HorarioDia::class.java),
+                                Viernes  = hSnap.child("Viernes").getValue(HorarioDia::class.java)
+                            )
+                            lawyer.copy(horario = horario)
+                        }
+                        else -> null
+                    }
                 }
+                cont.resume(Result.success(users))
             }
-            cont.resume(Result.success(users))
-        }.addOnFailureListener {
-            cont.resume(Result.failure(it))
-        }
+            .addOnFailureListener { cont.resume(Result.failure(it)) }
     }
 }

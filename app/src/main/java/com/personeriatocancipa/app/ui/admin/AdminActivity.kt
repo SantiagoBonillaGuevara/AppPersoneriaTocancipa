@@ -1,6 +1,5 @@
 package com.personeriatocancipa.app.ui.admin
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -11,18 +10,20 @@ import com.personeriatocancipa.app.data.repository.FirebaseUserRepository
 import com.personeriatocancipa.app.databinding.ActivityAdminBinding
 import com.personeriatocancipa.app.domain.model.Admin
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
+import com.personeriatocancipa.app.ui.admin.managementAdminPqrs.ManageAdminPqrsActivity
 import com.personeriatocancipa.app.ui.admin.managementDates.ManageDatesActivity
 import com.personeriatocancipa.app.ui.admin.managementLawyers.ManageLawyersActivity
 import com.personeriatocancipa.app.ui.admin.managementUsers.ManageUsersActivity
 import com.personeriatocancipa.app.ui.admin.reports.ReportsActivity
 import com.personeriatocancipa.app.ui.common.LoginActivity
+import com.personeriatocancipa.app.ui.common.signup.RegisterActivity
 import kotlinx.coroutines.launch
 
 class AdminActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    private val getUserUseCase: GetUserUseCase = GetUserUseCase(FirebaseUserRepository())
+    private val getUserUseCase = GetUserUseCase(FirebaseUserRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,79 +33,54 @@ class AdminActivity : AppCompatActivity() {
         initComponents()
     }
 
-    private fun initComponents(){
-        binding.flUser.setOnClickListener{
-            navigateToManageUsers()
-        }
-
-        binding.flLawyer.setOnClickListener{
-            navigateToManageLawyers()
-        }
-
-        binding.flDate.setOnClickListener{
-            navigateToManageDates()
-        }
-
-        binding.flEdit.setOnClickListener {
-            navigateToModify()
-        }
-
-        binding.flExit.setOnClickListener{
-            navigateToLogin()
-        }
-
-        binding.flData.setOnClickListener{
-            navigateToReports()
-        }
-
-        binding.btnPqrsAdmin.setOnClickListener {
-            startActivity(Intent(this, PqrsAdminActivity::class.java))
-        }
-
-
-
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) cargarNombre()
-        }
-    }
-
     private fun cargarNombre() {
         lifecycleScope.launch {
-            val result = getUserUseCase.execute("AdminData","")
-            result.onSuccess {
-                if (it is Admin) binding.tvName.text = it.nombreCompleto
+            val result = getUserUseCase.execute("AdminData", "")
+            result.onSuccess { user ->
+                if (user is Admin) {
+                    binding.tvName.text = user.nombreCompleto
+                }
             }
         }
     }
 
-    private fun navigateToLogin(){
-        val intent = Intent(this, LoginActivity::class.java)
-        finish()
-        startActivity(intent)
-    }
+    private fun initComponents() {
+        // Editar cuenta
+        binding.flEdit.setOnClickListener {
+            startActivity(Intent(this, ModifyAdminActivity::class.java))
+        }
 
-    private fun navigateToManageUsers(){
-        val intent = Intent(this@AdminActivity, ManageUsersActivity::class.java)
-        startActivity(intent)
-    }
+        // Gestionar abogados
+        binding.flLawyer.setOnClickListener {
+            startActivity(Intent(this, ManageLawyersActivity::class.java))
+        }
 
-    private fun navigateToManageLawyers(){
-        val intent = Intent(this@AdminActivity, ManageLawyersActivity::class.java)
-        startActivity(intent)
-    }
+        // Gestionar usuarios
+        binding.flUser.setOnClickListener {
+            startActivity(Intent(this, ManageUsersActivity::class.java))
+        }
 
-    private fun navigateToManageDates(){
-        val intent = Intent(this@AdminActivity, ManageDatesActivity::class.java)
-        startActivity(intent)
-    }
+        // NUEVO: Gestionar Admin PQRS
+        binding.flAdminPqrsManage.setOnClickListener {
+            startActivity(Intent(this, ManageAdminPqrsActivity::class.java))
+        }
 
-    private fun navigateToModify(){
-        val intent = Intent(this@AdminActivity, ModifyAdminActivity::class.java)
-        launcher.launch(intent)
-    }
+        // Informes
+        binding.flData.setOnClickListener {
+            startActivity(Intent(this, ReportsActivity::class.java))
+        }
 
-    private fun navigateToReports(){
-        val intent = Intent(this@AdminActivity, ReportsActivity::class.java)
-        startActivity(intent)
+        // Salir / Logout
+        binding.flExit.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+
+        // Para recargar nombre tras editar datos
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                cargarNombre()
+            }
+        }
     }
 }

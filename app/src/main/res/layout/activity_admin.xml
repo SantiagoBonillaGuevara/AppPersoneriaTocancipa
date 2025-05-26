@@ -159,6 +159,32 @@
                         android:textSize="15sp" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/flAdminPqrsManage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/background"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@drawable/ic_person"
+                        app:tint="@color/white" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gestionar  \nadmin PQRS"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
                 <FrameLayout
                     android:id="@+id/flExit"
                     android:layout_width="match_parent"
@@ -167,7 +193,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/step_circle_active"
+                    android:background="@color/background"
                     android:backgroundTint="@color/background">
 
                     <ImageView
@@ -179,30 +205,6 @@
                 </FrameLayout>
 
             </LinearLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/btnPqrsAdmin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@color/background"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="5dp">
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_chat"
-                app:tint="@color/white" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="PQRS"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout

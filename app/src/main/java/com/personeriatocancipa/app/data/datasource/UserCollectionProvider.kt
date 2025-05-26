@@ -11,6 +11,7 @@ class UserCollectionProvider {
         return listOf(
             "abogadoData" to Role.LAWYER,
             "AdminData" to Role.ADMIN,
+            "AdminPqrsData" to Role.ADMIN_PQRS,
             "userData" to Role.USER
         )
     }

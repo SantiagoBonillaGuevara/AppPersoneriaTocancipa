@@ -12,9 +12,6 @@
     <string name="login_no_count">No tienes cuenta? Regístrate</string>
 
 
-
-
-
     <string-array name="opcionesTipoDocumento">
         <item>CC</item>
         <item>CE</item>

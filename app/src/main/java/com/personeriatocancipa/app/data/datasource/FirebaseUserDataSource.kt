@@ -110,6 +110,7 @@ class FirebaseUserDataSource {
                 when (node) {
                     "userData" -> it.getValue(User::class.java)
                     "AdminData" -> it.getValue(Admin::class.java)
+                    "AdminPqrsData" -> it.getValue(Admin::class.java)
                     "abogadoData" -> {
                         val lawyer = it.getValue(Lawyer::class.java)
                         val horarioSnapshot = it.child("horario")

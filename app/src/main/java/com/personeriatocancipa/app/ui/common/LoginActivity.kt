@@ -61,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
                     Role.USER -> Intent(this@LoginActivity, UserActivity::class.java)
                     Role.LAWYER -> Intent(this@LoginActivity, LawyerActivity::class.java)
                     Role.ADMIN -> Intent(this@LoginActivity, AdminActivity::class.java)
+                    Role.ADMIN_PQRS -> Intent(this@LoginActivity, AdminActivity::class.java)
                 }
                 startActivity(intent)
                 finish()

@@ -60,6 +60,10 @@ class AdminActivity : AppCompatActivity() {
             startActivity(Intent(this, ManageUsersActivity::class.java))
         }
 
+        binding.flDate.setOnClickListener {
+            startActivity(Intent(this, ManageDatesActivity::class.java))
+        }
+
         // NUEVO: Gestionar Admin PQRS
         binding.flAdminPqrsManage.setOnClickListener {
             startActivity(Intent(this, ManageAdminPqrsActivity::class.java))

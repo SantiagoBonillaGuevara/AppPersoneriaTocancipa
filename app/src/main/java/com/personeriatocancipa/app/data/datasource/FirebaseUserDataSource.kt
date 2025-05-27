@@ -98,7 +98,7 @@ class FirebaseUserDataSource {
                     else            -> null
                 }
                 if (user is RegistrableUser) cont.resume(Result.success(user))
-                else                        cont.resume(Result.failure(Exception("No se pudo mapear el usuario desde $node")))
+                else cont.resume(Result.failure(Exception("No se pudo mapear el usuario desde $node")))
             }
             .addOnFailureListener {
                 cont.resume(Result.failure(it))
@@ -109,27 +109,22 @@ class FirebaseUserDataSource {
         db.getReference(node).get()
             .addOnSuccessListener { snapshot ->
                 // para cada hijo, primero verifico que snapshot.value sea un Map
-                val users = snapshot.children.mapNotNull { child ->
-                    val raw = child.value
-                    if (raw !is Map<*, *>) {
-                        // no es un objeto, lo salto
-                        return@mapNotNull null
-                    }
+                val users = snapshot.children.mapNotNull {
                     // ahora sí lo convierto, sabiendo que hay estructura de objeto
                     when (node) {
-                        "userData" -> child.getValue(User::class.java)
-                        "AdminData", "AdminPqrsData" -> child.getValue(Admin::class.java)
+                        "userData" -> it.getValue(User::class.java)
+                        "AdminData", "AdminPqrsData" -> it.getValue(Admin::class.java)
                         "abogadoData" -> {
-                            val lawyer = child.getValue(Lawyer::class.java) ?: return@mapNotNull null
-                            val hSnap = child.child("horario")
+                            val lawyer = it.getValue(Lawyer::class.java)
+                            val horarioSnapshot = it.child("horario")
                             val horario = Horario(
-                                Lunes    = hSnap.child("Lunes").getValue(HorarioDia::class.java),
-                                Martes   = hSnap.child("Martes").getValue(HorarioDia::class.java),
-                                Miércoles= hSnap.child("Miércoles").getValue(HorarioDia::class.java),
-                                Jueves   = hSnap.child("Jueves").getValue(HorarioDia::class.java),
-                                Viernes  = hSnap.child("Viernes").getValue(HorarioDia::class.java)
+                                Lunes = horarioSnapshot.child("lunes").getValue(HorarioDia::class.java),
+                                Martes = horarioSnapshot.child("martes").getValue(HorarioDia::class.java),
+                                Miércoles = horarioSnapshot.child("miércoles").getValue(HorarioDia::class.java),
+                                Jueves = horarioSnapshot.child("jueves").getValue(HorarioDia::class.java),
+                                Viernes = horarioSnapshot.child("viernes").getValue(HorarioDia::class.java)
                             )
-                            lawyer.copy(horario = horario)
+                            lawyer?.copy(horario = horario)
                         }
                         else -> null
                     }

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:background="@color/white"
+    android:background="@drawable/fondo_oscuro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
@@ -38,20 +38,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/background"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    app:tint="@color/text_color_secondary"
+                    app:tint="@color/white"
                     android:src="@drawable/ic_add" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color"
-                    android:text="Enviar Nueva PQRS" />
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:text="Enviar PQRS" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -74,18 +78,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:background="@color/background"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/ic_gestion"
-                    app:tint="@color/text_color_secondary" />
+                    app:tint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
                     android:text="Mis PQRS" />
 
             </LinearLayout>

@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Personería</string>
     <string name="home_title">Inicio</string>
-    <string name="home_btn_chatbot">Ir al ChatBot</string>
-    <string name="home_btn_pqrs">Ir a PQRS</string>
+    <string name="home_btn_chatbot">ChatBot</string>
+    <string name="home_btn_pqrs">PQRS</string>
 
     //login
     <string name="login_personeria">Personería de Tocancipá</string>

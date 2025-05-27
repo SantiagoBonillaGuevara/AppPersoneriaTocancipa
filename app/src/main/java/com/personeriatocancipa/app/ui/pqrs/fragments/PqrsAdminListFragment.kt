@@ -1,6 +1,7 @@
 // app/src/main/java/com/personeriatocancipa/app/ui/pqrs/fragments/PqrsAdminListFragment.kt
 package com.personeriatocancipa.app.ui.pqrs.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.personeriatocancipa.app.databinding.FragmentPqrsAdminListBinding
 import com.personeriatocancipa.app.domain.usecase.GetAllPqrsUseCase
 import com.personeriatocancipa.app.domain.usecase.GetPqrsWithUserUseCase
 import com.personeriatocancipa.app.domain.usecase.GetUserUseCase
+import com.personeriatocancipa.app.ui.common.LoginActivity
 import com.personeriatocancipa.app.ui.pqrs.adapter.PqrsAdminAdapter
 import com.personeriatocancipa.app.ui.pqrs.viewmodel.PqrsAdminViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -41,6 +43,10 @@ class PqrsAdminListFragment : Fragment(R.layout.fragment_pqrs_admin_list) {
 
         // Flecha volver
         b.toolbarAdminList.setNavigationOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }
+            startActivity(intent)
             requireActivity().finish()
         }
 

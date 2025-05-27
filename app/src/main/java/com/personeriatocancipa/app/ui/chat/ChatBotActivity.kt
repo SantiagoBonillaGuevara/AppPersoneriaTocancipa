@@ -1,6 +1,7 @@
 package com.personeriatocancipa.app.ui.chat
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -30,4 +31,6 @@ class ChatBotActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return findNavController(R.id.navHostPqrs).navigateUp() || super.onSupportNavigateUp()
     }
+
+
 }

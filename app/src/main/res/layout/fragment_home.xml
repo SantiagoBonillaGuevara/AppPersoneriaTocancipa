@@ -6,7 +6,7 @@
     android:id="@+id/home_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@drawable/fondo_oscuro"
     tools:context=".ui.home.HomeFragment">
 
 
@@ -29,12 +29,11 @@
             android:elevation="20dp"
             android:layout_height="200dp"
             android:padding="30dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnPqrs"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
             >
 
             <LinearLayout
@@ -46,13 +45,16 @@
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    app:tint="@color/text_color_secondary"
+                    app:tint="@color/white"
                     android:src="@drawable/ic_chat" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
                     android:text="@string/home_btn_chatbot" />
 
             </LinearLayout>
@@ -65,7 +67,7 @@
             android:layout_marginStart="20dp"
             android:layout_height="200dp"
             android:padding="30dp"
-            app:cardBackgroundColor="@color/white"
+            app:cardBackgroundColor="@color/background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnChatBot"
@@ -82,12 +84,15 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:src="@drawable/ic_person"
-                    app:tint="@color/text_color_secondary" />
+                    app:tint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color"
+                    android:textColor="@color/white"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
                     android:text="@string/home_btn_pqrs" />
 
             </LinearLayout>

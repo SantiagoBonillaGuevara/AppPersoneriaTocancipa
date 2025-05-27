@@ -18,6 +18,7 @@ import com.personeriatocancipa.app.domain.usecase.GetAllUsersUseCase
 import com.personeriatocancipa.app.domain.usecase.ModifyUseCase
 import com.personeriatocancipa.app.ui.admin.managementAdminPqrs.adapter.AdminPqrsAdapter
 import com.personeriatocancipa.app.ui.admin.managementAdminPqrs.registerAdminPqrs.RegisterAdminPqrsActivity
+import com.personeriatocancipa.app.ui.common.LoginActivity
 import kotlinx.coroutines.launch
 
 class ManageAdminPqrsActivity : AppCompatActivity() {
@@ -44,7 +45,9 @@ class ManageAdminPqrsActivity : AppCompatActivity() {
                 Intent(this, RegisterAdminPqrsActivity::class.java)
             )
         }
-        b.ivBack.setOnClickListener { finish() }
+        b.ivBack.setOnClickListener {
+            finish()
+        }
 
         b.etDocumento.addTextChangedListener(object: TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, i: Int, i2: Int, i3: Int){}
